@@ -13,8 +13,9 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public Text HealthText;
 
     public Slider HealthBar;
-
     public Image HealthBarFill;
+
+    public Slider CastBar;
 
     public Outline RegularOutline;
     public Outline SelectOutline;
@@ -55,8 +56,15 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         // Health Bar
         HealthBar.value = raider.Health / raider.MaxHealth;
-
         HealthBarFill.color = RoleUtil.GetColor(raider.Role);
+
+        // Cast Bar
+        if (!raider.IsCasting) CastBar.gameObject.SetActive(false);
+        else
+        {
+            CastBar.gameObject.SetActive(true);
+            CastBar.value = 1.0f - (raider.CastRemaining / raider.CurrentAbility.CastTime);
+        }
     }
 
     public void Select()

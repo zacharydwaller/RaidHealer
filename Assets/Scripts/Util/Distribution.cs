@@ -36,7 +36,6 @@ public static class Distribution
         float max = dice * sides;
 
         float adjustedMedian = (max - min) / 2.0f;
-        float adjustedMax = max - min - adjustedMedian;
         float adjustedRoll = roll - min - adjustedMedian;
 
         float maxZ = 2.50f;

@@ -9,7 +9,7 @@ public static class Numbers
     public static string ThousandAbbrev = "k";
 
     public static float Billion = 1000000000;
-    public static float Million = 10000000;
+    public static float Million = 1000000;
     public static float Thousand = 1000;
 
     public static string Abbreviate(float input)

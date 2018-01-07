@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -11,17 +12,35 @@ public class Raid
     [SerializeField]
     public List<Raider> Raiders;
 
-    public Raid(Raider player, RaidSize _size)
+    public int NumTanks { get { return Raiders.Count(r => r.Role == Role.Tank); } }
+
+    protected BattleManager Mgr;
+
+    public Raid(BattleManager mgr, Raider player, RaidSize _size)
     {
+        Mgr = mgr;
+
         Size = _size;
         Raiders = new List<Raider>();
 
         BuildRaid(player);
-        PrintRaid();
+        //PrintRaid();
     }
 
-    // Get Tank(int index)
-    // Returns Raider
+    public Raider GetTank(int index)
+    {
+        var tanks = Raiders.Where(r => r.Role == Role.Tank).ToList<Raider>();
+        if (index < tanks.Count)
+        {
+            return tanks[index];
+        }
+        else return tanks[0];
+    }
+
+    public Raider GetLowestHealth()
+    {
+        return Raiders.First(r => r.HealthPercent.Equals(Raiders.Min(s => s.HealthPercent)));
+    }
 
     // Get(row, col)
     // Returns Raider
@@ -95,9 +114,9 @@ public class Raid
 
     protected Raider CreateRaider(Role role)
     {
-        if (role == Role.Tank) return new Tank();
-        else if (role == Role.Healer) return new Healer();
-        else return new Damage();
+        if (role == Role.Tank) return new Tank(Mgr);
+        else if (role == Role.Healer) return new Healer(Mgr);
+        else return new Damage(Mgr);
     }
 
     protected void PrintRaid()
