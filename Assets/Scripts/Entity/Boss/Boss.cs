@@ -7,6 +7,10 @@ public class Boss : Entity
 {
     public float SwingDamage;
 
+    public bool IsEnraged = false;
+    public float EnrageDelay = 60;
+    public float EnrageTime;
+
     public float TankSwapDelay = 10;
     public float TankSwapTime = 0;
 
@@ -20,6 +24,13 @@ public class Boss : Entity
 
     public override void Tick()
     {
+        if (IsEnraged == false && Time.time >= EnrageTime)
+        {
+            IsEnraged = true;
+            SwingDamage *= 5;
+            GlobalCooldown /= 1.5f;
+        }
+
         if(Time.time >= TankSwapTime)
         {
             TankSwapTime += TankSwapDelay;

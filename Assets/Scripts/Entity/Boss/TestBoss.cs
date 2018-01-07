@@ -8,8 +8,10 @@ public class TestBoss : Boss
         : base(mgr)
     {
         Name = "Big Boy";
-        MaxHealth = Health = 1 * Numbers.Million;
-        SwingDamage = 10000;
+        MaxHealth = Health = 10 * Numbers.Million;
+        SwingDamage = 5000;
+        EnrageDelay = 3;
+        EnrageTime = Time.time + EnrageDelay;
         CurrentAbility = new AutoAttack();
     }
 }
