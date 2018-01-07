@@ -22,8 +22,8 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public bool IsSelected;
 
-    private float UpdateInterval = 0.05f;
-    private float NextUpdate = 0.0f;
+    protected float HealthTargetValue;
+    protected float HealthLerpConstant = 0.3f;
 
     private void Start()
     {
@@ -32,11 +32,7 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     private void Update()
     {
-        if (Time.time >= NextUpdate)
-        {
-            UpdateInfo();
-            NextUpdate = Time.time + UpdateInterval;
-        }
+        UpdateInfo();
     }
 
     public void Initialize(Raid raid, int raidIndex)
@@ -55,8 +51,12 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         HealthText.text = Numbers.Abbreviate(raider.Health);
 
         // Health Bar
-        HealthBar.value = raider.Health / raider.MaxHealth;
+        HealthBar.maxValue = raider.MaxHealth;
         HealthBarFill.color = RoleUtil.GetColor(raider.Role);
+
+        HealthTargetValue = raider.Health;
+
+        HealthBar.value = Mathf.Lerp(HealthBar.value, HealthTargetValue, HealthLerpConstant);
 
         // Cast Bar
         if (!raider.IsCasting) CastBar.gameObject.SetActive(false);
