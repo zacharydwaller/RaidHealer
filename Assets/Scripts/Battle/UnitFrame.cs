@@ -6,8 +6,7 @@ using UnityEngine.EventSystems;
 
 public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    public Raid Raid;
-    public int RaidIndex;
+    public Raider Raider;
 
     public Text NameText;
     public Text HealthText;
@@ -17,12 +16,13 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public Slider CastBar;
 
+    public Image Background;
+
     public Outline RegularOutline;
     public Outline SelectOutline;
 
     public bool IsSelected;
 
-    protected float HealthTargetValue;
     protected float HealthLerpConstant = 0.3f;
 
     private void Start()
@@ -35,40 +35,50 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         UpdateInfo();
     }
 
-    public void Initialize(Raid raid, int raidIndex)
+    public void Initialize(Raid raid, int index)
     {
-        Raid = raid;
-        RaidIndex = raidIndex;
+        Raider = raid.Raiders[index];
+
+        NameText.text = Raider.Name;
+
+        HealthBar.maxValue = Raider.MaxHealth;
+        HealthBarFill.color = RoleUtil.GetColor(Raider.Role);
+
+        CastBar.gameObject.SetActive(false);
+
         UpdateInfo();
     }
 
     public void UpdateInfo()
     {
-        Raider raider = Raid.Raiders[RaidIndex];
-
-        NameText.text = raider.Name;
-
-        HealthText.text = Numbers.Abbreviate(raider.Health);
+        // Text
+        HealthText.text = Numbers.Abbreviate(Raider.Health);
 
         // Health Bar
-        HealthBar.maxValue = raider.MaxHealth;
-        HealthBarFill.color = RoleUtil.GetColor(raider.Role);
-
-        HealthTargetValue = raider.Health;
-
-        HealthBar.value = Mathf.Lerp(HealthBar.value, HealthTargetValue, HealthLerpConstant);
+        HealthBar.value = Mathf.Lerp(HealthBar.value, Raider.Health, HealthLerpConstant);
 
         // Cast Bar
-        if (!raider.IsCasting) CastBar.gameObject.SetActive(false);
+        if (!Raider.IsCasting) CastBar.gameObject.SetActive(false);
         else
         {
             CastBar.gameObject.SetActive(true);
-            CastBar.value = 1.0f - (raider.CastRemaining / raider.CurrentAbility.CastTime);
+            CastBar.value = 1.0f - (Raider.CastRemaining / Raider.CurrentAbility.CastTime);
+        }
+
+        // Dead state
+        if (Raider.IsDead)
+        {
+            SetAlpha(Background, 0.1f);
+            SetAlpha(NameText, 0.5f);
+            HealthText.text = "Dead";
+            CastBar.gameObject.SetActive(false);
         }
     }
 
     public void Select()
     {
+        if (Raider.IsDead) return;
+
         IsSelected = true;
         RegularOutline.enabled = false;
         SelectOutline.enabled = true;
@@ -85,8 +95,6 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public void OnPointerEnter(PointerEventData eventData)
     {
         HealthText.enabled = true;
-
-
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -104,5 +112,12 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         {
             Select();
         }
+    }
+
+    public void SetAlpha(MaskableGraphic element, float alpha)
+    {
+        Color col = element.color;
+        col.a = alpha;
+        element.color = col;
     }
 }

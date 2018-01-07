@@ -17,13 +17,18 @@ public class Healer : Raider
         if (GCDReady && !IsCasting)
         {
             GCDFinish += GlobalCooldown;
-            StartCasting();
+            StartCasting(Mgr.Raid.GetLowestHealth());
             return;
         }
 
         if (IsCasting)
         {
             CastRemaining -= Time.deltaTime;
+
+            if(CastTarget == null || CastTarget.IsDead)
+            {
+                IsCasting = false;
+            }
         }
 
         if (CastReady)
@@ -36,9 +41,10 @@ public class Healer : Raider
     {
         GCDFinish += GlobalCooldown;
 
-        var lowestHealth = Mgr.Raid.GetLowestHealth();
-
-        CurrentAbility.Do(lowestHealth, AbilityPower);
+        if(CastTarget != null && CastTarget.IsAlive)
+        {
+            CurrentAbility.Do(CastTarget, AbilityPower);
+        }
 
         IsCasting = false;
     }

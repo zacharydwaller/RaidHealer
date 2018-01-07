@@ -9,8 +9,8 @@ public class TestBoss : Boss
     {
         Name = "Big Boy";
         MaxHealth = Health = 10 * Numbers.Million;
-        SwingDamage = 5000;
-        EnrageDelay = 3;
+        SwingDamage = 20000;
+        EnrageDelay = 30;
         EnrageTime = Time.time + EnrageDelay;
         CurrentAbility = new AutoAttack();
     }

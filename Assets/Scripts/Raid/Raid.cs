@@ -79,7 +79,7 @@ public class Raid
     /// <returns></returns>
     public Raider GetNextAlive()
     {
-        return Raiders.First(r => r.IsAlive);
+        return Raiders.FirstOrDefault(r => r.IsAlive);
     }
 
     // Get(row, col)

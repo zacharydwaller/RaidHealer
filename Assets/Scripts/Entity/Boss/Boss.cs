@@ -47,15 +47,13 @@ public class Boss : Entity
     {
         GCDFinish += GlobalCooldown;
 
-        var tank = Mgr.Raid.GetTank(currentTank);
+        var target = Mgr.Raid.GetTank(currentTank);
 
-        if(tank != null)
+        if (target == null) target = Mgr.Raid.GetNextAlive();
+
+        if (target != null)
         {
-            CurrentAbility.Do(Mgr.Raid.GetTank(currentTank), SwingDamage);
-        }
-        else
-        {
-            CurrentAbility.Do(Mgr.Raid.GetNextAlive(), SwingDamage);
+            CurrentAbility.Do(target, SwingDamage);
         }
     }
 }

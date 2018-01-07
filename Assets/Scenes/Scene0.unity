@@ -1030,6 +1030,9 @@ MonoBehaviour:
     IsCasting: 0
     CastRemaining: 0
     SwingDamage: 0
+    IsEnraged: 0
+    EnrageDelay: 0
+    EnrageTime: 0
     TankSwapDelay: 0
     TankSwapTime: 0
   RaidSize: 12

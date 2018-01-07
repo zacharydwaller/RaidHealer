@@ -211,7 +211,6 @@ GameObject:
   - component: {fileID: 224828029059501262}
   - component: {fileID: 222201733542085252}
   - component: {fileID: 114289661346545534}
-  - component: {fileID: 114196918123538372}
   - component: {fileID: 114616267940745218}
   - component: {fileID: 114385457963171144}
   - component: {fileID: 114443517668361328}
@@ -297,33 +296,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 250k/500k
---- !u!114 &114196918123538372
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1868632718824648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.21568628, g: 0.21568628, b: 0.21568628, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
 --- !u!114 &114289661346545534
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -344,6 +316,7 @@ MonoBehaviour:
   HealthBar: {fileID: 114589841301940076}
   HealthBarFill: {fileID: 114444359713172996}
   CastBar: {fileID: 114448021380960872}
+  Background: {fileID: 114326658426343532}
   RegularOutline: {fileID: 114385457963171144}
   SelectOutline: {fileID: 114616267940745218}
   IsSelected: 0
@@ -492,7 +465,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 114196918123538372}
+  m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:

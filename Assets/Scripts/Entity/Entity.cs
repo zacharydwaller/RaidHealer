@@ -19,6 +19,7 @@ public abstract class Entity
     public Ability CurrentAbility;
     public bool IsCasting = false;
     public float CastRemaining;
+    protected Entity CastTarget;
 
     protected BattleManager Mgr;
 
@@ -41,10 +42,11 @@ public abstract class Entity
         Mgr = mgr;
     }
 
-    public void StartCasting()
+    public void StartCasting(Entity target)
     {
         CastRemaining = CurrentAbility.CastTime;
         IsCasting = true;
+        CastTarget = target;
     }
 
     public void TakeDamage(float amount)
