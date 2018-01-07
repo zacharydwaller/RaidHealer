@@ -23,7 +23,8 @@ public abstract class Entity
     protected BattleManager Mgr;
 
     public bool GCDReady { get { return !IsDead && (Time.time >= GCDFinish); } }
-    public bool IsDead { get { return Health <= 0; } }
+    public bool IsAlive { get { return Health > 0; } }
+    public bool IsDead { get { return !IsAlive; } }
     public bool CastReady { get { return IsCasting && (CastRemaining <= 0); } }
 
     public Entity(BattleManager mgr)
@@ -48,11 +49,16 @@ public abstract class Entity
 
     public void TakeDamage(float amount)
     {
+        if (IsDead) return;
+
         Health -= amount;
+        if (Health < 0) Health = 0.0f;
     }
 
     public void TakeHeal(float amount)
     {
+        if (IsDead) return;
+
         Health += amount;
         if (Health > MaxHealth) Health = MaxHealth;
     }

@@ -27,19 +27,59 @@ public class Raid
         //PrintRaid();
     }
 
-    public Raider GetTank(int index)
+    /// <summary>
+    /// Gets an alive tank provided with optional offset for tank switches
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public Raider GetTank(int index = 0)
     {
-        var tanks = Raiders.Where(r => r.Role == Role.Tank).ToList<Raider>();
-        if (index < tanks.Count)
+        var aliveTanks = Raiders.Where(r => r.Role == Role.Tank && r.IsAlive).ToList<Raider>();
+        if (aliveTanks.Count > 0)
         {
-            return tanks[index];
+            if(index < aliveTanks.Count)
+            {
+                return aliveTanks[index];
+            }
+            else
+            {
+                return aliveTanks[0];
+            }
         }
-        else return tanks[0];
+        else
+        {
+            return null;
+        }
     }
 
+    /// <summary>
+    /// Gets the raider with the lowest health
+    /// </summary>
+    /// <returns></returns>
     public Raider GetLowestHealth()
     {
-        return Raiders.First(r => r.HealthPercent.Equals(Raiders.Min(s => s.HealthPercent)));
+        float minHP = Mathf.Infinity;
+        Raider minRaider = null;
+        foreach(var raider in Raiders)
+        {
+            if(raider.IsAlive && raider.HealthPercent < minHP)
+            {
+                minHP = raider.HealthPercent;
+                minRaider = raider;
+            }
+        }
+
+        return minRaider;
+    }
+
+    /// <summary>
+    /// Gets the lowest index raider who is still alive
+    /// TODO: Get raider with highest DPS (sort of like threat)
+    /// </summary>
+    /// <returns></returns>
+    public Raider GetNextAlive()
+    {
+        return Raiders.First(r => r.IsAlive);
     }
 
     // Get(row, col)

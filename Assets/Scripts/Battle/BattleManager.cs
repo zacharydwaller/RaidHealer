@@ -25,9 +25,9 @@ public class BattleManager : MonoBehaviour
     {
         foreach(var raider in Raid.Raiders)
         {
-            if(!raider.IsDead) raider.Tick();
+            if(raider.IsAlive) raider.Tick();
         }
 
-        if(!Boss.IsDead) Boss.Tick();
+        if(Boss.IsAlive) Boss.Tick();
     }
 }

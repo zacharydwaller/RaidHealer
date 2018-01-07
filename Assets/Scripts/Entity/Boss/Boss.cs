@@ -35,6 +35,16 @@ public class Boss : Entity
     public void DoAbility()
     {
         GCDFinish += GlobalCooldown;
-        CurrentAbility.Do(Mgr.Raid.GetTank(currentTank), SwingDamage);
+
+        var tank = Mgr.Raid.GetTank(currentTank);
+
+        if(tank != null)
+        {
+            CurrentAbility.Do(Mgr.Raid.GetTank(currentTank), SwingDamage);
+        }
+        else
+        {
+            CurrentAbility.Do(Mgr.Raid.GetNextAlive(), SwingDamage);
+        }
     }
 }

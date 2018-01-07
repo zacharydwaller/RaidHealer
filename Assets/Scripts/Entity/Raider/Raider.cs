@@ -21,7 +21,7 @@ public class Raider : Entity
     public Raider(BattleManager mgr)
         :base(mgr)
     {
-        Health = Distribution.GetRandom(baseHealth, healthStdDev);
+        MaxHealth = Health = Distribution.GetRandom(baseHealth, healthStdDev);
         AbilityPower = Distribution.GetRandom(baseAP, apStdDev);
         GlobalCooldown = Distribution.GetRandom(baseAD, adStdDev);
 

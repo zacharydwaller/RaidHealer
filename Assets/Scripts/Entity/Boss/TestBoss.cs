@@ -9,7 +9,7 @@ public class TestBoss : Boss
     {
         Name = "Big Boy";
         MaxHealth = Health = 1 * Numbers.Million;
-        SwingDamage = 2000;
+        SwingDamage = 10000;
         CurrentAbility = new AutoAttack();
     }
 }
