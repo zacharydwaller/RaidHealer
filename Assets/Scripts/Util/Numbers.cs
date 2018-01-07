@@ -41,4 +41,26 @@ public static class Numbers
 
         return ret;
     }
+
+    /// <summary>
+    /// Returns the number increased by percent. Percent is 100-based, for instance enter 150.0f for 150.0% increase
+    /// </summary>
+    /// <param name="number"></param>
+    /// <param name="percent"></param>
+    /// <returns></returns>
+    public static float IncreaseByPercent(float number, float percent)
+    {
+        return number * (1 + (percent / 100.0f));
+    }
+
+    /// <summary>
+    /// Returns the number decreased by percent. Percent is 100-based, for instance enter 150.0f for 150.0% increase
+    /// </summary>
+    /// <param name="number"></param>
+    /// <param name="percent"></param>
+    /// <returns></returns>
+    public static float DecreaseByPercent(float number, float percent)
+    {
+        return number * (1 - (percent / 100.0f));
+    }
 }

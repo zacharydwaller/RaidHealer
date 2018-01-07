@@ -7,43 +7,51 @@ public class UnitFrameManager : MonoBehaviour
 {
     public GameObject unitFrameRef;
 
-    public Raid Raid;
+    public Transform BossFrame;
+    public Transform RaidFrames;
 
-    private Transform Grid;
+    protected BattleManager Mgr;
 
     private void Awake()
     {
-        Grid = GetComponent<RectTransform>();
+        
     }
 
-    public void PopulateUnitFrames(Raid raid)
+    public void PopulateUnitFrames(BattleManager mgr)
     {
-        DeleteChildren();
+        Mgr = mgr;
 
-        Raid = raid;
+        // Init Boss Frame
+        BossFrame.GetComponent<BossFrame>().Initialize(Mgr.Boss);
 
-        if(Raid.Size == RaidSize.Large)
+        // Populate Raid Frames
+        DeleteRaidFrames();
+
+        Raid raid = Mgr.Raid;
+
+        var grid = RaidFrames.GetComponent<GridLayoutGroup>();
+        if(raid.Size == RaidSize.Large)
         {
-            GetComponent<GridLayoutGroup>().constraintCount = 6;
+            grid.constraintCount = 6;
         }
         else
         {
-            GetComponent<GridLayoutGroup>().constraintCount = 4;
+            grid.constraintCount = 4;
         }
 
-        for(int i = 0; i < Raid.Raiders.Count; i++)
+        for(int i = 0; i < raid.Raiders.Count; i++)
         {
             GameObject uf = Instantiate(unitFrameRef);
-            uf.GetComponent<UnitFrame>().Initialize(Raid, i);
-            uf.transform.SetParent(Grid.transform);
+            uf.GetComponent<UnitFrame>().Initialize(raid, i);
+            uf.transform.SetParent(RaidFrames.transform);
         }
     }
 
-    private void DeleteChildren()
+    private void DeleteRaidFrames()
     {
-        for (int i = Grid.childCount - 1; i >= 0; i--)
+        for (int i = RaidFrames.childCount - 1; i >= 0; i--)
         {
-            Destroy(Grid.GetChild(i).gameObject);
+            Destroy(RaidFrames.GetChild(i).gameObject);
         }
     }
 }

@@ -26,9 +26,7 @@ public class Boss : Entity
     {
         if (IsEnraged == false && Time.time >= EnrageTime)
         {
-            IsEnraged = true;
-            SwingDamage *= 5;
-            GlobalCooldown /= 1.5f;
+            Enrage();
         }
 
         if(Time.time >= TankSwapTime)
@@ -55,5 +53,18 @@ public class Boss : Entity
         {
             CurrentAbility.Do(target, SwingDamage);
         }
+    }
+
+    /// <summary>
+    /// Increase damage by 500%, attack speed by 150%
+    /// </summary>
+    public void Enrage()
+    {
+        IsEnraged = true;
+        SwingDamage = Numbers.IncreaseByPercent(SwingDamage, 500.0f);
+
+        float attacksPerSec = 1.0f / GlobalCooldown;
+        attacksPerSec = Numbers.IncreaseByPercent(attacksPerSec, 150.0f);
+        GlobalCooldown = 1.0f / attacksPerSec;
     }
 }

@@ -307,10 +307,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7197284ed346d644caa6aa4c248049be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Raid:
-    Size: 0
-    Raiders: []
-  RaidIndex: 0
+  Raider:
+    Name: 
+    MaxHealth: 0
+    Health: 0
+    GlobalCooldown: 0
+    IsCasting: 0
+    CastRemaining: 0
+    Role: 0
+    AbilityPower: 0
   NameText: {fileID: 114931121743953100}
   HealthText: {fileID: 114047812439998782}
   HealthBar: {fileID: 114589841301940076}

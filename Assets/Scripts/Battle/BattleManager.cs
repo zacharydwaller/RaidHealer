@@ -16,9 +16,10 @@ public class BattleManager : MonoBehaviour
     private void Awake()
     {
         Raid = new Raid(this, Player, RaidSize);
-        UFManager.PopulateUnitFrames(Raid);
         Boss = new TestBoss(this);
         Player.SetManager(this);
+
+        UFManager.PopulateUnitFrames(this);
     }
 
     private void Update()
