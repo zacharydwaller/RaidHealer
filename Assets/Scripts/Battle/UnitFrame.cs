@@ -78,6 +78,7 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             SetAlpha(Background, 0.1f);
             SetAlpha(NameText, 0.5f);
             HealthText.text = "Dead";
+            HealPredict.gameObject.SetActive(false);
             CastBar.gameObject.SetActive(false);
         }
     }
