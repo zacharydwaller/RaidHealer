@@ -14,6 +14,8 @@ public class Raid
 
     public int NumTanks { get { return Raiders.Count(r => r.Role == Role.Tank); } }
 
+    protected float HurtThreshold = 90.0f;
+
     protected BattleManager Mgr;
 
     public Raid(BattleManager mgr, Raider player, RaidSize _size)
@@ -53,16 +55,21 @@ public class Raid
     }
 
     /// <summary>
-    /// Gets the raider with the lowest health
+    /// Gets the raider with the lowest health + healPredict. Can optionally ignore heal prediction
     /// </summary>
     /// <returns></returns>
-    public Raider GetLowestHealth()
+    public Raider GetLowestHealth(bool ignoreHealPredict = false)
     {
         float minHP = Mathf.Infinity;
         Raider minRaider = null;
         foreach(var raider in Raiders)
         {
-            if(raider.IsAlive && raider.HealthPercent < minHP)
+            float effectiveHealthPercent;
+
+            if (ignoreHealPredict) effectiveHealthPercent = raider.HealthPercent;
+            else effectiveHealthPercent = raider.HealthPercentPredict;
+
+            if(raider.IsAlive && (effectiveHealthPercent < minHP))
             {
                 minHP = raider.HealthPercent;
                 minRaider = raider;
@@ -73,6 +80,20 @@ public class Raid
         if (minHP == 100) return null;
 
         return minRaider;
+    }
+
+    /// <summary>
+    /// Returns how many raiders in a list are injured lower than the hurtThreshold
+    /// </summary>
+    /// <param name="raiders"></param>
+    /// <returns></returns>
+    public int GetNumberHurt(IList<Raider> raiders, bool ignoreHealPredict = false)
+    {
+        System.Func<Raider, bool> predicate;
+        if (ignoreHealPredict) predicate = r => r.HealthPercent < HurtThreshold;
+        else predicate = r => r.HealthPercentPredict < HurtThreshold;
+
+        return Raiders.Count(predicate);
     }
 
     /// <summary>
@@ -112,6 +133,11 @@ public class Raid
     {
         int index = CoordToIndex(coordinate);
         return Mgr.UFManager.GetRaiderByIndex(index);
+    }
+
+    public IList<Raider> GetSplash(Raider centerRaider)
+    {
+        return GetSplash(GetCoordinate(centerRaider));
     }
 
     public IList<Raider> GetSplash(Coordinate center)

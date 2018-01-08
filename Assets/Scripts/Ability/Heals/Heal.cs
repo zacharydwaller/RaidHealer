@@ -8,8 +8,13 @@ public class Heal : Ability
         : base(owner)
     {
         Name = "Heal";
-        CastTime = 0.5f;
+        CastTime = 0.25f;
         PowerCoefficient = 1.0f;
+    }
+
+    public override void StartCast(Entity target, float power)
+    {
+        AddHealPredict(target, power);
     }
 
     public override void Do(Entity target, float power)
@@ -17,5 +22,7 @@ public class Heal : Ability
         base.Do(target, power);
 
         target.TakeHeal(power * PowerCoefficient);
+
+        RemoveHealPredict(target, power);
     }
 }

@@ -6426,7 +6426,7 @@ MonoBehaviour:
     EnrageTime: 0
     TankSwapDelay: 0
     TankSwapTime: 0
-  RaidSize: 24
+  RaidSize: 12
   Raid:
     Size: 12
     Raiders: []
