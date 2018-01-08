@@ -40,6 +40,8 @@ public static class Names
         "Joel",
         "MCRide",
         "Bonestorm",
+        "Heron",
+        "Birb"
     };
 
     public static string GetRandom()
