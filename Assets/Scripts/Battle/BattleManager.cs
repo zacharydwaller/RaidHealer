@@ -5,8 +5,9 @@ using UnityEngine;
 public class BattleManager : MonoBehaviour
 {
     public UnitFrameManager UFManager;
-    [HideInInspector]
-    public CombatLogger CombatLogger;
+
+    protected CombatLogger CombatLogger;
+    protected DamageMeter DamageMeter;
 
     public Boss Boss;
 
@@ -23,6 +24,7 @@ public class BattleManager : MonoBehaviour
 
         UFManager.PopulateUnitFrames(this);
         CombatLogger = GetComponent<CombatLogger>();
+        DamageMeter = GetComponent<DamageMeter>();
     }
 
     private void Update()
@@ -33,5 +35,11 @@ public class BattleManager : MonoBehaviour
         }
 
         if(Boss.IsAlive) Boss.Tick();
+    }
+
+    public void LogAction(Entity user, Entity target, Ability ability)
+    {
+        CombatLogger.LogAction(user, target, ability);
+        DamageMeter.LogAction(user, target, ability);
     }
 }

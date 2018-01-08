@@ -18,6 +18,6 @@ public abstract class Ability
 
     public virtual void Do(Entity target, float power)
     {
-        Owner.Mgr.CombatLogger.LogAction(Owner, target, this);   
+        Owner.Mgr.LogAction(Owner, target, this);   
     }
 }

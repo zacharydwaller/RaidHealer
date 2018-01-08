@@ -15,16 +15,11 @@ public class CombatLogger : MonoBehaviour
     protected float BatchWriteDelay = 0.33f;
     protected float NextBatchWrite = 0;
 
-    //public DamageMeter
-
     protected BattleManager Mgr;
-
-    protected float StartTime;
 
     private void Awake()
     {
         Mgr = GetComponent<BattleManager>();
-        StartTime = Time.time;
         MessageBatch = new List<string>();
     }
 
@@ -34,8 +29,6 @@ public class CombatLogger : MonoBehaviour
         {
             NextBatchWrite = Time.time + BatchWriteDelay;
             ProcessMessageBatch();
-
-            Debug.Log("Processing messages. Number of Messages: " + MessageBatch.Count);
         }
     }
 
@@ -101,6 +94,9 @@ public class CombatLogger : MonoBehaviour
     {
         int overflow = MessageBatch.Count - maxMessages;
 
-        MessageBatch.RemoveRange(0, overflow);
+        if(overflow > 0)
+        {
+            MessageBatch.RemoveRange(0, overflow);
+        }
     }
 }
