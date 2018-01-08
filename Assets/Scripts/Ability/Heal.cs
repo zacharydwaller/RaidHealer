@@ -8,7 +8,7 @@ public class Heal : Ability
         : base(owner)
     {
         Name = "Heal";
-        CastTime = 2.0f;
+        CastTime = 0.5f;
         PowerCoefficient = 1.0f;
     }
 

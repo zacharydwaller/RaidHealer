@@ -50,8 +50,6 @@ public class DamageMeter : MonoBehaviour
             {
                 SetDamage = SetDamage / SetTime;
                 SetTime = 1.0f;
-
-                Debug.Log("Reset");
             }
         }
     }

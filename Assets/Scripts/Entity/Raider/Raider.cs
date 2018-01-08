@@ -8,21 +8,24 @@ public class Raider : Entity
 {
     public Role Role;
 
-    protected float baseHealth = 10000;
-    protected float healthStdDev = 500;
+    protected float baseHealth = 1500;
+    protected float healthStdDev = 250;
 
-    protected float baseAP = 1000;
-    protected float apStdDev = 50;
+    protected float baseAP = 300;
+    protected float apStdDev = 25;
 
-    protected float baseGCD = 1.25f;
-    protected float gcdStdDev = 0.10f;
+    protected float baseGCD = 1.5f;
+    protected float gcdStdDev = 0.15f;
 
     public Raider(BattleManager mgr)
         :base(mgr)
     {
         MaxHealth = Health = Distribution.GetRandom(baseHealth, healthStdDev);
         AbilityPower = Distribution.GetRandom(baseAP, apStdDev);
-        GlobalCooldown = Distribution.GetRandom(baseGCD, gcdStdDev);
+
+        float haste = Mathf.Abs(baseGCD - Distribution.GetRandom(baseGCD, gcdStdDev));
+
+        GlobalCooldown -= haste;
 
         GCDFinish = GlobalCooldown;
 
@@ -40,6 +43,9 @@ public class Raider : Entity
 
     public virtual void DoAbility()
     {
-        CurrentAbility.Do(Mgr.Boss, AbilityPower);
+        if(Mgr.Boss.IsAlive)
+        {
+            CurrentAbility.Do(Mgr.Boss, AbilityPower);
+        }
     }
 }

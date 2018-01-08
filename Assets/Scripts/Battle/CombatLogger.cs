@@ -37,6 +37,13 @@ public class CombatLogger : MonoBehaviour
         MessageBatch.Add(text);
     }
 
+    public void LogAction(Entity user, string action)
+    {
+        string message = GetNameString(user);
+        message += action;
+        MessageBatch.Add(message);
+    }
+
     public void LogAction(Entity user, Entity target, Ability ability)
     {
         string message = CreateAbilityMessage(user, target, ability);
@@ -46,33 +53,31 @@ public class CombatLogger : MonoBehaviour
     protected string CreateAbilityMessage(Entity user, Entity target, Ability ability)
     {
         var sb = new StringBuilder();
+        float magnitude = user.AbilityPower * ability.PowerCoefficient;
 
+        sb.Append(GetNameString(user));
+        sb.Append(ability.Name + " ");
+        sb.Append(GetNameString(target));
+        sb.Append(GetColoredText(Numbers.Abbreviate(magnitude), "yellow"));
+
+        return sb.ToString();
+    }
+
+    protected string GetNameString(Entity entity)
+    {
         string colorTextFormat = "<color={0}>{1}</color> ";
         string color = "lightblue";
 
-        // Append User's name
-        if (user.Equals(Mgr.Player)) color = "cyan";
-        else if (user.Equals(Mgr.Boss)) color = "red";
+        if (entity.Equals(Mgr.Player)) color = "cyan";
+        else if (entity.Equals(Mgr.Boss)) color = "red";
 
-        sb.Append(string.Format(colorTextFormat, color, user.Name));
+        return string.Format(colorTextFormat, color, entity.Name);
+    }
 
-        // Append action
-        sb.Append(ability.Name + " ");
-
-        // Append Target's name
-        if (target.Equals(Mgr.Player)) color = "cyan";
-        else if (target.Equals(Mgr.Boss)) color = "red";
-        else color = "lightblue";
-
-        sb.Append(string.Format(colorTextFormat, color, target.Name));
-
-        // Append ability magnitude
-        float magnitude = user.AbilityPower * ability.PowerCoefficient;
-        color = "yellow";
-
-        sb.Append(string.Format(colorTextFormat, color, Numbers.Abbreviate(magnitude)));
-
-        return sb.ToString();
+    protected string GetColoredText(string message, string color)
+    {
+        string colorTextFormat = "<color={0}>{1}</color> ";
+        return string.Format(colorTextFormat, color, message);
     }
 
     protected void ProcessMessageBatch()

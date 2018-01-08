@@ -1357,7 +1357,7 @@ Prefab:
     - target: {fileID: 224672582902467078, guid: 556540fdf9636d749aede42d0769214e,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 15.75
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 224669773581863696, guid: 556540fdf9636d749aede42d0769214e,
         type: 2}
@@ -1367,7 +1367,7 @@ Prefab:
     - target: {fileID: 224669773581863696, guid: 556540fdf9636d749aede42d0769214e,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: -19.25
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 224544436178723356, guid: 556540fdf9636d749aede42d0769214e,
         type: 2}
@@ -1783,7 +1783,7 @@ Prefab:
     - target: {fileID: 224672582902467078, guid: 556540fdf9636d749aede42d0769214e,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 15.75
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 224669773581863696, guid: 556540fdf9636d749aede42d0769214e,
         type: 2}
@@ -1793,7 +1793,7 @@ Prefab:
     - target: {fileID: 224669773581863696, guid: 556540fdf9636d749aede42d0769214e,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: -19.25
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 224544436178723356, guid: 556540fdf9636d749aede42d0769214e,
         type: 2}
@@ -2620,7 +2620,7 @@ MonoBehaviour:
     EnrageTime: 0
     TankSwapDelay: 0
     TankSwapTime: 0
-  RaidSize: 12
+  RaidSize: 24
   Raid:
     Size: 12
     Raiders: []
@@ -3249,7 +3249,7 @@ Prefab:
     - target: {fileID: 224672582902467078, guid: 556540fdf9636d749aede42d0769214e,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 15.75
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 224669773581863696, guid: 556540fdf9636d749aede42d0769214e,
         type: 2}
@@ -3259,7 +3259,7 @@ Prefab:
     - target: {fileID: 224669773581863696, guid: 556540fdf9636d749aede42d0769214e,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: -19.25
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 224544436178723356, guid: 556540fdf9636d749aede42d0769214e,
         type: 2}

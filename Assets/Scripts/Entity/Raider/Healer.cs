@@ -16,8 +16,13 @@ public class Healer : Raider
     {
         if (GCDReady && !IsCasting)
         {
-            GCDFinish += GlobalCooldown;
-            StartCasting(Mgr.Raid.GetLowestHealth());
+            var lowestHealth = Mgr.Raid.GetLowestHealth();
+
+            if(lowestHealth != null)
+            {
+                GCDFinish += GlobalCooldown;
+                StartCasting(lowestHealth);
+            }
             return;
         }
 

@@ -21,6 +21,9 @@ public abstract class Entity
 
     [SerializeField]
     public Ability CurrentAbility;
+
+    // Casting stuff - Cast time measured as GCD + additional ability cast
+    // This is how I'm going to simulate spellcasting haste
     public bool IsCasting = false;
     public float CastRemaining;
     protected Entity CastTarget;
@@ -54,7 +57,7 @@ public abstract class Entity
 
     public void StartCasting(Entity target)
     {
-        CastRemaining = CurrentAbility.CastTime;
+        CastRemaining = GlobalCooldown + CurrentAbility.CastTime;
         IsCasting = true;
         CastTarget = target;
     }

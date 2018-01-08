@@ -9,7 +9,7 @@ public class Tank : Raider
     {
         Name = "Tank";
         Role = Role.Tank;
-        MaxHealth = Health *= 2.0f;
-        AbilityPower *= 0.5f;
+        MaxHealth = Health = Distribution.GetRandom(baseHealth * 4.0f, healthStdDev);
+        AbilityPower *= 0.75f;
     }
 }

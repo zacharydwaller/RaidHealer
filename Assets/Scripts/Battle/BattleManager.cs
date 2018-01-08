@@ -37,6 +37,16 @@ public class BattleManager : MonoBehaviour
         if(Boss.IsAlive) Boss.Tick();
     }
 
+    public void LogLine(string message)
+    {
+        CombatLogger.LogLine(message);
+    }
+
+    public void LogAction(Entity user, string message)
+    {
+        CombatLogger.LogAction(user, message);
+    }
+
     public void LogAction(Entity user, Entity target, Ability ability)
     {
         CombatLogger.LogAction(user, target, ability);

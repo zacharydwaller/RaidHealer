@@ -69,6 +69,9 @@ public class Raid
             }
         }
 
+        // Everyone's health is full
+        if (minHP == 100) return null;
+
         return minRaider;
     }
 

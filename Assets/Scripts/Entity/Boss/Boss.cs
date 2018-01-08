@@ -57,6 +57,8 @@ public class Boss : Entity
     /// </summary>
     public void Enrage()
     {
+        Mgr.LogAction(this, "enrages!");
+
         IsEnraged = true;
         AbilityPower = Numbers.IncreaseByPercent(AbilityPower, 500.0f);
 
