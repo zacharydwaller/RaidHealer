@@ -5,6 +5,8 @@
 - Added heal prediction
 - Added boss ability framework
 - Added names to raiders
+- Added healer abilities
+- Improved healer behavior
 
 ### Release 0.1.0
 - Combat simulation implemented

@@ -64,7 +64,7 @@ public abstract class Entity
         CastRemaining = GlobalCooldown + CurrentAbility.CastTime;
         IsCasting = true;
         CastTarget = target;
-        CurrentAbility.StartCast(target, AbilityPower);
+        CurrentAbility.StartCast(target);
     }
 
     public void TakeDamage(float amount)

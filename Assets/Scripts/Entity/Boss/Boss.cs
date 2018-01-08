@@ -72,7 +72,7 @@ public class Boss : Entity
 
         if (target != null)
         {
-            CurrentAbility.Do(target, AbilityPower);
+            CurrentAbility.Do(target);
         }
     }
 

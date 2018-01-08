@@ -20,6 +20,7 @@ public class Healer : Raider
     {
         TickCDs();
 
+        // Ready for new cast
         if (GCDReady && !IsCasting)
         {
             var target = GetAction();
@@ -33,17 +34,19 @@ public class Healer : Raider
             return;
         }
 
+        // Currently casting
         if (IsCasting)
         {
             CastRemaining -= Time.deltaTime;
 
             if(CastTarget == null || CastTarget.IsDead)
             {
-                CurrentAbility.CancelCast(CastTarget, AbilityPower);
+                CurrentAbility.CancelCast();
                 IsCasting = false;
             }
         }
 
+        // Cast Ready
         if (CastReady)
         {
             DoAbility();
@@ -54,7 +57,7 @@ public class Healer : Raider
     {
         if(CastTarget != null && CastTarget.IsAlive)
         {
-            CurrentAbility.Do(CastTarget, AbilityPower);
+            CurrentAbility.Do();
         }
 
         IsCasting = false;
@@ -64,7 +67,7 @@ public class Healer : Raider
     /// Sets the current ability and returns the apropriate target. Returns null if no healing is needed.
     /// </summary>
     /// <returns></returns>
-    protected Raider GetAction()
+    protected Entity GetAction()
     {
         var raid = Mgr.Raid;
         var lowestHealth = raid.GetLowestHealth();

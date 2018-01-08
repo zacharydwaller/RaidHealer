@@ -13,20 +13,18 @@ public class SplashAttack : Ability
         Cooldown = 4.0f;
     }
 
-    public override void Do(Entity target, float power)
+    public override void Do(Entity target = null)
     {
         var raid = Owner.Mgr.Raid;
-        target = raid.GetRandom();
+        var center = raid.GetRandom();
 
-        var center = raid.GetCoordinate(target as Raider);
-        var raiders = raid.GetSplash(center);
+        Targets = (List<Entity>) raid.GetSplash(center);
 
-        foreach(var raider in raiders)
+        foreach(var raider in Targets)
         {
-            raider.TakeDamage(power * PowerCoefficient);
-            Owner.Mgr.LogAction(Owner, target, this);
+            raider.TakeDamage(TotalPower);
         }
 
-        CooldownRemaining = Cooldown;
+        base.Do();
     }
 }

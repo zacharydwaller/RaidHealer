@@ -12,22 +12,22 @@ public class Heal : Ability
         PowerCoefficient = 1.0f;
     }
 
-    public override void StartCast(Entity target, float power)
+    public override void StartCast(Entity target)
     {
-        AddHealPredict(target, power * PowerCoefficient);
+        base.StartCast(target);
+        AddHealPredict();
     }
 
-    public override void CancelCast(Entity target, float power)
+    public override void CancelCast()
     {
-        RemoveHealPredict(target, power * PowerCoefficient);
+        RemoveHealPredict();
     }
 
-    public override void Do(Entity target, float power)
+    public override void Do(Entity target = null)
     {
-        base.Do(target, power);
+        Targets[0].TakeHeal(TotalPower);
+        RemoveHealPredict();
 
-        target.TakeHeal(power * PowerCoefficient);
-
-        RemoveHealPredict(target, power * PowerCoefficient);
+        base.Do();
     }
 }

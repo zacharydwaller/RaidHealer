@@ -13,16 +13,14 @@ public class AoEAttack : Ability
         Cooldown = 12.0f;
     }
 
-    public override void Do(Entity target, float power)
+    public override void Do(Entity target = null)
     {
-        var raid = Owner.Mgr.Raid;
-
-        foreach (var raider in raid.Raiders)
+        Targets = Owner.Mgr.Raid.Raiders;
+        foreach (var raider in Targets)
         {
-            raider.TakeDamage(power * PowerCoefficient);
-            Owner.Mgr.LogAction(Owner, target, this);
+            raider.TakeDamage(TotalPower);
         }
 
-        CooldownRemaining = Cooldown;
+        base.Do();
     }
 }

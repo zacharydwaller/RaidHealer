@@ -10,9 +10,9 @@ public class Raid
     public RaidSize Size;
 
     [SerializeField]
-    public List<Raider> Raiders;
+    public List<Entity> Raiders;
 
-    public int NumTanks { get { return Raiders.Count(r => r.Role == Role.Tank); } }
+    public int NumTanks { get { return Raiders.Count(r => RoleOf(r) == Role.Tank); } }
 
     protected float HurtThreshold = 90.0f;
 
@@ -23,7 +23,7 @@ public class Raid
         Mgr = mgr;
 
         Size = _size;
-        Raiders = new List<Raider>();
+        Raiders = new List<Entity>();
 
         BuildRaid(player);
         //PrintRaid();
@@ -34,9 +34,10 @@ public class Raid
     /// </summary>
     /// <param name="index"></param>
     /// <returns></returns>
-    public Raider GetTank(int index = 0)
+    public Entity GetTank(int index = 0)
     {
-        var aliveTanks = Raiders.Where(r => r.Role == Role.Tank && r.IsAlive).ToList<Raider>();
+        var aliveTanks = Raiders.Where(r => RoleOf(r) == Role.Tank && r.IsAlive).ToList();
+
         if (aliveTanks.Count > 0)
         {
             if(index < aliveTanks.Count)
@@ -58,10 +59,10 @@ public class Raid
     /// Gets the raider with the lowest health + healPredict. Can optionally ignore heal prediction
     /// </summary>
     /// <returns></returns>
-    public Raider GetLowestHealth(bool ignoreHealPredict = false)
+    public Entity GetLowestHealth(bool ignoreHealPredict = false)
     {
         float minHP = Mathf.Infinity;
-        Raider minRaider = null;
+        Entity minRaider = null;
         foreach(var raider in Raiders)
         {
             float effectiveHealthPercent;
@@ -87,13 +88,13 @@ public class Raid
     /// </summary>
     /// <param name="raiders"></param>
     /// <returns></returns>
-    public int GetNumberHurt(IList<Raider> raiders, bool ignoreHealPredict = false)
+    public int GetNumberHurt(IList<Entity> raiders, bool ignoreHealPredict = false)
     {
-        System.Func<Raider, bool> predicate;
+        System.Func<Entity, bool> predicate;
         if (ignoreHealPredict) predicate = r => r.HealthPercent < HurtThreshold;
         else predicate = r => r.HealthPercentPredict < HurtThreshold;
 
-        return Raiders.Count(predicate);
+        return raiders.Count(predicate);
     }
 
     /// <summary>
@@ -101,20 +102,20 @@ public class Raid
     /// TODO: Get raider with highest DPS (sort of like threat)
     /// </summary>
     /// <returns></returns>
-    public Raider GetNextAlive()
+    public Entity GetNextAlive()
     {
         return Raiders.FirstOrDefault(r => r.IsAlive);
     }
 
     //Get by ID
-    public Raider GetByID(int id)
+    public Entity GetByID(int id)
     {
         return Raiders.FirstOrDefault(r => r.ID == id);
     }
 
-    public Raider GetRandom()
+    public Entity GetRandom()
     {
-        Raider raider;
+        Entity raider;
         do
         {
             raider = Raiders[Random.Range(0, Raiders.Count)];
@@ -123,26 +124,26 @@ public class Raid
         return raider;
     }
 
-    public Coordinate GetCoordinate(Raider raider)
+    public Coordinate GetCoordinate(Entity raider)
     {
         int index = Mgr.UFManager.GetRaiderIndex(raider);
         return IndexToCoord(index);
     }
 
-    public Raider GetRaider(Coordinate coordinate)
+    public Entity GetRaider(Coordinate coordinate)
     {
         int index = CoordToIndex(coordinate);
         return Mgr.UFManager.GetRaiderByIndex(index);
     }
 
-    public IList<Raider> GetSplash(Raider centerRaider)
+    public IList<Entity> GetSplash(Entity centerRaider)
     {
         return GetSplash(GetCoordinate(centerRaider));
     }
 
-    public IList<Raider> GetSplash(Coordinate center)
+    public IList<Entity> GetSplash(Coordinate center)
     {
-        var list = new List<Raider>();
+        var list = new List<Entity>();
 
         for(int r = -1; r <= 1; r++)
         {
@@ -191,7 +192,7 @@ public class Raid
      * D D D D D D
      * D H H H H D
      */
-    protected void BuildRaid(Raider player)
+    protected void BuildRaid(Entity player)
     {
         if(Size == RaidSize.Group)
         {
@@ -217,7 +218,7 @@ public class Raid
 
     protected void AddRaiders(Role role, int number, int index)
     {
-        var raiders = new List<Raider>();
+        var raiders = new List<Entity>();
         for(int i = 0; i < number; i++)
         {
             raiders.Add(CreateRaider(role));
@@ -225,7 +226,7 @@ public class Raid
         Raiders.InsertRange(index, raiders);
     }
 
-    protected Raider CreateRaider(Role role)
+    protected Entity CreateRaider(Role role)
     {
         if (role == Role.Tank) return new Tank(Mgr);
         else if (role == Role.Healer) return new Healer(Mgr);
@@ -237,7 +238,7 @@ public class Raid
         StringBuilder sb = new StringBuilder();
         int numCols = RaidSizeUtil.GetCols(Size);
         int col = 0;
-        foreach(Raider raider in Raiders)
+        foreach(Entity raider in Raiders)
         {
             sb.Append(raider.Name + "\t");
             col++;
@@ -248,6 +249,13 @@ public class Raid
                 sb = new StringBuilder();
             }
         }
+    }
+
+    public Role RoleOf(Entity ent)
+    {
+        var raider = ent as Raider;
+        if (raider != null) return raider.Role;
+        else return Role.Damage;
     }
 
     protected Coordinate IndexToCoord(int index)

@@ -12,10 +12,9 @@ public class AutoAttack : Ability
         PowerCoefficient = 1.0f;
     }
 
-    public override void Do(Entity target, float power)
+    public override void Do(Entity target)
     {
-        base.Do(target, power);
-
-        target.TakeDamage(power * PowerCoefficient);
+        target.TakeDamage(TotalPower);
+        base.Do(target);
     }
 }

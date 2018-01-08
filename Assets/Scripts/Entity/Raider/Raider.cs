@@ -52,7 +52,7 @@ public class Raider : Entity
     {
         if(Mgr.Boss.IsAlive)
         {
-            CurrentAbility.Do(Mgr.Boss, AbilityPower);
+            CurrentAbility.Do(Mgr.Boss);
         }
     }
 

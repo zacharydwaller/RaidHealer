@@ -9,6 +9,8 @@ public abstract class Ability
     public float CastTime;
     public float PowerCoefficient;
 
+    public float TotalPower { get { return Owner.AbilityPower * PowerCoefficient; } }
+
     public float Cooldown;
     public float CooldownRemaining;
 
@@ -16,32 +18,86 @@ public abstract class Ability
 
     public Entity Owner;
 
+    public List<Entity> Targets;
+
     public Ability(Entity owner)
     {
         Owner = owner;
+        Targets = new List<Entity>();
     }
 
+    /// <summary>
+    /// Called every frame to lower cooldown remaining.
+    /// Override for channeled spells and HoTs/DoTs to tick healing/damage.
+    /// </summary>
     public void Tick()
     {
         CooldownRemaining = Mathf.Max(CooldownRemaining - Time.deltaTime, 0.0f);
     }
 
-    public virtual void StartCast(Entity target, float power) { }
-
-    public virtual void CancelCast(Entity target, float power) { }
-
-    public virtual void Do(Entity target, float power)
+    /// <summary>
+    /// Default behavior for single target cast, adds target to Targets.
+    /// Override for chain/splash/aoe abilities.
+    /// </summary>
+    /// <param name="target"></param>
+    public virtual void StartCast(Entity target)
     {
-        Owner.Mgr.LogAction(Owner, target, this);   
+        Targets.Clear();
+        Targets.Add(target);
     }
 
-    public void AddHealPredict(Entity target, float power)
+    /// <summary>
+    /// Clears Targets, doesn't trigger cooldown.
+    /// </summary>
+    public virtual void CancelCast()
     {
-        target.HealPredict += Owner.AbilityPower * PowerCoefficient;
+        Targets.Clear();
     }
 
-    public void RemoveHealPredict(Entity target, float power)
+    /// <summary>
+    /// Do() for instant cast spells where Targets is not set.
+    /// Override to make ability do action. base.Do() should be called at end of overridden function.
+    /// Default behavior logs action for target and Targets and triggers the cooldown.
+    /// </summary>
+    /// <param name="target"></param>
+    public virtual void Do(Entity target = null)
     {
-        target.HealPredict -= Owner.AbilityPower * PowerCoefficient;
+        if(target != null)
+        {
+            Owner.Mgr.LogAction(Owner, target, this);
+        }
+
+        if(Targets.Count > 0)
+        {
+            foreach (var entity in Targets)
+            {
+                Owner.Mgr.LogAction(Owner, entity, this);
+            }
+        }
+        CooldownRemaining = Cooldown;
+    }
+
+    /// <summary>
+    /// Adds heal predict to each target.
+    /// Call when starting to cast heal.
+    /// </summary>
+    public void AddHealPredict()
+    {
+        foreach(var target in Targets)
+        {
+            target.HealPredict += TotalPower;
+        }
+    }
+
+    /// <summary>
+    /// Removes heal predict from each target.
+    /// Call when finishing or canceling a heal cast.
+    /// </summary>
+    public void RemoveHealPredict()
+    {
+        foreach (var target in Targets)
+        {
+            target.HealPredict -= TotalPower;
+        }
     }
 }

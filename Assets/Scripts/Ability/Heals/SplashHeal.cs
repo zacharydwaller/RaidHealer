@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class SplashHeal : Ability
 {
-    protected IList<Raider> raiders;
-
     public SplashHeal(Entity owner)
         : base(owner)
     {
@@ -15,35 +13,25 @@ public class SplashHeal : Ability
         Cooldown = 8.0f;
     }
 
-    public override void StartCast(Entity target, float power)
+    public override void StartCast(Entity target)
     {
-        var raid = Owner.Mgr.Raid;
-        var center = raid.GetCoordinate(target as Raider);
-        raiders = raid.GetSplash(center);
-
-        foreach (var raider in raiders)
-        {
-            AddHealPredict(raider, power * PowerCoefficient);
-        }
+        Targets = (List<Entity>) Owner.Mgr.Raid.GetSplash(target as Raider);
+        AddHealPredict();
     }
 
-    public override void CancelCast(Entity target, float power)
+    public override void CancelCast()
     {
-        foreach (var raider in raiders)
-        {
-            RemoveHealPredict(raider, power * PowerCoefficient);
-        }
+        RemoveHealPredict();
     }
 
-    public override void Do(Entity target, float power)
+    public override void Do(Entity target = null)
     {
-        foreach (var raider in raiders)
+        foreach (var raider in Targets)
         {
-            raider.TakeHeal(power * PowerCoefficient);
-            RemoveHealPredict(raider, power * PowerCoefficient);
-            Owner.Mgr.LogAction(Owner, target, this);
+            raider.TakeHeal(TotalPower);
         }
+        RemoveHealPredict();
 
-        CooldownRemaining = Cooldown;
+        base.Do();
     }
 }

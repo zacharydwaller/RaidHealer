@@ -13,14 +13,11 @@ public class AttackRandom : Ability
         Cooldown = 6.0f;
     }
 
-    public override void Do(Entity target, float power)
+    public override void Do(Entity target = null)
     {
         target = Owner.Mgr.Raid.GetRandom();
-        target.TakeDamage(power * PowerCoefficient);
+        target.TakeDamage(TotalPower);
 
-        Owner.Mgr.LogAction(Owner, target, this);
-        CooldownRemaining = Cooldown;
-
-        Coordinate cord = Owner.Mgr.Raid.GetCoordinate(target as Raider);
+        base.Do(target);
     }
 }

@@ -28,7 +28,7 @@ public class UnitFrameManager : MonoBehaviour
         return RaidFrames.GetChild(index).GetComponent<UnitFrame>().Raider;
     }
 
-    public int GetRaiderIndex(Raider raider)
+    public int GetRaiderIndex(Entity raider)
     {
         var list = RaidFrames.GetComponentsInChildren<UnitFrame>();
         

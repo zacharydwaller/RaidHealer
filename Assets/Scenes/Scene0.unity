@@ -6426,10 +6426,9 @@ MonoBehaviour:
     EnrageTime: 0
     TankSwapDelay: 0
     TankSwapTime: 0
-  RaidSize: 12
+  RaidSize: 24
   Raid:
     Size: 12
-    Raiders: []
   PowerLevel: 100
 --- !u!4 &1620592520
 Transform:

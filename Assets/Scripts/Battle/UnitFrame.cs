@@ -39,7 +39,7 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void Initialize(Raid raid, int index)
     {
-        Raider = raid.Raiders[index];
+        Raider = raid.Raiders[index] as Raider;
 
         NameText.text = Raider.Name;
 
