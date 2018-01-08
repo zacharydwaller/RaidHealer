@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,14 +15,24 @@ public class Boss : Entity
 
     protected int currentTank = 0;
 
+    protected List<Ability> AbilityList;
+
     public Boss(BattleManager mgr)
         : base(mgr)
     {
+        AbilityList = new List<Ability>();
+        AbilityList.Add(new AutoAttack(this));
 
+        CurrentAbility = AbilityList[0];
     }
 
     public override void Tick()
     {
+        foreach(var ability in AbilityList)
+        {
+            ability.Tick();
+        }
+
         if (IsEnraged == false && Time.time >= EnrageTime)
         {
             Enrage();
@@ -37,7 +48,22 @@ public class Boss : Entity
         {
             GCDFinish += GlobalCooldown;
             DoAbility();
+            SelectAbility();
         }
+    }
+
+    public void SelectAbility()
+    {
+        for (int i = AbilityList.Count - 1; i >= 0; i--)
+        {
+            if(AbilityList[i].CooldownRemaining == 0)
+            {
+                CurrentAbility = AbilityList[i];
+                break;
+            }
+        }
+
+        Debug.Log(CurrentAbility);
     }
 
     public void DoAbility()

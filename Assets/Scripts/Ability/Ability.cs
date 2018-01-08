@@ -9,11 +9,19 @@ public abstract class Ability
     public float CastTime;
     public float PowerCoefficient;
 
+    public float Cooldown;
+    public float CooldownRemaining;
+
     public Entity Owner;
 
     public Ability(Entity owner)
     {
         Owner = owner;
+    }
+
+    public void Tick()
+    {
+        CooldownRemaining = Mathf.Max(CooldownRemaining - Time.deltaTime, 0.0f);
     }
 
     public virtual void Do(Entity target, float power)

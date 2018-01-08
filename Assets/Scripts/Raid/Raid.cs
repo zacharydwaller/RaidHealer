@@ -91,11 +91,49 @@ public class Raid
         return Raiders.FirstOrDefault(r => r.ID == id);
     }
 
-    // GetSingle(row, col)
-    // Returns Raider
+    public Raider GetRandom()
+    {
+        Raider raider;
+        do
+        {
+            raider = Raiders[Random.Range(0, Raiders.Count)];
+        } while (raider.IsDead);
 
-    // Get Splash (row, col)
-    // Returns IList<Raider>
+        return raider;
+    }
+
+    public Coordinate GetCoordinate(Raider raider)
+    {
+        int index = Mgr.UFManager.GetRaiderIndex(raider);
+        return IndexToCoord(index);
+    }
+
+    public Raider GetRaider(Coordinate coordinate)
+    {
+        int index = CoordToIndex(coordinate);
+        return Mgr.UFManager.GetRaiderByIndex(index);
+    }
+
+    public IList<Raider> GetSplash(Coordinate center)
+    {
+        var list = new List<Raider>();
+
+        for(int r = -1; r <= 1; r++)
+        {
+            for(int c = -1; c <= 1; c++)
+            {
+                Coordinate coord = new Coordinate(center.Row + r, center.Col + c);
+
+                if(coord.Row >= 0 && coord.Row < RaidSizeUtil.GetRows(Size)
+                    && coord.Col >= 0 && coord.Col < RaidSizeUtil.GetCols(Size))
+                {
+                    list.Add(GetRaider(coord));
+                }
+            }
+        }
+
+        return list;
+    }
 
     // Get Chain(row, col, number)
     // Returns IList<Raider>
@@ -184,5 +222,17 @@ public class Raid
                 sb = new StringBuilder();
             }
         }
+    }
+
+    protected Coordinate IndexToCoord(int index)
+    {
+        int cols = RaidSizeUtil.GetCols(Size);
+        return new Coordinate(index / cols, index % cols);
+    }
+
+    protected int CoordToIndex(Coordinate coord)
+    {
+        int cols = RaidSizeUtil.GetCols(Size);
+        return coord.Row * cols + coord.Col;
     }
 }

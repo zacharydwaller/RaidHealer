@@ -5,9 +5,8 @@ using UnityEngine;
 public class BattleManager : MonoBehaviour
 {
     public UnitFrameManager UFManager;
-
-    protected CombatLogger CombatLogger;
-    protected DamageMeter DamageMeter;
+    public CombatLogger CombatLogger;
+    public DamageMeter DamageMeter;
 
     public Boss Boss;
 

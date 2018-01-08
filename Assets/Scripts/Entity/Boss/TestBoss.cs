@@ -14,6 +14,8 @@ public class TestBoss : Boss
         GlobalCooldown = 2.0f;
         EnrageDelay = 60;
         EnrageTime = Time.time + EnrageDelay;
-        CurrentAbility = new AutoAttack(this);
+
+        AbilityList.Add(new AttackRandom(this));
+        AbilityList.Add(new Splash(this));
     }
 }
