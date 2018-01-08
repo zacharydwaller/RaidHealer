@@ -6,11 +6,14 @@ using UnityEngine.UI;
 
 public class CombatLogger : MonoBehaviour
 {
-    public GameObject LogObjectRef;
-    public GameObject ContentPanel;
+    public Text CombatLog;
     public ScrollRect Scroll;
 
     public int maxMessages;
+
+    protected List<string> MessageBatch;
+    protected float BatchWriteDelay = 0.33f;
+    protected float NextBatchWrite = 0;
 
     //public DamageMeter
 
@@ -22,27 +25,29 @@ public class CombatLogger : MonoBehaviour
     {
         Mgr = GetComponent<BattleManager>();
         StartTime = Time.time;
+        MessageBatch = new List<string>();
     }
 
     private void Update()
     {
-        // Snap combat log to bottom
-        Scroll.verticalNormalizedPosition = 0f;
+        if(Time.time >= NextBatchWrite)
+        {
+            NextBatchWrite = Time.time + BatchWriteDelay;
+            ProcessMessageBatch();
 
-        CleanLog();
+            Debug.Log("Processing messages. Number of Messages: " + MessageBatch.Count);
+        }
     }
 
-    protected void LogLine(string text)
+    public void LogLine(string text)
     {
-        var messageObject = Instantiate(LogObjectRef);
-        messageObject.GetComponent<Text>().text = text;
-        messageObject.transform.SetParent(ContentPanel.transform, false);
+        MessageBatch.Add(text);
     }
 
     public void LogAction(Entity user, Entity target, Ability ability)
     {
         string message = CreateAbilityMessage(user, target, ability);
-        LogLine(message);
+        MessageBatch.Add(message);
     }
 
     protected string CreateAbilityMessage(Entity user, Entity target, Ability ability)
@@ -77,13 +82,25 @@ public class CombatLogger : MonoBehaviour
         return sb.ToString();
     }
 
-    protected void CleanLog()
+    protected void ProcessMessageBatch()
     {
-        int overflow = ContentPanel.transform.childCount - maxMessages;
+        CleanMessages();
+        CombatLog.text = "";
 
-        for(int i = 0; i < overflow; i++)
+        foreach (string message in MessageBatch)
         {
-            Destroy(ContentPanel.transform.GetChild(0).gameObject);
+            CombatLog.text += message;
+            CombatLog.text += "\n";
         }
+
+        // Snap combat log to bottom
+        Scroll.verticalNormalizedPosition = 0f;
+    }
+
+    protected void CleanMessages()
+    {
+        int overflow = MessageBatch.Count - maxMessages;
+
+        MessageBatch.RemoveRange(0, overflow);
     }
 }
