@@ -16,6 +16,7 @@ public class TestBoss : Boss
         EnrageTime = Time.time + EnrageDelay;
 
         AbilityList.Add(new AttackRandom(this));
-        AbilityList.Add(new Splash(this));
+        AbilityList.Add(new SplashAttack(this));
+        AbilityList.Add(new AoEAttack(this));
     }
 }

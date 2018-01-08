@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Splash : Ability
+public class SplashAttack : Ability
 {
-    public Splash(Entity owner)
+    public SplashAttack(Entity owner)
         : base(owner)
     {
         Name = "Splash";
