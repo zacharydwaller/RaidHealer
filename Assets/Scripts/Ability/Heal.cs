@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Heal : Ability
 {
-    public Heal()
+    public Heal(Entity owner)
+        : base(owner)
     {
         Name = "Heal";
         CastTime = 2.0f;
@@ -13,6 +14,8 @@ public class Heal : Ability
 
     public override void Do(Entity target, float power)
     {
+        base.Do(target, power);
+
         target.TakeHeal(power * PowerCoefficient);
     }
 }

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class AutoAttack : Ability
 {
-    public AutoAttack()
+    public AutoAttack(Entity owner)
+        : base(owner)
     {
         Name = "Attack";
         CastTime = 0;
@@ -13,6 +14,8 @@ public class AutoAttack : Ability
 
     public override void Do(Entity target, float power)
     {
+        base.Do(target, power);
+
         target.TakeDamage(power * PowerCoefficient);
     }
 }

@@ -9,5 +9,15 @@ public abstract class Ability
     public float CastTime;
     public float PowerCoefficient;
 
-    public virtual void Do(Entity target, float power) { }
+    public Entity Owner;
+
+    public Ability(Entity owner)
+    {
+        Owner = owner;
+    }
+
+    public virtual void Do(Entity target, float power)
+    {
+        Owner.Mgr.CombatLogger.LogAction(Owner, target, this);   
+    }
 }

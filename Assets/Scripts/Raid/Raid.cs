@@ -82,7 +82,13 @@ public class Raid
         return Raiders.FirstOrDefault(r => r.IsAlive);
     }
 
-    // Get(row, col)
+    //Get by ID
+    public Raider GetByID(int id)
+    {
+        return Raiders.FirstOrDefault(r => r.ID == id);
+    }
+
+    // GetSingle(row, col)
     // Returns Raider
 
     // Get Splash (row, col)

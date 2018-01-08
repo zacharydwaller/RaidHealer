@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,27 +8,25 @@ public class Raider : Entity
 {
     public Role Role;
 
-    public float AbilityPower = 1000;
-
     protected float baseHealth = 10000;
     protected float healthStdDev = 500;
 
     protected float baseAP = 1000;
     protected float apStdDev = 50;
 
-    protected float baseAD = 1.25f;
-    protected float adStdDev = 0.10f;
+    protected float baseGCD = 1.25f;
+    protected float gcdStdDev = 0.10f;
 
     public Raider(BattleManager mgr)
         :base(mgr)
     {
         MaxHealth = Health = Distribution.GetRandom(baseHealth, healthStdDev);
         AbilityPower = Distribution.GetRandom(baseAP, apStdDev);
-        GlobalCooldown = Distribution.GetRandom(baseAD, adStdDev);
+        GlobalCooldown = Distribution.GetRandom(baseGCD, gcdStdDev);
 
         GCDFinish = GlobalCooldown;
 
-        CurrentAbility = new AutoAttack();
+        CurrentAbility = new AutoAttack(this);
     }
 
     public override void Tick()
@@ -41,7 +40,6 @@ public class Raider : Entity
 
     public virtual void DoAbility()
     {
-        //CurrentAbility.Do(Mgr.Boss, AbilityPower);
-        Mgr.Boss.TakeDamage(AbilityPower);
+        CurrentAbility.Do(Mgr.Boss, AbilityPower);
     }
 }

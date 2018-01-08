@@ -9,7 +9,7 @@ public class Healer : Raider
     {
         Name = "Healer";
         Role = Role.Healer;
-        CurrentAbility = new Heal();
+        CurrentAbility = new Heal(this);
     }
 
     public override void Tick()
@@ -39,8 +39,6 @@ public class Healer : Raider
 
     public override void DoAbility()
     {
-        GCDFinish += GlobalCooldown;
-
         if(CastTarget != null && CastTarget.IsAlive)
         {
             CurrentAbility.Do(CastTarget, AbilityPower);

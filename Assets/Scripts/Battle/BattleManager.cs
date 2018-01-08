@@ -5,21 +5,24 @@ using UnityEngine;
 public class BattleManager : MonoBehaviour
 {
     public UnitFrameManager UFManager;
+    [HideInInspector]
+    public CombatLogger CombatLogger;
 
     public Boss Boss;
 
     public RaidSize RaidSize;
     public Raid Raid;
 
-    public Raider Player;
+    public Player Player;
 
     private void Awake()
     {
+        Player = new Player(this);
         Raid = new Raid(this, Player, RaidSize);
         Boss = new TestBoss(this);
-        Player.SetManager(this);
 
         UFManager.PopulateUnitFrames(this);
+        CombatLogger = GetComponent<CombatLogger>();
     }
 
     private void Update()

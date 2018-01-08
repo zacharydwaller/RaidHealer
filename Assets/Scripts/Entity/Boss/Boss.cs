@@ -5,8 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class Boss : Entity
 {
-    public float SwingDamage;
-
     public bool IsEnraged = false;
     public float EnrageDelay = 60;
     public float EnrageTime;
@@ -37,21 +35,20 @@ public class Boss : Entity
 
         if(GCDReady & !IsCasting)
         {
+            GCDFinish += GlobalCooldown;
             DoAbility();
         }
     }
 
     public void DoAbility()
     {
-        GCDFinish += GlobalCooldown;
-
         var target = Mgr.Raid.GetTank(currentTank);
 
         if (target == null) target = Mgr.Raid.GetNextAlive();
 
         if (target != null)
         {
-            CurrentAbility.Do(target, SwingDamage);
+            CurrentAbility.Do(target, AbilityPower);
         }
     }
 
@@ -61,7 +58,7 @@ public class Boss : Entity
     public void Enrage()
     {
         IsEnraged = true;
-        SwingDamage = Numbers.IncreaseByPercent(SwingDamage, 500.0f);
+        AbilityPower = Numbers.IncreaseByPercent(AbilityPower, 500.0f);
 
         float attacksPerSec = 1.0f / GlobalCooldown;
         attacksPerSec = Numbers.IncreaseByPercent(attacksPerSec, 150.0f);

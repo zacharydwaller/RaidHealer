@@ -5,6 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public abstract class Entity
 {
+    public int ID;
+
     public string Name;
 
     public float MaxHealth;
@@ -15,13 +17,18 @@ public abstract class Entity
     public float GlobalCooldown = 1.5f;
     protected float GCDFinish;
 
+    public float AbilityPower;
+
     [SerializeField]
     public Ability CurrentAbility;
     public bool IsCasting = false;
     public float CastRemaining;
     protected Entity CastTarget;
 
-    protected BattleManager Mgr;
+    [HideInInspector]
+    public BattleManager Mgr;
+
+    protected static int currentID;
 
     public bool GCDReady { get { return !IsDead && (Time.time >= GCDFinish); } }
     public bool IsAlive { get { return Health > 0; } }
@@ -33,6 +40,9 @@ public abstract class Entity
         Mgr = mgr;
         Health = MaxHealth;
         GCDFinish = GlobalCooldown;
+
+        currentID++;
+        ID = currentID;
     }
 
     public virtual void Tick() { }
