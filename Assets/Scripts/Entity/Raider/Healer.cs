@@ -7,7 +7,6 @@ public class Healer : Raider
     public Healer(BattleManager mgr)
         : base(mgr)
     {
-        Name = "Healer";
         Role = Role.Healer;
         CurrentAbility = new Heal(this);
     }

@@ -24,6 +24,7 @@ public class Raider : Entity
     public Raider(BattleManager mgr)
         :base(mgr)
     {
+        Name = Names.GetRandom();
         PowerLevel = Distribution.GetRandom(Mgr.PowerLevel, powerStd);
 
         MaxHealth = Health = GetPowerScaledValue(BaseHP);
