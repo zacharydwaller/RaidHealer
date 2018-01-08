@@ -10,7 +10,7 @@ public class AttackRandom : Ability
         Name = "Attack Random";
         CastTime = 0;
         PowerCoefficient = 0.5f;
-        Cooldown = 4.0f;
+        Cooldown = 6.0f;
     }
 
     public override void Do(Entity target, float power)

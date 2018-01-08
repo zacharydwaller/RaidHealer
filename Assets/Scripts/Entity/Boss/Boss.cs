@@ -86,6 +86,10 @@ public class Boss : Entity
         IsEnraged = true;
         AbilityPower = Numbers.IncreaseByPercent(AbilityPower, 500.0f);
 
+        AbilityList.Clear();
+        AbilityList.Add(new AutoAttack(this));
+        CurrentAbility = AbilityList[0];
+
         float attacksPerSec = 1.0f / GlobalCooldown;
         attacksPerSec = Numbers.IncreaseByPercent(attacksPerSec, 150.0f);
         GlobalCooldown = 1.0f / attacksPerSec;

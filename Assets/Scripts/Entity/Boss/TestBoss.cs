@@ -8,8 +8,8 @@ public class TestBoss : Boss
         : base(mgr)
     {
         Name = "Big Boy";
-        //MaxHealth = Health = 25.0f * Numbers.Thousand;
-        MaxHealth = Health = 1.0f * Numbers.Million;
+        MaxHealth = Health = 37.5f * Numbers.Thousand;
+        //MaxHealth = Health = 1.0f * Numbers.Million;
         AbilityPower = 150;
         GlobalCooldown = 2.0f;
         EnrageDelay = 60;

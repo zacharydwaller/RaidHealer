@@ -1985,7 +1985,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Raid DPS: 1.0M'
+  m_Text: 'Raid DPS: 0'
 --- !u!222 &454822992
 CanvasRenderer:
   m_ObjectHideFlags: 0

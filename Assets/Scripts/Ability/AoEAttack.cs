@@ -10,7 +10,7 @@ public class AoEAttack : Ability
         Name = "AoE";
         CastTime = 0;
         PowerCoefficient = 0.25f;
-        Cooldown = 4.0f;
+        Cooldown = 12.0f;
     }
 
     public override void Do(Entity target, float power)
