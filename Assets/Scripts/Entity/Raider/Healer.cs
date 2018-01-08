@@ -18,6 +18,8 @@ public class Healer : Raider
 
     public override void Tick()
     {
+        TickCDs();
+
         if (GCDReady && !IsCasting)
         {
             var target = GetAction();
@@ -25,8 +27,8 @@ public class Healer : Raider
             if(target != null)
             {
                 GCDFinish += GlobalCooldown;
+                Debug.Log(CurrentAbility);
                 StartCasting(target);
-                CastTarget.HealPredict += AbilityPower * CurrentAbility.PowerCoefficient;
             }
             return;
         }
@@ -37,6 +39,7 @@ public class Healer : Raider
 
             if(CastTarget == null || CastTarget.IsDead)
             {
+                CurrentAbility.CancelCast(CastTarget, AbilityPower);
                 IsCasting = false;
             }
         }
@@ -87,5 +90,11 @@ public class Healer : Raider
         }
 
         return lowestHealth;
+    }
+
+    protected void TickCDs()
+    {
+        Heal.Tick();
+        SplashHeal.Tick();
     }
 }

@@ -14,7 +14,12 @@ public class Heal : Ability
 
     public override void StartCast(Entity target, float power)
     {
-        AddHealPredict(target, power);
+        AddHealPredict(target, power * PowerCoefficient);
+    }
+
+    public override void CancelCast(Entity target, float power)
+    {
+        RemoveHealPredict(target, power * PowerCoefficient);
     }
 
     public override void Do(Entity target, float power)
@@ -23,6 +28,6 @@ public class Heal : Ability
 
         target.TakeHeal(power * PowerCoefficient);
 
-        RemoveHealPredict(target, power);
+        RemoveHealPredict(target, power * PowerCoefficient);
     }
 }

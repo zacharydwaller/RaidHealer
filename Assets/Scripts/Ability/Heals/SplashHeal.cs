@@ -11,8 +11,8 @@ public class SplashHeal : Ability
     {
         Name = "Splash Heal";
         CastTime = 0.5f;
-        PowerCoefficient = 0.1f;
-        Cooldown = 6.0f;
+        PowerCoefficient = 0.33f;
+        Cooldown = 8.0f;
     }
 
     public override void StartCast(Entity target, float power)
@@ -27,12 +27,20 @@ public class SplashHeal : Ability
         }
     }
 
+    public override void CancelCast(Entity target, float power)
+    {
+        foreach (var raider in raiders)
+        {
+            RemoveHealPredict(raider, power * PowerCoefficient);
+        }
+    }
+
     public override void Do(Entity target, float power)
     {
         foreach (var raider in raiders)
         {
             raider.TakeHeal(power * PowerCoefficient);
-            RemoveHealPredict(target, power * PowerCoefficient);
+            RemoveHealPredict(raider, power * PowerCoefficient);
             Owner.Mgr.LogAction(Owner, target, this);
         }
 

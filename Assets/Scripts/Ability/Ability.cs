@@ -28,6 +28,8 @@ public abstract class Ability
 
     public virtual void StartCast(Entity target, float power) { }
 
+    public virtual void CancelCast(Entity target, float power) { }
+
     public virtual void Do(Entity target, float power)
     {
         Owner.Mgr.LogAction(Owner, target, this);   
@@ -40,6 +42,6 @@ public abstract class Ability
 
     public void RemoveHealPredict(Entity target, float power)
     {
-        target.HealPredict += Owner.AbilityPower * PowerCoefficient;
+        target.HealPredict -= Owner.AbilityPower * PowerCoefficient;
     }
 }
