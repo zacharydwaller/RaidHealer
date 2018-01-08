@@ -55,6 +55,8 @@ public class Raider : Entity
         }
     }
 
+    
+
     protected float GetPowerScaledValue(float baseValue)
     {
         return baseValue * Mathf.Pow(PowerCoef, PowerLevel * PowerExp);

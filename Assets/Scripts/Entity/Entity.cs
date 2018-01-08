@@ -14,6 +14,8 @@ public abstract class Entity
 
     public float HealthPercent { get { return Health / MaxHealth * 100.0f;  } }
 
+    public float HealPredict;
+
     public float GlobalCooldown = 1.5f;
     protected float GCDFinish;
 

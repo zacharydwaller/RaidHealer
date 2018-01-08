@@ -22,6 +22,7 @@ public class Healer : Raider
             {
                 GCDFinish += GlobalCooldown;
                 StartCasting(lowestHealth);
+                CastTarget.HealPredict += AbilityPower * CurrentAbility.PowerCoefficient;
             }
             return;
         }
@@ -32,6 +33,7 @@ public class Healer : Raider
 
             if(CastTarget == null || CastTarget.IsDead)
             {
+                CastTarget.HealPredict -= AbilityPower * CurrentAbility.PowerCoefficient;
                 IsCasting = false;
             }
         }
@@ -46,6 +48,7 @@ public class Healer : Raider
     {
         if(CastTarget != null && CastTarget.IsAlive)
         {
+            CastTarget.HealPredict -= AbilityPower * CurrentAbility.PowerCoefficient;
             CurrentAbility.Do(CastTarget, AbilityPower);
         }
 
