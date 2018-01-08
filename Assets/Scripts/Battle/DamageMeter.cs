@@ -22,7 +22,7 @@ public class DamageMeter : MonoBehaviour
     protected float SetTime = 0.0f;
 
     // Update Meter on interval
-    protected float UpdateDelay = 0.33f;
+    protected float UpdateDelay = 1f;
     protected float NextUpdate = 0f;
 
     protected float StartTime;
@@ -110,12 +110,19 @@ public class DamageMeter : MonoBehaviour
     public void SortBars()
     {
         var list = DamageTable.ToList();
-        list.Sort((e1, e2) => e1.Value.CompareTo(e2.Value));
+        list.Sort((e1, e2) => e2.Value.CompareTo(e1.Value));
 
-        foreach(var entry in list)
+        int i;
+        for(i = 0; (i < 10) && i < list.Count; i++)
         {
-            var bar = DamageBars[entry.Key];
-            bar.transform.SetSiblingIndex(0);
+            var bar = DamageBars[list[i].Key];
+            bar.gameObject.SetActive(true);
+            bar.transform.SetSiblingIndex(i);
+        }
+        for(; i < list.Count; i++)
+        {
+            var bar = DamageBars[list[i].Key];
+            bar.gameObject.SetActive(false);
         }
     }
 }
