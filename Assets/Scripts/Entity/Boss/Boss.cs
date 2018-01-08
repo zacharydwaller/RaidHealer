@@ -62,8 +62,6 @@ public class Boss : Entity
                 break;
             }
         }
-
-        Debug.Log(CurrentAbility);
     }
 
     public void DoAbility()

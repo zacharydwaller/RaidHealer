@@ -22,6 +22,5 @@ public class AttackRandom : Ability
         CooldownRemaining = Cooldown;
 
         Coordinate cord = Owner.Mgr.Raid.GetCoordinate(target as Raider);
-        Debug.Log(string.Format("Row: {0} Col: {1}", cord.Row, cord.Col));
     }
 }
