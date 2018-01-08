@@ -8,11 +8,15 @@ public class Raider : Entity
 {
     public Role Role;
 
-    protected float baseHealth = 1500;
-    protected float healthStdDev = 250;
+    public float PowerLevel;
 
-    protected float baseAP = 300;
-    protected float apStdDev = 25;
+    protected const float BaseAP = 20;
+    protected const float BaseHP = 100;
+
+    protected const float PowerCoef = 1.5f;
+    protected const float PowerExp = 0.02f;
+
+    protected const float powerStd = 10;
 
     protected float baseGCD = 1.5f;
     protected float gcdStdDev = 0.15f;
@@ -20,8 +24,10 @@ public class Raider : Entity
     public Raider(BattleManager mgr)
         :base(mgr)
     {
-        MaxHealth = Health = Distribution.GetRandom(baseHealth, healthStdDev);
-        AbilityPower = Distribution.GetRandom(baseAP, apStdDev);
+        PowerLevel = Distribution.GetRandom(Mgr.PowerLevel, powerStd);
+
+        MaxHealth = Health = GetPowerScaledValue(BaseHP);
+        AbilityPower = GetPowerScaledValue(BaseAP);
 
         float haste = Mathf.Abs(baseGCD - Distribution.GetRandom(baseGCD, gcdStdDev));
 
@@ -47,5 +53,10 @@ public class Raider : Entity
         {
             CurrentAbility.Do(Mgr.Boss, AbilityPower);
         }
+    }
+
+    protected float GetPowerScaledValue(float baseValue)
+    {
+        return baseValue * Mathf.Pow(PowerCoef, PowerLevel * PowerExp);
     }
 }

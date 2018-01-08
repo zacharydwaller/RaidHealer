@@ -9,8 +9,6 @@ public class Player : Raider
     {
         Name = "Player";
         Role = Role.Healer;
-        MaxHealth = Health = baseHealth;
-        AbilityPower = baseAP;
         GlobalCooldown = baseGCD;
 
         GCDFinish = 0;

@@ -16,6 +16,8 @@ public class BattleManager : MonoBehaviour
 
     public Player Player;
 
+    public float PowerLevel;
+
     private void Awake()
     {
         Player = new Player(this);
