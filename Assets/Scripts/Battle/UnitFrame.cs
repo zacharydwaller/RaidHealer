@@ -14,6 +14,8 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public Slider HealthBar;
     public Image HealthBarFill;
 
+    public Slider HealPredict;
+
     public Slider CastBar;
 
     public Image Background;
@@ -37,12 +39,14 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void Initialize(Raid raid, int index)
     {
-        Raider = raid.Raiders[index];
+        Raider = raid.Raiders[index] as Raider;
 
         NameText.text = Raider.Name;
 
         HealthBar.maxValue = Raider.MaxHealth;
         HealthBarFill.color = RoleUtil.GetColor(Raider.Role);
+
+        HealPredict.maxValue = Raider.MaxHealth;
 
         CastBar.gameObject.SetActive(false);
 
@@ -56,6 +60,9 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         // Health Bar
         HealthBar.value = Mathf.Lerp(HealthBar.value, Raider.Health, HealthLerpConstant);
+
+        // Heal predict
+        HealPredict.value = Mathf.Lerp(HealPredict.value, Raider.Health + Raider.HealPredict, HealthLerpConstant);
 
         // Cast Bar
         if (!Raider.IsCasting) CastBar.gameObject.SetActive(false);
@@ -71,6 +78,7 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             SetAlpha(Background, 0.1f);
             SetAlpha(NameText, 0.5f);
             HealthText.text = "Dead";
+            HealPredict.gameObject.SetActive(false);
             CastBar.gameObject.SetActive(false);
         }
     }

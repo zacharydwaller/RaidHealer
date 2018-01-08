@@ -10,9 +10,11 @@ public class Raid
     public RaidSize Size;
 
     [SerializeField]
-    public List<Raider> Raiders;
+    public List<Entity> Raiders;
 
-    public int NumTanks { get { return Raiders.Count(r => r.Role == Role.Tank); } }
+    public int NumTanks { get { return Raiders.Count(r => RoleOf(r) == Role.Tank); } }
+
+    protected float HurtThreshold = 90.0f;
 
     protected BattleManager Mgr;
 
@@ -21,7 +23,7 @@ public class Raid
         Mgr = mgr;
 
         Size = _size;
-        Raiders = new List<Raider>();
+        Raiders = new List<Entity>();
 
         BuildRaid(player);
         //PrintRaid();
@@ -32,9 +34,10 @@ public class Raid
     /// </summary>
     /// <param name="index"></param>
     /// <returns></returns>
-    public Raider GetTank(int index = 0)
+    public Entity GetTank(int index = 0)
     {
-        var aliveTanks = Raiders.Where(r => r.Role == Role.Tank && r.IsAlive).ToList<Raider>();
+        var aliveTanks = Raiders.Where(r => RoleOf(r) == Role.Tank && r.IsAlive).ToList();
+
         if (aliveTanks.Count > 0)
         {
             if(index < aliveTanks.Count)
@@ -53,16 +56,21 @@ public class Raid
     }
 
     /// <summary>
-    /// Gets the raider with the lowest health
+    /// Gets the raider with the lowest health + healPredict. Can optionally ignore heal prediction
     /// </summary>
     /// <returns></returns>
-    public Raider GetLowestHealth()
+    public Entity GetLowestHealth(bool ignoreHealPredict = false)
     {
         float minHP = Mathf.Infinity;
-        Raider minRaider = null;
+        Entity minRaider = null;
         foreach(var raider in Raiders)
         {
-            if(raider.IsAlive && raider.HealthPercent < minHP)
+            float effectiveHealthPercent;
+
+            if (ignoreHealPredict) effectiveHealthPercent = raider.HealthPercent;
+            else effectiveHealthPercent = raider.HealthPercentPredict;
+
+            if(raider.IsAlive && (effectiveHealthPercent < minHP))
             {
                 minHP = raider.HealthPercent;
                 minRaider = raider;
@@ -76,26 +84,83 @@ public class Raid
     }
 
     /// <summary>
+    /// Returns how many raiders in a list are injured lower than the hurtThreshold
+    /// </summary>
+    /// <param name="raiders"></param>
+    /// <returns></returns>
+    public int GetNumberHurt(IList<Entity> raiders, bool ignoreHealPredict = false)
+    {
+        System.Func<Entity, bool> predicate;
+        if (ignoreHealPredict) predicate = r => r.HealthPercent < HurtThreshold;
+        else predicate = r => r.HealthPercentPredict < HurtThreshold;
+
+        return raiders.Count(predicate);
+    }
+
+    /// <summary>
     /// Gets the lowest index raider who is still alive
     /// TODO: Get raider with highest DPS (sort of like threat)
     /// </summary>
     /// <returns></returns>
-    public Raider GetNextAlive()
+    public Entity GetNextAlive()
     {
         return Raiders.FirstOrDefault(r => r.IsAlive);
     }
 
     //Get by ID
-    public Raider GetByID(int id)
+    public Entity GetByID(int id)
     {
         return Raiders.FirstOrDefault(r => r.ID == id);
     }
 
-    // GetSingle(row, col)
-    // Returns Raider
+    public Entity GetRandom()
+    {
+        Entity raider;
+        do
+        {
+            raider = Raiders[Random.Range(0, Raiders.Count)];
+        } while (raider.IsDead);
 
-    // Get Splash (row, col)
-    // Returns IList<Raider>
+        return raider;
+    }
+
+    public Coordinate GetCoordinate(Entity raider)
+    {
+        int index = Mgr.UFManager.GetRaiderIndex(raider);
+        return IndexToCoord(index);
+    }
+
+    public Entity GetRaider(Coordinate coordinate)
+    {
+        int index = CoordToIndex(coordinate);
+        return Mgr.UFManager.GetRaiderByIndex(index);
+    }
+
+    public IList<Entity> GetSplash(Entity centerRaider)
+    {
+        return GetSplash(GetCoordinate(centerRaider));
+    }
+
+    public IList<Entity> GetSplash(Coordinate center)
+    {
+        var list = new List<Entity>();
+
+        for(int r = -1; r <= 1; r++)
+        {
+            for(int c = -1; c <= 1; c++)
+            {
+                Coordinate coord = new Coordinate(center.Row + r, center.Col + c);
+
+                if(coord.Row >= 0 && coord.Row < RaidSizeUtil.GetRows(Size)
+                    && coord.Col >= 0 && coord.Col < RaidSizeUtil.GetCols(Size))
+                {
+                    list.Add(GetRaider(coord));
+                }
+            }
+        }
+
+        return list;
+    }
 
     // Get Chain(row, col, number)
     // Returns IList<Raider>
@@ -127,7 +192,7 @@ public class Raid
      * D D D D D D
      * D H H H H D
      */
-    protected void BuildRaid(Raider player)
+    protected void BuildRaid(Entity player)
     {
         if(Size == RaidSize.Group)
         {
@@ -153,7 +218,7 @@ public class Raid
 
     protected void AddRaiders(Role role, int number, int index)
     {
-        var raiders = new List<Raider>();
+        var raiders = new List<Entity>();
         for(int i = 0; i < number; i++)
         {
             raiders.Add(CreateRaider(role));
@@ -161,7 +226,7 @@ public class Raid
         Raiders.InsertRange(index, raiders);
     }
 
-    protected Raider CreateRaider(Role role)
+    protected Entity CreateRaider(Role role)
     {
         if (role == Role.Tank) return new Tank(Mgr);
         else if (role == Role.Healer) return new Healer(Mgr);
@@ -173,7 +238,7 @@ public class Raid
         StringBuilder sb = new StringBuilder();
         int numCols = RaidSizeUtil.GetCols(Size);
         int col = 0;
-        foreach(Raider raider in Raiders)
+        foreach(Entity raider in Raiders)
         {
             sb.Append(raider.Name + "\t");
             col++;
@@ -184,5 +249,24 @@ public class Raid
                 sb = new StringBuilder();
             }
         }
+    }
+
+    public Role RoleOf(Entity ent)
+    {
+        var raider = ent as Raider;
+        if (raider != null) return raider.Role;
+        else return Role.Damage;
+    }
+
+    protected Coordinate IndexToCoord(int index)
+    {
+        int cols = RaidSizeUtil.GetCols(Size);
+        return new Coordinate(index / cols, index % cols);
+    }
+
+    protected int CoordToIndex(Coordinate coord)
+    {
+        int cols = RaidSizeUtil.GetCols(Size);
+        return coord.Row * cols + coord.Col;
     }
 }

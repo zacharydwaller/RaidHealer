@@ -14,6 +14,10 @@ public abstract class Entity
 
     public float HealthPercent { get { return Health / MaxHealth * 100.0f;  } }
 
+    public float HealPredict;
+
+    public float HealthPercentPredict { get { return (Health + HealPredict) / MaxHealth * 100.0f; } }
+
     public float GlobalCooldown = 1.5f;
     protected float GCDFinish;
 
@@ -60,6 +64,7 @@ public abstract class Entity
         CastRemaining = GlobalCooldown + CurrentAbility.CastTime;
         IsCasting = true;
         CastTarget = target;
+        CurrentAbility.StartCast(target);
     }
 
     public void TakeDamage(float amount)

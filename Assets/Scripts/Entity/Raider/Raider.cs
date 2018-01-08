@@ -24,6 +24,7 @@ public class Raider : Entity
     public Raider(BattleManager mgr)
         :base(mgr)
     {
+        Name = Names.GetRandom();
         PowerLevel = Distribution.GetRandom(Mgr.PowerLevel, powerStd);
 
         MaxHealth = Health = GetPowerScaledValue(BaseHP);
@@ -51,9 +52,11 @@ public class Raider : Entity
     {
         if(Mgr.Boss.IsAlive)
         {
-            CurrentAbility.Do(Mgr.Boss, AbilityPower);
+            CurrentAbility.Do(Mgr.Boss);
         }
     }
+
+    
 
     protected float GetPowerScaledValue(float baseValue)
     {

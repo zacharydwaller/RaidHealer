@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,31 @@ public class UnitFrameManager : MonoBehaviour
     private void Awake()
     {
         
+    }
+
+    /// <summary>
+    /// Gets a raider by child index - NOT the same as Entity ID
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public Raider GetRaiderByIndex(int index)
+    {
+        return RaidFrames.GetChild(index).GetComponent<UnitFrame>().Raider;
+    }
+
+    public int GetRaiderIndex(Entity raider)
+    {
+        var list = RaidFrames.GetComponentsInChildren<UnitFrame>();
+        
+        for(int i = 0; i < list.Length; i++)
+        {
+            if(list[i].Raider.ID == raider.ID)
+            {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     public void PopulateUnitFrames(BattleManager mgr)
