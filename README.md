@@ -3,6 +3,7 @@
 
 ### Release 0.2.0
 - Added heal prediction
+- Added boss ability framework
 
 ### Release 0.1.0
 - Combat simulation implemented
