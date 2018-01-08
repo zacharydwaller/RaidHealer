@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,8 @@ public class DamageMeter : MonoBehaviour
     public Text RaidDpsText;
 
     protected Dictionary<int, float> DamageTable;
+    protected Dictionary<int, DamageBar> DamageBars;
+
     protected float TotalDamage;
 
     // To calculate raid damage in 5 second steps
@@ -33,17 +36,21 @@ public class DamageMeter : MonoBehaviour
         StartTime = Time.time;
 
         DamageTable = new Dictionary<int, float>();
+        DamageBars = new Dictionary<int, DamageBar>();
         TotalDamage = 0;
     }
 
     private void Update()
     {
+        if (TotalDamage == 0) return;
+
         SetTime += Time.deltaTime;
 
         if(Time.time >= NextUpdate)
         {
             NextUpdate = Time.time + UpdateDelay;
 
+            // Update Raid DPS
             RaidDpsText.text = string.Format("Raid DPS: {0}", Numbers.Abbreviate(SetDamage / SetTime));
 
             if (SetTime >= SetDuration)
@@ -51,6 +58,14 @@ public class DamageMeter : MonoBehaviour
                 SetDamage = SetDamage / SetTime;
                 SetTime = 1.0f;
             }
+
+            // Update Damage Bars
+            float highestDamage = DamageTable.Max(d => d.Value);
+            foreach(var damageBar in DamageBars.Values)
+            {
+                UpdateDamageBar(damageBar, highestDamage);    
+            }
+            SortBars();
         }
     }
 
@@ -67,8 +82,40 @@ public class DamageMeter : MonoBehaviour
         if(!DamageTable.ContainsKey(user.ID))
         {
             DamageTable.Add(user.ID, 0);
+            CreateDamageBar(user);
         }
 
         DamageTable[user.ID] += damage;
+    }
+
+    public void UpdateDamageBar(DamageBar bar, float highestDamage)
+    {
+        int id = bar.ID;
+        float damage = DamageTable[id];
+
+        bar.UpdateInfo(damage, highestDamage, FightDuration);
+    }
+
+    public void CreateDamageBar(Entity raider)
+    {
+        var barObj = Instantiate(DamageBarRef);
+        barObj.transform.SetParent(DamageMeterFrame.transform, false);
+        
+        var barScript = barObj.GetComponent<DamageBar>();
+        barScript.Initialize(raider);
+        
+        DamageBars.Add(raider.ID, barScript);
+    }
+
+    public void SortBars()
+    {
+        var list = DamageTable.ToList();
+        list.Sort((e1, e2) => e1.Value.CompareTo(e2.Value));
+
+        foreach(var entry in list)
+        {
+            var bar = DamageBars[entry.Key];
+            bar.transform.SetSiblingIndex(0);
+        }
     }
 }
