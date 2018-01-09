@@ -8,13 +8,13 @@ public class AutoAttack : Ability
         : base(owner)
     {
         Name = "Attack";
-        CastTime = 0;
+        CastAdd = 0;
         PowerCoefficient = 1.0f;
     }
 
-    public override void Do(Entity target)
+    protected override void Do()
     {
-        target.TakeDamage(TotalPower);
-        base.Do(target);
+        Target.TakeDamage(TotalPower);
+        base.Do();
     }
 }

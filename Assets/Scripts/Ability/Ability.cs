@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,33 +7,68 @@ using UnityEngine;
 public abstract class Ability
 {
     public string Name;
-    public float CastTime;
-    public float PowerCoefficient;
 
+    public float PowerCoefficient;
     public float TotalPower { get { return Owner.AbilityPower * PowerCoefficient; } }
+
+    /// <summary>
+    /// Total cast time is Owner's GCD + Cast Add
+    /// e.g. For a 2 second casted spell, make CastAdd = 0.5f
+    /// </summary>
+    public float CastAdd;
+    public float CastRemaining;
+
+    /// <summary>
+    /// Spell's total cast time with CastAdd and Owner's GCD factored in
+    /// </summary>
+    public float CastTime { get { return IsCastedAbility ? Owner.GlobalCooldown + CastAdd : 0; } }
+
+    public bool IsCastedAbility { get { return CastAdd > 0; } }
+    public bool IsBeingCasted { get { return CastRemaining > 0; } }
+    public bool CastReady { get { return CastRemaining == 0; } }
 
     public float Cooldown;
     public float CooldownRemaining;
 
-    public bool Ready { get { return CooldownRemaining <= 0; } }
+    
+    public bool OffCooldown { get { return CooldownRemaining <= 0; } }
 
     public Entity Owner;
 
-    public List<Entity> Targets;
+    public List<Entity> TargetList;
+    public Entity Target { get { return TargetList.Count > 0 ? TargetList[0] : null; } }
 
     public Ability(Entity owner)
     {
         Owner = owner;
-        Targets = new List<Entity>();
+        TargetList = new List<Entity>();
     }
 
     /// <summary>
     /// Called every frame to lower cooldown remaining.
     /// Override for channeled spells and HoTs/DoTs to tick healing/damage.
     /// </summary>
-    public void Tick()
+    public virtual void Tick()
     {
-        CooldownRemaining = Mathf.Max(CooldownRemaining - Time.deltaTime, 0.0f);
+        // Being casted, tick cast timer and check if ready or if target is dead
+        if(IsBeingCasted)
+        {
+            CastRemaining = Mathf.Max(CastRemaining - Time.deltaTime, 0.0f);
+
+            if (TargetList.All(t => t.IsDead))
+            {
+                CancelCast();
+            }
+            else if (CastReady)
+            {
+                Do();
+            }
+        }
+        // Not being casted, tick cooldown
+        else
+        {
+            CooldownRemaining = Mathf.Max(CooldownRemaining - Time.deltaTime, 0.0f);
+        }
     }
 
     /// <summary>
@@ -40,10 +76,22 @@ public abstract class Ability
     /// Override for chain/splash/aoe abilities.
     /// </summary>
     /// <param name="target"></param>
-    public virtual void StartCast(Entity target)
+    public virtual void StartCast(Entity target = null)
     {
-        Targets.Clear();
-        Targets.Add(target);
+        TargetList.Clear();
+        if (target != null)
+        {
+            TargetList.Add(target);
+        }
+
+        if (IsCastedAbility)
+        {
+            CastRemaining = CastTime;
+        }
+        else
+        {
+            Do();
+        }
     }
 
     /// <summary>
@@ -51,29 +99,26 @@ public abstract class Ability
     /// </summary>
     public virtual void CancelCast()
     {
-        Targets.Clear();
+        TargetList.Clear();
     }
 
     /// <summary>
-    /// Do() for instant cast spells where Targets is not set.
     /// Override to make ability do action. base.Do() should be called at end of overridden function.
-    /// Default behavior logs action for target and Targets and triggers the cooldown.
+    /// Default behavior logs action for each Target, clears Targets, and triggers its cooldown
     /// </summary>
     /// <param name="target"></param>
-    public virtual void Do(Entity target = null)
+    protected virtual void Do()
     {
-        if(target != null)
+        if(TargetList.Count > 0)
         {
-            Owner.Mgr.LogAction(Owner, target, this);
-        }
-
-        if(Targets.Count > 0)
-        {
-            foreach (var entity in Targets)
+            foreach (var entity in TargetList)
             {
                 Owner.Mgr.LogAction(Owner, entity, this);
             }
+
+            TargetList.Clear();
         }
+
         CooldownRemaining = Cooldown;
     }
 
@@ -83,7 +128,7 @@ public abstract class Ability
     /// </summary>
     public void AddHealPredict()
     {
-        foreach(var target in Targets)
+        foreach(var target in TargetList)
         {
             target.HealPredict += TotalPower;
         }
@@ -95,7 +140,7 @@ public abstract class Ability
     /// </summary>
     public void RemoveHealPredict()
     {
-        foreach (var target in Targets)
+        foreach (var target in TargetList)
         {
             target.HealPredict -= TotalPower;
         }

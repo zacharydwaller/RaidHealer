@@ -8,15 +8,15 @@ public class AoEAttack : Ability
         : base(owner)
     {
         Name = "AoE";
-        CastTime = 0;
+        CastAdd = 0;
         PowerCoefficient = 0.25f;
         Cooldown = 12.0f;
     }
 
-    public override void Do(Entity target = null)
+    protected override void Do()
     {
-        Targets = Owner.Mgr.Raid.Raiders;
-        foreach (var raider in Targets)
+        TargetList = new List<Entity>(Owner.Mgr.Raid.Raiders.ToArray());
+        foreach (var raider in TargetList)
         {
             raider.TakeDamage(TotalPower);
         }

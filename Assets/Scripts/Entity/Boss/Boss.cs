@@ -15,44 +15,54 @@ public class Boss : Entity
 
     protected int currentTank = 0;
 
+    /// <summary>
+    /// List of abilities. Should be ordered least-to-most priority. So add AutoAttack first.
+    /// </summary>
     protected List<Ability> AbilityList;
 
     public Boss(BattleManager mgr)
         : base(mgr)
     {
-        AbilityList = new List<Ability>();
-        AbilityList.Add(new AutoAttack(this));
-
-        CurrentAbility = AbilityList[0];
+        
     }
 
     public override void Tick()
     {
-        foreach(var ability in AbilityList)
-        {
-            ability.Tick();
-        }
+        base.Tick();
 
+        // Check enrage timer
         if (IsEnraged == false && Time.time >= EnrageTime)
         {
             Enrage();
         }
 
+        // Check tank swap
         if(Time.time >= TankSwapTime)
         {
             TankSwapTime += TankSwapDelay;
             currentTank = (currentTank + 1) % Mgr.Raid.NumTanks;
         }
 
+        // Check if can do ability
         if(GCDReady & !IsCasting)
         {
-            GCDFinish += GlobalCooldown;
-            DoAbility();
             SelectAbility();
+            DoAbility();
         }
     }
 
-    public void SelectAbility()
+    protected override void TickAbilities()
+    {
+        foreach (var ability in AbilityList)
+        {
+            ability.Tick();
+        }
+    }
+
+    /// <summary>
+    /// Iterates through AbilityList in reverse and selects the first one that's not on cooldown.
+    /// </summary>
+    protected override void SelectAbility()
     {
         for (int i = AbilityList.Count - 1; i >= 0; i--)
         {
@@ -64,20 +74,24 @@ public class Boss : Entity
         }
     }
 
-    public void DoAbility()
+    /// <summary>
+    /// Starts casting selected ability. Tries to target tanks if alive. Otherwise targets next raider in line.
+    /// Random Attack abilities will always target random regardless.
+    /// </summary>
+    protected override void DoAbility()
     {
         var target = Mgr.Raid.GetTank(currentTank);
 
         if (target == null) target = Mgr.Raid.GetNextAlive();
-
         if (target != null)
         {
-            CurrentAbility.Do(target);
+            StartCasting(target);
         }
     }
 
     /// <summary>
-    /// Increase damage by 500%, attack speed by 150%
+    /// Increase damage by 500%, attack speed by 150%.
+    /// Boss will only auto attack.
     /// </summary>
     public void Enrage()
     {

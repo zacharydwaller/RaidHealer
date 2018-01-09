@@ -1096,8 +1096,6 @@ MonoBehaviour:
     HealPredict: 0
     GlobalCooldown: 0
     AbilityPower: 0
-    IsCasting: 0
-    CastRemaining: 0
     Mgr: {fileID: 0}
     Role: 0
     PowerLevel: 0
@@ -4475,8 +4473,6 @@ MonoBehaviour:
     HealPredict: 0
     GlobalCooldown: 0
     AbilityPower: 0
-    IsCasting: 0
-    CastRemaining: 0
     Mgr: {fileID: 0}
     Role: 0
     PowerLevel: 0
@@ -4554,8 +4550,6 @@ MonoBehaviour:
     HealPredict: 0
     GlobalCooldown: 0
     AbilityPower: 0
-    IsCasting: 0
-    CastRemaining: 0
     Mgr: {fileID: 0}
     IsEnraged: 0
     EnrageDelay: 0
@@ -5565,8 +5559,6 @@ MonoBehaviour:
     HealPredict: 0
     GlobalCooldown: 0
     AbilityPower: 0
-    IsCasting: 0
-    CastRemaining: 0
     Mgr: {fileID: 0}
     Role: 0
     PowerLevel: 0
@@ -6418,8 +6410,6 @@ MonoBehaviour:
     HealPredict: 0
     GlobalCooldown: 0
     AbilityPower: 0
-    IsCasting: 0
-    CastRemaining: 0
     Mgr: {fileID: 0}
     IsEnraged: 0
     EnrageDelay: 0

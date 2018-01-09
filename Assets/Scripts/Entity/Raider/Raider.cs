@@ -41,22 +41,15 @@ public class Raider : Entity
 
     public override void Tick()
     {
-        if(GCDReady)
+        base.Tick();
+
+        // Ready for new cast
+        if (GCDReady && !IsCasting)
         {
-            GCDFinish += GlobalCooldown;
+            SelectAbility();
             DoAbility();
         }
     }
-
-    public virtual void DoAbility()
-    {
-        if(Mgr.Boss.IsAlive)
-        {
-            CurrentAbility.Do(Mgr.Boss);
-        }
-    }
-
-    
 
     protected float GetPowerScaledValue(float baseValue)
     {

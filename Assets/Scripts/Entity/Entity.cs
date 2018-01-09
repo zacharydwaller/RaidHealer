@@ -26,11 +26,7 @@ public abstract class Entity
     [SerializeField]
     public Ability CurrentAbility;
 
-    // Casting stuff - Cast time measured as GCD + additional ability cast
-    // This is how I'm going to simulate spellcasting haste
-    public bool IsCasting = false;
-    public float CastRemaining;
-    protected Entity CastTarget;
+    public bool IsCasting { get { return CurrentAbility != null ? CurrentAbility.IsBeingCasted : false; } }
 
     [HideInInspector]
     public BattleManager Mgr;
@@ -40,7 +36,6 @@ public abstract class Entity
     public bool GCDReady { get { return !IsDead && (Time.time >= GCDFinish); } }
     public bool IsAlive { get { return Health > 0; } }
     public bool IsDead { get { return !IsAlive; } }
-    public bool CastReady { get { return IsCasting && (CastRemaining <= 0); } }
 
     public Entity(BattleManager mgr)
     {
@@ -52,19 +47,44 @@ public abstract class Entity
         ID = currentID;
     }
 
-    public virtual void Tick() { }
+    /// <summary>
+    /// Base Entity Tick. Override to include more behavior. Always call base.Tick() at beginning of overriden function.
+    /// </summary>
+    public virtual void Tick()
+    {
+        TickAbilities();
+    }
+
+    /// <summary>
+    /// Should call Ability.Tick() on all abilities.
+    /// Override to include which abilities are being ticked.
+    /// </summary>
+    protected virtual void TickAbilities() { }
 
     public void SetManager(BattleManager mgr)
     {
         Mgr = mgr;
     }
 
+    protected virtual void SelectAbility() { }
+    protected virtual void DoAbility() { }
+
+    /// <summary>
+    /// Triggers the GCD and starts CurrentAbility's cast
+    /// </summary>
+    /// <param name="target"></param>
     public void StartCasting(Entity target)
     {
-        CastRemaining = GlobalCooldown + CurrentAbility.CastTime;
-        IsCasting = true;
-        CastTarget = target;
+        GCDFinish += GlobalCooldown;
         CurrentAbility.StartCast(target);
+    }
+
+    /// <summary>
+    /// Cancels CurrentAbility
+    /// </summary>
+    public void CancelCasting()
+    {
+        CurrentAbility.CancelCast();
     }
 
     public void TakeDamage(float amount)
