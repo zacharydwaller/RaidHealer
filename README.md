@@ -6,6 +6,7 @@
 - Player abilities
 - Implemented gear system
 - Fixed resolution scaling
+- Implemented ActionBar
 
 ### Release 0.2.0
 - Added heal prediction

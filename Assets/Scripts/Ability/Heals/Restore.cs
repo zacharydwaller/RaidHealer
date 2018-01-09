@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Heal : HealAbility
+public class Restore : HealAbility
 {
-    public Heal(Entity owner = null)
+    public Restore(Entity owner = null)
         : base(owner)
     {
-        Name = "Heal";
+        Name = "Restore";
         CastAdd = 0.25f;
-        PowerCoefficient = 0.25f;
+        PowerCoefficient = 1.0f;
     }
 
     protected override void Do()

@@ -19,8 +19,8 @@ public class PlayerInfo
         // Have to set owner later
         AbilityList = new List<Ability>
         {
-            new Heal(),
-            new SplashHeal()
+            new Restore(),
+            new Prayer()
         };
     }
 }
