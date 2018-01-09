@@ -5,45 +5,75 @@ using UnityEngine;
 [System.Serializable]
 public class Gear
 {
-    public Slot Weapon;
+    public Slot[] List;
 
-    public Slot Head;
-    public Slot Shoulders;
-    public Slot Chest;
-
-    public Slot LeftRing;
-    public Slot RightRing;
-
-    public Slot Trinket;
-
-    public Gear()
+    public Gear(float itemLevel)
     {
-        Weapon = new Slot(SlotType.Weapon);
-
-        Head = new Slot(SlotType.Head);
-        Shoulders = new Slot(SlotType.Shoulders);
-        Chest = new Slot(SlotType.Chest);
-
-        LeftRing = new Slot(SlotType.Ring);
-        RightRing = new Slot(SlotType.Ring);
-
-        Trinket = new Slot(SlotType.Trinket);
+        List = new Slot[7];
+        List[0] = new Slot(SlotType.Weapon, itemLevel);
+        List[1] = new Slot(SlotType.Head, itemLevel);
+        List[2] = new Slot(SlotType.Shoulders, itemLevel);
+        List[3] = new Slot(SlotType.Chest, itemLevel);
+        List[4] = new Slot(SlotType.Ring, itemLevel);
+        List[5] = new Slot(SlotType.Ring, itemLevel);
+        List[6] = new Slot(SlotType.Trinket, itemLevel);
     }
 
-    public float GetAverageItemLevel()
+    public float AverageItemLevel
     {
-        float total;
-        float numSlots = 7.0f;
+        get
+        {
+            float total = 0;
+            float numSlots = List.Length;
+            foreach (var slot in List)
+            {
+                total += slot.ItemLevel;
+            }
 
-        total =
-            Weapon.ItemLevel
-            + Head.ItemLevel
-            + Shoulders.ItemLevel
-            + Chest.ItemLevel
-            + LeftRing.ItemLevel
-            + RightRing.ItemLevel
-            + Trinket.ItemLevel;
+            return total / numSlots;
+        }
+        
+    }
 
-        return total / numSlots;
+    public float TotalPlusHP
+    {
+        get
+        {
+            float total = 0;
+            foreach (var slot in List)
+            {
+                total += slot.PlusHP;
+            }
+
+            return total;
+        }
+    }
+
+    public float TotalAbilityPower
+    {
+        get
+        {
+            float total = 0;
+            foreach (var slot in List)
+            {
+                total += slot.AbilityPower;
+            }
+
+            return total;
+        }
+    }
+
+    public float TotalHaste
+    {
+        get
+        {
+            float total = 0;
+            foreach (var slot in List)
+            {
+                total += slot.Haste;
+            }
+
+            return total;
+        }
     }
 }

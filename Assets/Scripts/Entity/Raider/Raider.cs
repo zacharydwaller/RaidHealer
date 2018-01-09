@@ -17,15 +17,13 @@ public class Raider : Entity
         :base(mgr)
     {
         Name = Names.GetRandom();
-        ItemLevel = Distribution.GetRandom(Mgr.PowerLevel, powerStd);
+        ItemLevel = Distribution.GetRandom(Mgr.RaidItemLevel, powerStd);
 
-        //MaxHealth = Health = Power(BaseHP);
-        //AbilityPower = GetPowerScaledValue(BaseAP);
+        MaxHealth = Health = Power.ScaleValue(Power.BaseHP, ItemLevel);
+        AbilityPower = Power.ScaleValue(Power.BaseAP, ItemLevel);
 
         float haste = Mathf.Abs(Power.BaseGCD - Distribution.GetRandom(Power.BaseGCD, gcdStd));
-
         GlobalCooldown = Mathf.Max(GlobalCooldown - haste, Power.MinGCD);
-        
         GCDFinish = GlobalCooldown;
 
         CurrentAbility = new AutoAttack(this);
@@ -42,6 +40,4 @@ public class Raider : Entity
             DoAbility();
         }
     }
-
-    
 }

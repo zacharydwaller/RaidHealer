@@ -12,6 +12,9 @@ public class Damage : Raider
 
     protected override void DoAbility()
     {
-        StartCasting(Mgr.Boss);
+        if(Mgr.Boss.IsAlive)
+        {
+            StartCasting(Mgr.Boss);
+        }
     }
 }

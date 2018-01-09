@@ -18,10 +18,20 @@ public class Slot
 
     public bool IsEquipped { get { return Item != null; } }
     public float ItemLevel { get { return IsEquipped ? Item.ItemLevel : 0; } }
+    public float PlusHP { get { return IsEquipped ? Item.PlusHealth : 0; } }
+    public float AbilityPower { get { return IsEquipped ? Item.AbilityPower : 0; } }
+    public float Haste { get { return IsEquipped ? Item.Haste : 0; } }
+
 
     public Slot(SlotType type)
     {
         SlotType = type;
+    }
+
+    public Slot(SlotType type, float itemLevel)
+    {
+        SlotType = type;
+        Item = Item.CreateItem(type, itemLevel);
     }
 
     public static string GetTypeString(SlotType slot)

@@ -11,10 +11,10 @@ public class PlayerInfo
 
     public List<Ability> AbilityList;
 
-    public PlayerInfo(string newName)
+    public PlayerInfo(string newName, float itemLevel)
     {
         Name = newName;
-        Gear = new Gear();
+        Gear = new Gear(itemLevel);
 
         // Have to set owner later
         AbilityList = new List<Ability>

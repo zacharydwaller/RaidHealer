@@ -34,4 +34,10 @@ public static class Power
     {
         return baseValue * Mathf.Pow(PowerCoef, itemLevel * PowerExp);
     }
+
+    public static float GetHastedGCD(float haste)
+    {
+        float hasteSeconds = haste / 100.0f;
+        return Mathf.Clamp(BaseGCD - hasteSeconds, MinGCD, BaseGCD);
+    }
 }

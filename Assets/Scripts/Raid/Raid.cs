@@ -26,7 +26,6 @@ public class Raid
         Raiders = new List<Entity>();
 
         BuildRaid(player);
-        //PrintRaid();
     }
 
     /// <summary>

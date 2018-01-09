@@ -15,12 +15,16 @@ public class BattleManager : MonoBehaviour
 
     public Player Player;
 
-    public float PowerLevel;
+    public float RaidItemLevel;
 
     private void Awake()
     {
-        Player = new Player(this);
+        var gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        Player = new Player(this, gm.PlayerInfo);
+
+        RaidItemLevel = Player.ItemLevel;
         Raid = new Raid(this, Player, RaidSize);
+
         Boss = new TestBoss(this);
 
         UFManager.PopulateUnitFrames(this);

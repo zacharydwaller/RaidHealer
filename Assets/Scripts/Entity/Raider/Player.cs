@@ -13,14 +13,19 @@ public class Player : Raider
 
     protected int AbilityPress;
 
-    public Player(BattleManager mgr)
+    public Player(BattleManager mgr, PlayerInfo info)
         : base(mgr)
     {
-        Name = "Player";
+        Name = info.Name;
+        ItemLevel = info.Gear.AverageItemLevel;
         Role = Role.Healer;
-        GlobalCooldown = Power.BaseGCD;
 
+        MaxHealth = Health = Power.BaseHP + info.Gear.TotalPlusHP;
+        AbilityPower = Power.BaseAP + info.Gear.TotalAbilityPower;
+        GlobalCooldown = Power.GetHastedGCD(info.Gear.TotalHaste);
         GCDFinish = 0;
+
+        Debug.Log(string.Format("Haste: {0}; GCD: {1}", info.Gear.TotalHaste, GlobalCooldown));
 
         Heal = new Heal(this);
         SplashHeal = new SplashHeal(this);

@@ -11,7 +11,7 @@ public class Item
     public float ItemLevel;
 
     public float PlusHealth;
-    public float SpellPower;
+    public float AbilityPower;
     public float Haste;
 
     public static Item CreateItem(SlotType slot, float itemLevel)
@@ -21,20 +21,25 @@ public class Item
             Name = Slot.GetTypeString(slot),
             SlotType = slot,
             ItemLevel = itemLevel,
-            PlusHealth = GetStat(Power.BaseHP, itemLevel, slot),
-            SpellPower = GetStat(Power.BaseAP, itemLevel, slot),
-            Haste = GetStat(Power.BaseHaste, itemLevel, slot)
+            PlusHealth = GetScaledStat(Power.BaseHP, itemLevel, slot),
+            AbilityPower = GetScaledStat(Power.BaseAP, itemLevel, slot),
+            Haste = GetScaledHaste(itemLevel, slot)
         };
 
         item.PlusHealth = Mathf.Round(item.PlusHealth);
-        item.SpellPower = Mathf.Round(item.SpellPower);
+        item.AbilityPower = Mathf.Round(item.AbilityPower);
         item.Haste = Mathf.Round(item.Haste * 10.0f) / 10.0f;
 
         return item;
     }
 
-    private static float GetStat(float baseValue, float itemLevel, SlotType slot)
+    private static float GetScaledStat(float baseValue, float itemLevel, SlotType slot)
     {
         return Power.ScaleValue(baseValue, itemLevel) * Power.SlotMod(slot);
+    }
+
+    private static float GetScaledHaste(float itemLevel, SlotType slot)
+    {
+        return Power.BaseHaste + (itemLevel * Power.HasteMult * Power.SlotMod(slot));
     }
 }
