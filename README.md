@@ -5,6 +5,7 @@
 - Large Entity and Ability refactor
 - Player abilities
 - Implemented gear system
+- Fixed resolution scaling
 
 ### Release 0.2.0
 - Added heal prediction
