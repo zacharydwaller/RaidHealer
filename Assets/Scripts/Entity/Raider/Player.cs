@@ -9,6 +9,9 @@ public class Player : Raider
 
     public List<Ability> AbilityList;
 
+    protected int QueuedAbilityIndex = -1;
+    protected float QueueTime = 0.5f;
+
     public Player(BattleManager mgr, PlayerInfo info)
         : base(mgr)
     {
@@ -44,6 +47,15 @@ public class Player : Raider
             {
                 // Pause
             }
+
+            QueuedAbilityIndex = -1;
+        }
+
+        // Cast queued ability
+        if(GCDReady && !IsCasting && GetAbility(QueuedAbilityIndex) != null)
+        {
+            AbilityPressed(QueuedAbilityIndex);
+            QueuedAbilityIndex = -1;
         }
 
         // Clear target
@@ -67,6 +79,7 @@ public class Player : Raider
 
         var ability = AbilityList[index];
 
+        // Do ability if ready
         if(!IsCasting && GCDReady)
         {
             CurrentAbility = ability;
@@ -87,6 +100,11 @@ public class Player : Raider
             }
 
             StartCasting(target);
+        }
+        // Queue ability if within queue time
+        else if(GCDFinish - Time.time <= QueueTime)
+        {
+            QueuedAbilityIndex = index;
         }
     }
 
