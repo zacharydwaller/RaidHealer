@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SplashHeal : Ability
 {
-    public SplashHeal(Entity owner)
+    public SplashHeal(Entity owner = null)
         : base(owner)
     {
         Name = "Splash Heal";

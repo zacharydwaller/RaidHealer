@@ -18,7 +18,7 @@ public class Player : Raider
     {
         Name = "Player";
         Role = Role.Healer;
-        GlobalCooldown = baseGCD;
+        GlobalCooldown = Power.BaseGCD;
 
         GCDFinish = 0;
 

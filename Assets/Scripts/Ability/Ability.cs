@@ -38,7 +38,7 @@ public abstract class Ability
     public List<Entity> TargetList;
     public Entity Target { get { return TargetList.Count > 0 ? TargetList[0] : null; } }
 
-    public Ability(Entity owner)
+    public Ability(Entity owner = null)
     {
         Owner = owner;
         TargetList = new List<Entity>();

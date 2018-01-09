@@ -8,32 +8,24 @@ public class Raider : Entity
 {
     public Role Role;
 
-    public float PowerLevel;
-
-    protected const float BaseAP = 20;
-    protected const float BaseHP = 100;
-
-    protected const float PowerCoef = 1.5f;
-    protected const float PowerExp = 0.02f;
+    public float ItemLevel;
 
     protected const float powerStd = 10;
-
-    protected float baseGCD = 1.5f;
-    protected float gcdStdDev = 0.15f;
+    protected float gcdStd = 0.15f;
 
     public Raider(BattleManager mgr)
         :base(mgr)
     {
         Name = Names.GetRandom();
-        PowerLevel = Distribution.GetRandom(Mgr.PowerLevel, powerStd);
+        ItemLevel = Distribution.GetRandom(Mgr.PowerLevel, powerStd);
 
-        MaxHealth = Health = GetPowerScaledValue(BaseHP);
-        AbilityPower = GetPowerScaledValue(BaseAP);
+        //MaxHealth = Health = Power(BaseHP);
+        //AbilityPower = GetPowerScaledValue(BaseAP);
 
-        float haste = Mathf.Abs(baseGCD - Distribution.GetRandom(baseGCD, gcdStdDev));
+        float haste = Mathf.Abs(Power.BaseGCD - Distribution.GetRandom(Power.BaseGCD, gcdStd));
 
-        GlobalCooldown -= haste;
-
+        GlobalCooldown = Mathf.Max(GlobalCooldown - haste, Power.MinGCD);
+        
         GCDFinish = GlobalCooldown;
 
         CurrentAbility = new AutoAttack(this);
@@ -51,8 +43,5 @@ public class Raider : Entity
         }
     }
 
-    protected float GetPowerScaledValue(float baseValue)
-    {
-        return baseValue * Mathf.Pow(PowerCoef, PowerLevel * PowerExp);
-    }
+    
 }

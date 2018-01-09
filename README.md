@@ -4,6 +4,7 @@
 ### Release 0.3.0
 - Large Entity and Ability refactor
 - Player abilities
+- Gear added
 
 ### Release 0.2.0
 - Added heal prediction

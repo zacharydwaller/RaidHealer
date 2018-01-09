@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Heal : Ability
 {
-    public Heal(Entity owner)
+    public Heal(Entity owner = null)
         : base(owner)
     {
         Name = "Heal";
