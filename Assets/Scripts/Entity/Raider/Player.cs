@@ -63,7 +63,7 @@ public class Player : Raider
 
     public void AbilityPressed(int index)
     {
-        if (index > AbilityList.Count) return;
+        if (index < 0 || index >= AbilityList.Count) return;
 
         var ability = AbilityList[index];
 
