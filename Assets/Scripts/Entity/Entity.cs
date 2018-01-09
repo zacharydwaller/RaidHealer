@@ -34,8 +34,12 @@ public abstract class Entity
     protected static int currentID;
 
     public bool GCDReady { get { return !IsDead && (Time.time >= GCDFinish); } }
+    
+
     public bool IsAlive { get { return Health > 0; } }
     public bool IsDead { get { return !IsAlive; } }
+
+    public float GCDProgress { get { return GCDReady ? 1.0f : 1.0f - (Mathf.Max(GCDFinish - Time.time, 0) / GlobalCooldown); } }
 
     public Entity(BattleManager mgr)
     {
@@ -77,7 +81,7 @@ public abstract class Entity
     {
         if(CurrentAbility.OffCooldown)
         {
-            GCDFinish += GlobalCooldown;
+            GCDFinish = Time.time + GlobalCooldown;
             CurrentAbility.StartCast(target);
         }
     }

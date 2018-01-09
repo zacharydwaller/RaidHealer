@@ -23,6 +23,12 @@ public abstract class Ability
     /// </summary>
     public float CastTime { get { return IsCastedAbility ? Owner.GlobalCooldown + CastAdd : 0; } }
 
+    /// <summary>
+    /// Gives a float 0-1 to indicate percentage of cast completion.
+    /// Useful for progress bars.
+    /// </summary>
+    public float CastProgress { get { return 1.0f - (CastRemaining / CastTime); } }
+
     public bool IsCastedAbility { get { return CastAdd > 0; } }
     public bool IsBeingCasted { get { return CastRemaining > 0; } }
     public bool CastReady { get { return CastRemaining == 0; } }
@@ -30,8 +36,13 @@ public abstract class Ability
     public float Cooldown;
     public float CooldownRemaining;
 
-    
-    public bool OffCooldown { get { return CooldownRemaining <= 0; } }
+    /// <summary>
+    /// Gives a float 0-1 to indicate percentage of cooldown completion.
+    /// Useful for progress bars.
+    /// </summary>
+    public float CooldownProgress { get { return 1.0f - (CooldownRemaining / Cooldown); } }
+
+    public bool OffCooldown { get { return CooldownRemaining <= 0f; } }
 
     public Entity Owner;
 

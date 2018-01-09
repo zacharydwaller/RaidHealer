@@ -89,4 +89,10 @@ public class Player : Raider
             StartCasting(target);
         }
     }
+
+    public Ability GetAbility(int index)
+    {
+        if (index < 0 || index >= AbilityList.Count) return null;
+        else return AbilityList[index];
+    }
 }

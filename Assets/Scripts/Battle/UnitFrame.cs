@@ -72,7 +72,7 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         else
         {
             CastBar.gameObject.SetActive(true);
-            CastBar.value = 1.0f - (Raider.CurrentAbility.CastRemaining / (Raider.CurrentAbility.CastTime));
+            CastBar.value = Raider.CurrentAbility.CastProgress;
         }
 
         // Dead state

@@ -2812,6 +2812,21 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114708354887638120, guid: 196770f8419ea7d43b0b8481458f9f3a,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 114911009328414372, guid: 196770f8419ea7d43b0b8481458f9f3a,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 114911009328414372, guid: 196770f8419ea7d43b0b8481458f9f3a,
+        type: 2}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 196770f8419ea7d43b0b8481458f9f3a, type: 2}
   m_IsPrefabParent: 0
@@ -3727,6 +3742,16 @@ Prefab:
         type: 2}
       propertyPath: Key
       value: 51
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708354887638120, guid: 196770f8419ea7d43b0b8481458f9f3a,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 114911009328414372, guid: 196770f8419ea7d43b0b8481458f9f3a,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 0.5019608
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 196770f8419ea7d43b0b8481458f9f3a, type: 2}
