@@ -9,6 +9,7 @@
 - Implemented ActionBar
 - Added player cast bar
 - Disabled DamageMeter and CombatLog for performance
+- Added queue ability window
 
 ### Release 0.2.0
 - Added heal prediction
