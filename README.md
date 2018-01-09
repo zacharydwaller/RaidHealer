@@ -7,6 +7,8 @@
 - Implemented gear system
 - Fixed resolution scaling
 - Implemented ActionBar
+- Added player cast bar
+- Disabled DamageMeter and CombatLog for performance
 
 ### Release 0.2.0
 - Added heal prediction
