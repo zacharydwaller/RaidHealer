@@ -22,8 +22,8 @@ public class SplashHeal : Ability
 
     public override void CancelCast()
     {
-        base.CancelCast();
         RemoveHealPredict();
+        base.CancelCast();
     }
 
     protected override void Do()

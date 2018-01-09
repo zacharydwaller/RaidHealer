@@ -43,6 +43,14 @@ public class UnitFrameManager : MonoBehaviour
         return -1;
     }
 
+    public void UnselectAll()
+    {
+        foreach(var uf in RaidFrames.GetComponentsInChildren<UnitFrame>())
+        {
+            uf.UnSelect();
+        }
+    }
+
     public void PopulateUnitFrames(BattleManager mgr)
     {
         Mgr = mgr;
@@ -68,7 +76,7 @@ public class UnitFrameManager : MonoBehaviour
         for(int i = 0; i < raid.Raiders.Count; i++)
         {
             GameObject uf = Instantiate(unitFrameRef);
-            uf.GetComponent<UnitFrame>().Initialize(raid, i);
+            uf.GetComponent<UnitFrame>().Initialize(Mgr, i);
             uf.transform.SetParent(RaidFrames.transform);
         }
     }

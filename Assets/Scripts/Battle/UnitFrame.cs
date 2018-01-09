@@ -4,8 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
+    public BattleManager Mgr;
+
     public Raider Raider;
 
     public Text NameText;
@@ -37,9 +39,10 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         UpdateInfo();
     }
 
-    public void Initialize(Raid raid, int index)
+    public void Initialize(BattleManager mgr, int index)
     {
-        Raider = raid.Raiders[index] as Raider;
+        Mgr = mgr;
+        Raider = Mgr.Raid.Raiders[index] as Raider;
 
         NameText.text = Raider.Name;
 
@@ -75,6 +78,7 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         // Dead state
         if (Raider.IsDead)
         {
+            UnSelect();
             SetAlpha(Background, 0.1f);
             SetAlpha(NameText, 0.5f);
             HealthText.text = "Dead";
@@ -90,6 +94,8 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         IsSelected = true;
         RegularOutline.enabled = false;
         SelectOutline.enabled = true;
+
+        Mgr.Player.SelectTarget = Raider;
     }
 
     public void UnSelect()
@@ -97,27 +103,29 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         IsSelected = false;
         RegularOutline.enabled = true;
         SelectOutline.enabled = false;
+
+        Mgr.Player.SelectTarget = null;
     }
 
-    // Using Event handlers because OnMouseEnter doesn't work with UI elements
     public void OnPointerEnter(PointerEventData eventData)
     {
         HealthText.enabled = true;
+
+        Mgr.Player.HoverTarget = Raider;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         HealthText.enabled = false;
+
+        Mgr.Player.HoverTarget = null;
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnPointerDown(PointerEventData eventData)
     {
-        if (IsSelected)
+        if(!IsSelected && Raider.IsAlive)
         {
-            UnSelect();
-        }
-        else
-        {
+            Mgr.UFManager.UnselectAll();
             Select();
         }
     }

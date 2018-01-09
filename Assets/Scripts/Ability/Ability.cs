@@ -72,7 +72,7 @@ public abstract class Ability
     }
 
     /// <summary>
-    /// Default behavior for single target cast, adds target to Targets.
+    /// Default behavior for single target cast, adds target to Targets. Call base.StartCast() first in overridden function.
     /// Override for chain/splash/aoe abilities.
     /// </summary>
     /// <param name="target"></param>
@@ -95,11 +95,12 @@ public abstract class Ability
     }
 
     /// <summary>
-    /// Clears Targets, doesn't trigger cooldown.
+    /// Clears Targets, doesn't trigger cooldown. Call base.CancelCast() last in overridden function.
     /// </summary>
     public virtual void CancelCast()
     {
         TargetList.Clear();
+        CastRemaining = 0f;
     }
 
     /// <summary>

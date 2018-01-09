@@ -1,6 +1,10 @@
 # Raid Healer
 ## A game about raid guild management and healing idiots
 
+### Release 0.3.0
+- Large Entity and Ability refactor
+- Player abilities
+
 ### Release 0.2.0
 - Added heal prediction
 - Added boss ability framework

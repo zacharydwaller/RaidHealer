@@ -9,6 +9,7 @@ public class Player : Raider
 
     // Remove when implementing action bar/action slot
     public Ability Heal;
+    public Ability SplashHeal;
 
     protected int AbilityPress;
 
@@ -22,6 +23,7 @@ public class Player : Raider
         GCDFinish = 0;
 
         Heal = new Heal(this);
+        SplashHeal = new SplashHeal(this);
     }
 
     public override void Tick()
@@ -29,7 +31,7 @@ public class Player : Raider
         base.Tick();
 
         // Get Escape input
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Space))
         {
             if(IsCasting)
             {
@@ -41,11 +43,27 @@ public class Player : Raider
             }
         }
 
+        // Clear target
+        if(Input.GetMouseButtonDown(1))
+        {
+            Mgr.UFManager.UnselectAll();
+        }
+
         // Replace this with ActionSlot callback
-        if(Input.GetKey(KeyCode.Alpha3))
+        if(Input.GetKeyDown(KeyCode.Alpha3))
         {
             AbilityPressed(Heal);
         }
+        else if(Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            AbilityPressed(SplashHeal);
+        }
+    }
+
+    protected override void TickAbilities()
+    {
+        Heal.Tick();
+        SplashHeal.Tick();
     }
 
     public void AbilityPressed(Ability ability)

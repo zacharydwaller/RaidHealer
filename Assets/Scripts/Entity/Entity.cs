@@ -70,13 +70,16 @@ public abstract class Entity
     protected virtual void DoAbility() { }
 
     /// <summary>
-    /// Triggers the GCD and starts CurrentAbility's cast
+    /// Triggers the GCD and starts CurrentAbility's cast if ability is not on cooldown
     /// </summary>
     /// <param name="target"></param>
     public void StartCasting(Entity target)
     {
-        GCDFinish += GlobalCooldown;
-        CurrentAbility.StartCast(target);
+        if(CurrentAbility.OffCooldown)
+        {
+            GCDFinish += GlobalCooldown;
+            CurrentAbility.StartCast(target);
+        }
     }
 
     /// <summary>
