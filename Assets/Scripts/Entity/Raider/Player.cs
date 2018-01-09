@@ -7,11 +7,7 @@ public class Player : Raider
     public Raider HoverTarget;
     public Raider SelectTarget;
 
-    // Remove when implementing action bar/action slot
-    public Ability Heal;
-    public Ability SplashHeal;
-
-    protected int AbilityPress;
+    public List<Ability> AbilityList;
 
     public Player(BattleManager mgr, PlayerInfo info)
         : base(mgr)
@@ -25,10 +21,12 @@ public class Player : Raider
         GlobalCooldown = Power.GetHastedGCD(info.Gear.TotalHaste);
         GCDFinish = 0;
 
-        Debug.Log(string.Format("Haste: {0}; GCD: {1}", info.Gear.TotalHaste, GlobalCooldown));
+        AbilityList = info.AbilityList;
 
-        Heal = new Heal(this);
-        SplashHeal = new SplashHeal(this);
+        foreach(var ability in AbilityList)
+        {
+            ability.Owner = this;
+        }
     }
 
     public override void Tick()
@@ -53,26 +51,22 @@ public class Player : Raider
         {
             Mgr.UFManager.UnselectAll();
         }
-
-        // Replace this with ActionSlot callback
-        if(Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            AbilityPressed(Heal);
-        }
-        else if(Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            AbilityPressed(SplashHeal);
-        }
     }
 
     protected override void TickAbilities()
     {
-        Heal.Tick();
-        SplashHeal.Tick();
+        foreach(var ability in AbilityList)
+        {
+            ability.Tick();
+        }
     }
 
-    public void AbilityPressed(Ability ability)
+    public void AbilityPressed(int index)
     {
+        if (index > AbilityList.Count) return;
+
+        var ability = AbilityList[index];
+
         if(!IsCasting && GCDReady)
         {
             CurrentAbility = ability;
