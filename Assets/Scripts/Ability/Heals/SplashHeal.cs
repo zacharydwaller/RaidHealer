@@ -2,35 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SplashHeal : Ability
+public class SplashHeal : HealAbility
 {
-    public SplashHeal(Entity owner)
+    public SplashHeal(Entity owner = null)
         : base(owner)
     {
         Name = "Splash Heal";
-        CastTime = 0.5f;
-        PowerCoefficient = 0.33f;
+        CastAdd = 0.5f;
+        PowerCoefficient = 0.1f;
         Cooldown = 8.0f;
     }
 
     public override void StartCast(Entity target)
     {
-        Targets = (List<Entity>) Owner.Mgr.Raid.GetSplash(target as Raider);
+        base.StartCast(null);
+        TargetList = (List<Entity>) Owner.Mgr.Raid.GetSplash(target as Raider);
         AddHealPredict();
     }
 
-    public override void CancelCast()
+    protected override void Do()
     {
-        RemoveHealPredict();
-    }
-
-    public override void Do(Entity target = null)
-    {
-        foreach (var raider in Targets)
+        foreach (var raider in TargetList)
         {
             raider.TakeHeal(TotalPower);
         }
-        RemoveHealPredict();
 
         base.Do();
     }

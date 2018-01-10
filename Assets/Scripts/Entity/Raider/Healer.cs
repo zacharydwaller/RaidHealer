@@ -16,51 +16,20 @@ public class Healer : Raider
         SplashHeal = new SplashHeal(this);
     }
 
-    public override void Tick()
+    protected override void TickAbilities()
     {
-        TickCDs();
-
-        // Ready for new cast
-        if (GCDReady && !IsCasting)
-        {
-            var target = GetAction();
-
-            if(target != null)
-            {
-                GCDFinish += GlobalCooldown;
-                Debug.Log(CurrentAbility);
-                StartCasting(target);
-            }
-            return;
-        }
-
-        // Currently casting
-        if (IsCasting)
-        {
-            CastRemaining -= Time.deltaTime;
-
-            if(CastTarget == null || CastTarget.IsDead)
-            {
-                CurrentAbility.CancelCast();
-                IsCasting = false;
-            }
-        }
-
-        // Cast Ready
-        if (CastReady)
-        {
-            DoAbility();
-        }
+        Heal.Tick();
+        SplashHeal.Tick();
     }
 
-    public override void DoAbility()
+    protected override void DoAbility()
     {
-        if(CastTarget != null && CastTarget.IsAlive)
-        {
-            CurrentAbility.Do();
-        }
+        var target = GetAction();
 
-        IsCasting = false;
+        if(target != null)
+        {
+            StartCasting(target);
+        }
     }
 
     /// <summary>
@@ -78,7 +47,7 @@ public class Healer : Raider
 
         int numHurt = raid.GetNumberHurt(splash);
 
-        if(numHurt >= 6 && SplashHeal.Ready)
+        if(numHurt >= 6 && SplashHeal.OffCooldown)
         {
             CurrentAbility = SplashHeal;
         }
@@ -93,11 +62,5 @@ public class Healer : Raider
         }
 
         return lowestHealth;
-    }
-
-    protected void TickCDs()
-    {
-        Heal.Tick();
-        SplashHeal.Tick();
     }
 }

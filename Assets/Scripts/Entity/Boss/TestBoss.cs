@@ -15,8 +15,18 @@ public class TestBoss : Boss
         EnrageDelay = 60;
         EnrageTime = Time.time + EnrageDelay;
 
-        AbilityList.Add(new AttackRandom(this));
-        AbilityList.Add(new SplashAttack(this));
-        AbilityList.Add(new AoEAttack(this));
+        AbilityList = new List<Ability>
+        {
+            new AutoAttack(this),
+            new AttackRandom(this),
+            new SplashAttack(this),
+            new AoEAttack(this)
+        };
+
+        // Start every ability on cooldown
+        foreach(var ability in AbilityList)
+        {
+            ability.CooldownRemaining = ability.Cooldown;
+        }
     }
 }

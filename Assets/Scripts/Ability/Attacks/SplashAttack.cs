@@ -8,19 +8,19 @@ public class SplashAttack : Ability
         : base(owner)
     {
         Name = "Splash";
-        CastTime = 0;
+        CastAdd = 0;
         PowerCoefficient = 0.25f;
         Cooldown = 4.0f;
     }
 
-    public override void Do(Entity target = null)
+    protected override void Do()
     {
         var raid = Owner.Mgr.Raid;
         var center = raid.GetRandom();
 
-        Targets = (List<Entity>) raid.GetSplash(center);
+        TargetList = (List<Entity>) raid.GetSplash(center);
 
-        foreach(var raider in Targets)
+        foreach(var raider in TargetList)
         {
             raider.TakeDamage(TotalPower);
         }

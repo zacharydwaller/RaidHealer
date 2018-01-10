@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class DamageMeter : MonoBehaviour
 {
+    public bool ShowBars = false;
+
     public GameObject DamageBarRef;
 
     public GameObject DamageMeterFrame;
@@ -60,12 +62,15 @@ public class DamageMeter : MonoBehaviour
             }
 
             // Update Damage Bars
-            float highestDamage = DamageTable.Max(d => d.Value);
-            foreach(var damageBar in DamageBars.Values)
+            if(ShowBars)
             {
-                UpdateDamageBar(damageBar, highestDamage);    
+                float highestDamage = DamageTable.Max(d => d.Value);
+                foreach (var damageBar in DamageBars.Values)
+                {
+                    UpdateDamageBar(damageBar, highestDamage);
+                }
+                SortBars();
             }
-            SortBars();
         }
     }
 

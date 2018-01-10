@@ -11,4 +11,12 @@ public class Tank : Raider
         MaxHealth = Health *= 4.0f;
         AbilityPower *= 0.75f;
     }
+
+    protected override void DoAbility()
+    {
+        if (Mgr.Boss.IsAlive)
+        {
+            StartCasting(Mgr.Boss);
+        }
+    }
 }

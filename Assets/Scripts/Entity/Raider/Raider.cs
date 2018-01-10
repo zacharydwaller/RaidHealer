@@ -8,32 +8,22 @@ public class Raider : Entity
 {
     public Role Role;
 
-    public float PowerLevel;
-
-    protected const float BaseAP = 20;
-    protected const float BaseHP = 100;
-
-    protected const float PowerCoef = 1.5f;
-    protected const float PowerExp = 0.02f;
+    public float ItemLevel;
 
     protected const float powerStd = 10;
-
-    protected float baseGCD = 1.5f;
-    protected float gcdStdDev = 0.15f;
+    protected float gcdStd = 0.15f;
 
     public Raider(BattleManager mgr)
         :base(mgr)
     {
         Name = Names.GetRandom();
-        PowerLevel = Distribution.GetRandom(Mgr.PowerLevel, powerStd);
+        ItemLevel = Distribution.GetRandom(Mgr.RaidItemLevel, powerStd);
 
-        MaxHealth = Health = GetPowerScaledValue(BaseHP);
-        AbilityPower = GetPowerScaledValue(BaseAP);
+        MaxHealth = Health = Power.ScaleValue(Power.BaseHP, ItemLevel);
+        AbilityPower = Power.ScaleValue(Power.BaseAP, ItemLevel);
 
-        float haste = Mathf.Abs(baseGCD - Distribution.GetRandom(baseGCD, gcdStdDev));
-
-        GlobalCooldown -= haste;
-
+        float haste = Mathf.Abs(Power.BaseGCD - Distribution.GetRandom(Power.BaseGCD, gcdStd));
+        GlobalCooldown = Mathf.Max(GlobalCooldown - haste, Power.MinGCD);
         GCDFinish = GlobalCooldown;
 
         CurrentAbility = new AutoAttack(this);
@@ -41,25 +31,13 @@ public class Raider : Entity
 
     public override void Tick()
     {
-        if(GCDReady)
+        base.Tick();
+
+        // Ready for new cast
+        if (GCDReady && !IsCasting)
         {
-            GCDFinish += GlobalCooldown;
+            SelectAbility();
             DoAbility();
         }
-    }
-
-    public virtual void DoAbility()
-    {
-        if(Mgr.Boss.IsAlive)
-        {
-            CurrentAbility.Do(Mgr.Boss);
-        }
-    }
-
-    
-
-    protected float GetPowerScaledValue(float baseValue)
-    {
-        return baseValue * Mathf.Pow(PowerCoef, PowerLevel * PowerExp);
     }
 }

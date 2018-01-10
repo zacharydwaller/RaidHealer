@@ -9,4 +9,12 @@ public class Damage : Raider
     {
         Role = Role.Damage;
     }
+
+    protected override void DoAbility()
+    {
+        if(Mgr.Boss.IsAlive)
+        {
+            StartCasting(Mgr.Boss);
+        }
+    }
 }

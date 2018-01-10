@@ -8,16 +8,17 @@ public class AttackRandom : Ability
         : base(owner)
     {
         Name = "Attack Random";
-        CastTime = 0;
+        CastAdd = 0;
         PowerCoefficient = 0.5f;
         Cooldown = 6.0f;
     }
 
-    public override void Do(Entity target = null)
+    protected override void Do()
     {
-        target = Owner.Mgr.Raid.GetRandom();
-        target.TakeDamage(TotalPower);
+        TargetList.Clear();
+        TargetList.Add(Owner.Mgr.Raid.GetRandom());
+        Target.TakeDamage(TotalPower);
 
-        base.Do(target);
+        base.Do();
     }
 }

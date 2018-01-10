@@ -2,31 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Heal : Ability
+public class Heal : HealAbility
 {
-    public Heal(Entity owner)
+    public Heal(Entity owner = null)
         : base(owner)
     {
         Name = "Heal";
-        CastTime = 0.25f;
-        PowerCoefficient = 1.0f;
+        CastAdd = 0.25f;
+        PowerCoefficient = 0.25f;
     }
 
-    public override void StartCast(Entity target)
+    protected override void Do()
     {
-        base.StartCast(target);
-        AddHealPredict();
-    }
-
-    public override void CancelCast()
-    {
-        RemoveHealPredict();
-    }
-
-    public override void Do(Entity target = null)
-    {
-        Targets[0].TakeHeal(TotalPower);
-        RemoveHealPredict();
+        Target.TakeHeal(TotalPower);
 
         base.Do();
     }
