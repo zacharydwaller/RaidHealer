@@ -77,7 +77,7 @@ public abstract class Entity
     /// Triggers the GCD and starts CurrentAbility's cast if ability is not on cooldown
     /// </summary>
     /// <param name="target"></param>
-    public void StartCasting(Entity target)
+    public virtual void StartCast(Entity target)
     {
         if(CurrentAbility.OffCooldown)
         {
@@ -89,9 +89,14 @@ public abstract class Entity
     /// <summary>
     /// Cancels CurrentAbility
     /// </summary>
-    public void CancelCasting()
+    public virtual void CancelCast()
     {
         CurrentAbility.CancelCast();
+    }
+
+    public virtual void FinishCast()
+    {
+
     }
 
     public void TakeDamage(float amount)

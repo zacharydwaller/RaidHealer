@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,7 +42,7 @@ public class Player : Raider
         {
             if(IsCasting)
             {
-                CancelCasting();
+                CancelCast();
             }
             else
             {
@@ -73,6 +74,24 @@ public class Player : Raider
         }
     }
 
+    public override void StartCast(Entity target)
+    {
+        base.StartCast(target);
+        OnStartingCast();
+    }
+
+    public override void CancelCast()
+    {
+        base.CancelCast();
+        OnCancellingCast();
+    }
+
+    public override void FinishCast()
+    {
+        base.FinishCast();
+        OnFinishingCast();
+    }
+
     public void AbilityPressed(int index)
     {
         if (index < 0 || index >= AbilityList.Count) return;
@@ -99,7 +118,7 @@ public class Player : Raider
                 target = this;
             }
 
-            StartCasting(target);
+            StartCast(target);
         }
         // Queue ability if within queue time
         else if(GCDFinish - Time.time <= QueueTime)
@@ -113,4 +132,36 @@ public class Player : Raider
         if (index < 0 || index >= AbilityList.Count) return null;
         else return AbilityList[index];
     }
+
+#region EventHandling
+    public event EventHandler<CastEventArgs> StartingCast = delegate { };
+    public event EventHandler<CastEventArgs> CancellingCast = delegate { };
+    public event EventHandler<CastEventArgs> FinishingCast = delegate { };
+
+    protected CastEventArgs CreateEventArgs()
+    {
+        return new CastEventArgs
+        {
+            Mgr = this.Mgr,
+            Owner = this,
+            Ability = CurrentAbility
+        };
+    }
+
+    protected virtual void OnStartingCast()
+    {
+        StartingCast(this, CreateEventArgs());
+    }
+
+    protected virtual void OnCancellingCast()
+    {
+        CancellingCast(this, CreateEventArgs());
+    }
+
+    protected virtual void OnFinishingCast()
+    {
+        FinishingCast(this, CreateEventArgs());
+    }
+
+    #endregion
 }

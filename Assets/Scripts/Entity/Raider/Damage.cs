@@ -14,7 +14,7 @@ public class Damage : Raider
     {
         if(Mgr.Boss.IsAlive)
         {
-            StartCasting(Mgr.Boss);
+            StartCast(Mgr.Boss);
         }
     }
 }

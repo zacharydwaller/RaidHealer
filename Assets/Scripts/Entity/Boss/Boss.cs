@@ -85,7 +85,7 @@ public class Boss : Entity
         if (target == null) target = Mgr.Raid.GetNextAlive();
         if (target != null)
         {
-            StartCasting(target);
+            StartCast(target);
         }
     }
 

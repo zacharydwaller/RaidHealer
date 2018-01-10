@@ -134,6 +134,7 @@ public abstract class Ability
         }
 
         CooldownRemaining = Cooldown;
+        Owner.FinishCast();
     }
 
     /// <summary>

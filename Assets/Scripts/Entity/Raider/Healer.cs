@@ -28,7 +28,7 @@ public class Healer : Raider
 
         if(target != null)
         {
-            StartCasting(target);
+            StartCast(target);
         }
     }
 

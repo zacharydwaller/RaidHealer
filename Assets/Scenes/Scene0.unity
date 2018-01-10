@@ -2457,7 +2457,7 @@ Prefab:
     - target: {fileID: 224989254564024032, guid: dbda404e71adc41458cc7bf0509b0429,
         type: 2}
       propertyPath: m_LocalPosition.x
-      value: -86
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dbda404e71adc41458cc7bf0509b0429, type: 2}
@@ -2796,7 +2796,7 @@ MonoBehaviour:
     EnrageTime: 0
     TankSwapDelay: 0
     TankSwapTime: 0
-  RaidSize: 24
+  RaidSize: 4
   Raid:
     Size: 12
   RaidItemLevel: 0

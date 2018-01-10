@@ -3,6 +3,7 @@
 
 ### Release 0.4.0
 - Implemented more Cleric abilities
+- Expanded ability framework to include cast events and auras
 
 ### Release 0.3.0
 - Large Entity and Ability refactor
