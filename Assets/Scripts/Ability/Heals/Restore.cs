@@ -8,15 +8,8 @@ public class Restore : HealAbility
         : base(owner)
     {
         Name = "Restore";
-        CastAdd = 0.25f;
-        PowerCoefficient = 1.0f;
+        CastAdd = 1.0f;
+        PowerCoefficient = 1.25f;
         ImagePath = "Image/Cleric/restore";
-    }
-
-    protected override void Do()
-    {
-        Target.TakeHeal(TotalPower);
-
-        base.Do();
     }
 }

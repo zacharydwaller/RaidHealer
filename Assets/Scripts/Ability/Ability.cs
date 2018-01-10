@@ -86,13 +86,12 @@ public abstract class Ability
     }
 
     /// <summary>
-    /// Default behavior for single target cast, adds target to Targets. Call base.StartCast() first in overridden function.
+    /// Default behavior for single target cast, adds target to Targets.
     /// Override for chain/splash/aoe abilities.
     /// </summary>
     /// <param name="target"></param>
     public virtual void StartCast(Entity target = null)
     {
-        TargetList.Clear();
         if (target != null)
         {
             TargetList.Add(target);

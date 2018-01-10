@@ -20,7 +20,11 @@ public class PlayerInfo
         AbilityList = new List<Ability>
         {
             new Restore(),
-            new Prayer()
+            new Grace(),
+            new Absolution(),
+            new Prayer(),
+            new HallowGround(),
+            new Supplication()
         };
     }
 }

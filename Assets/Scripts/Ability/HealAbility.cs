@@ -13,18 +13,35 @@ public class HealAbility : Ability
     public override void StartCast(Entity target = null)
     {
         base.StartCast(target);
-        AddHealPredict();
+
+        if(IsCastedAbility)
+        {
+            AddHealPredict();
+        }
     }
 
     public override void CancelCast()
     {
-        RemoveHealPredict();
+        if(IsCastedAbility)
+        {
+            RemoveHealPredict();
+        }
+        
         base.CancelCast();
     }
 
     protected override void Do()
     {
-        RemoveHealPredict();
+        foreach (var raider in TargetList)
+        {
+            raider.TakeHeal(TotalPower);
+        }
+
+        if(IsCastedAbility)
+        {
+            RemoveHealPredict();
+        }
+        
         base.Do();
     }
 }

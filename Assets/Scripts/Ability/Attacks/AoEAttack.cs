@@ -15,7 +15,7 @@ public class AoEAttack : Ability
 
     protected override void Do()
     {
-        TargetList = new List<Entity>(Owner.Mgr.Raid.Raiders.ToArray());
+        TargetList = (List<Entity>) Owner.Mgr.Raid.GetAoE();
         foreach (var raider in TargetList)
         {
             raider.TakeDamage(TotalPower);

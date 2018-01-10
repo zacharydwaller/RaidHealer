@@ -11,11 +11,4 @@ public class Heal : HealAbility
         CastAdd = 0.25f;
         PowerCoefficient = 0.25f;
     }
-
-    protected override void Do()
-    {
-        Target.TakeHeal(TotalPower);
-
-        base.Do();
-    }
 }

@@ -135,6 +135,11 @@ public class Raid
         return Mgr.UFManager.GetRaiderByIndex(index);
     }
 
+    /// <summary>
+    /// Returns a list of the center raider and every adjacent raider
+    /// </summary>
+    /// <param name="centerRaider"></param>
+    /// <returns></returns>
     public IList<Entity> GetSplash(Entity centerRaider)
     {
         return GetSplash(GetCoordinate(centerRaider));
@@ -161,14 +166,45 @@ public class Raid
         return list;
     }
 
-    // Get Chain(row, col, number)
-    // Returns IList<Raider>
+    /// <summary>
+    /// Returns the raider and the n lowest health adjacent raiders
+    /// </summary>
+    /// <param name="center"></param>
+    /// <returns></returns>
+    public IList<Entity> GetChain(Coordinate center, int number)
+    {
+        return GetChain(GetRaider(center), number);
+    }
 
-    // Get Smart AoE(int number)
-    // Returns IList<Raider>
+    public IList<Entity> GetChain(Entity centerRaider, int number)
+    {
+        var splash = GetSplash(centerRaider);
+        splash.Remove(centerRaider);
 
-    // Get AoE
-    // Returns IList<Raider>
+        var chain = splash.OrderBy(r => r.HealthPercent).Take(number - 1).ToList();
+        chain.Add(centerRaider);
+
+        return chain;
+    }
+
+    /// <summary>
+    /// Gets an amount of the lowest health raiders
+    /// </summary>
+    /// <param name="number"></param>
+    /// <returns></returns>
+    public IList<Entity> GetSmartAoE(int number)
+    {
+        return Raiders.OrderBy(r => r.HealthPercent).Take(number).ToList();
+    }
+
+    /// <summary>
+    /// Returns the whole raid copied into a new list.
+    /// </summary>
+    /// <returns></returns>
+    public IList<Entity> GetAoE()
+    {
+        return Raiders.ToList();
+    }
 
     /*
      * Builds a raid layout that makes Splash/Chain heals work better

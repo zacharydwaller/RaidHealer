@@ -4,30 +4,22 @@ using UnityEngine;
 
 public class Prayer : HealAbility
 {
+    int TargetCount;
+
     public Prayer(Entity owner = null)
         : base(owner)
     {
         Name = "Prayer";
         CastAdd = 0.5f;
         PowerCoefficient = 0.33f;
-        Cooldown = 8.0f;
+        Cooldown = 0f;
         ImagePath = "Image/Cleric/prayer";
+        TargetCount = 3;
     }
 
     public override void StartCast(Entity target)
     {
+        TargetList = (List<Entity>)Owner.Mgr.Raid.GetChain(target as Raider, TargetCount);
         base.StartCast(null);
-        TargetList = (List<Entity>)Owner.Mgr.Raid.GetSplash(target as Raider);
-        AddHealPredict();
-    }
-
-    protected override void Do()
-    {
-        foreach (var raider in TargetList)
-        {
-            raider.TakeHeal(TotalPower);
-        }
-
-        base.Do();
     }
 }

@@ -15,18 +15,7 @@ public class SplashHeal : HealAbility
 
     public override void StartCast(Entity target)
     {
-        base.StartCast(null);
         TargetList = (List<Entity>) Owner.Mgr.Raid.GetSplash(target as Raider);
-        AddHealPredict();
-    }
-
-    protected override void Do()
-    {
-        foreach (var raider in TargetList)
-        {
-            raider.TakeHeal(TotalPower);
-        }
-
-        base.Do();
+        base.StartCast(null);
     }
 }
