@@ -11,6 +11,7 @@ public class Prayer : HealAbility
         CastAdd = 0.5f;
         PowerCoefficient = 0.33f;
         Cooldown = 8.0f;
+        ImagePath = "Image/Cleric/prayer";
     }
 
     public override void StartCast(Entity target)

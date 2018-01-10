@@ -34,7 +34,7 @@ public class ActionButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         {
             SpellText.text = Ability.Name;
             SpellImage.enabled = true;
-            //SpellImage.image = Ability.image;
+            SpellImage.sprite = Resources.Load<Sprite>(Ability.ImagePath);
         }
         else
         {

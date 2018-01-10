@@ -10,6 +10,7 @@ public class Restore : HealAbility
         Name = "Restore";
         CastAdd = 0.25f;
         PowerCoefficient = 1.0f;
+        ImagePath = "Image/Cleric/restore";
     }
 
     protected override void Do()

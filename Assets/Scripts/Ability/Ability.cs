@@ -2,11 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public abstract class Ability
 {
     public string Name;
+
+    public string ImagePath;
 
     public float PowerCoefficient;
     public float TotalPower { get { return Owner.AbilityPower * PowerCoefficient; } }
