@@ -7,10 +7,10 @@ public class SplashAttack : Ability
     public SplashAttack(Entity owner)
         : base(owner)
     {
-        Name = "Splash";
-        CastAdd = 0;
+        Name = "Meteor";
+        CastAdd = 0.01f;
         PowerCoefficient = 0.25f;
-        Cooldown = 4.0f;
+        Cooldown = 12.0f;
     }
 
     protected override void Do()
@@ -18,6 +18,7 @@ public class SplashAttack : Ability
         var raid = Owner.Mgr.Raid;
         var center = raid.GetRandom();
 
+        TargetList.Clear();
         TargetList = (List<Entity>) raid.GetSplash(center);
 
         foreach(var raider in TargetList)

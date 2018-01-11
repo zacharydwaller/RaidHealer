@@ -14,7 +14,12 @@ public class BossFrame : MonoBehaviour
     public Slider HealthBar;
     public Image HealthBarFill;
 
-    protected float HealthLerpConstant = 0.3f;
+    public Slider CastBar;
+
+    public Text AbilityText;
+    public Text CastRemainingText;
+
+    protected float LerpConstant = 0.3f;
 
     private void Awake()
     {
@@ -32,15 +37,41 @@ public class BossFrame : MonoBehaviour
 
         NameText.text = Boss.Name;
         HealthBar.maxValue = Boss.MaxHealth;
+
+        CastBar.value = 0;
+        CastBar.gameObject.SetActive(false);
     }
 
     public void UpdateInfo()
     {
+        // Health
         HealthText.text = Numbers.Abbreviate(Boss.Health);
         HealthPText.text = string.Format("{0}%", Boss.HealthPercent.ToString("G3"));
 
-        HealthBar.value = Mathf.Lerp(HealthBar.value, Boss.Health, HealthLerpConstant);
+        HealthBar.value = Mathf.Lerp(HealthBar.value, Boss.Health, LerpConstant);
 
+        // Cast
+        if(Boss.IsCasting)
+        {
+            if(!CastBar.gameObject.activeInHierarchy)
+            {
+                CastBar.gameObject.SetActive(true);
+            }
+
+            if(AbilityText.text != Boss.CurrentAbility.Name)
+            {
+                AbilityText.text = Boss.CurrentAbility.Name;
+            }
+
+            CastBar.value = Mathf.Lerp(CastBar.value, Boss.CastProgress, LerpConstant);
+        }
+        else if(!Boss.IsCasting && CastBar.gameObject.activeInHierarchy)
+        {
+            CastBar.value = 0;
+            CastBar.gameObject.SetActive(false);
+        }
+
+        // Enrage
         if(Boss.IsEnraged)
         {
             HealthBarFill.color = Color.white;

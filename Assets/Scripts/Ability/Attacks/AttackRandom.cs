@@ -10,7 +10,7 @@ public class AttackRandom : Ability
         Name = "Attack Random";
         CastAdd = 0;
         PowerCoefficient = 0.5f;
-        Cooldown = 6.0f;
+        Cooldown = 8.0f;
     }
 
     protected override void Do()

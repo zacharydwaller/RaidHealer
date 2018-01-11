@@ -19,7 +19,7 @@ public class Prayer : HealAbility
 
     public override void StartCast(Entity target)
     {
-        TargetList = (List<Entity>)Owner.Mgr.Raid.GetChain(target as Raider, TargetCount);
+        TargetList = (List<Entity>)Owner.Mgr.Raid.GetSmartChain(target as Raider, TargetCount);
         base.StartCast(null);
     }
 }

@@ -7,14 +7,15 @@ public class AoEAttack : Ability
     public AoEAttack(Entity owner)
         : base(owner)
     {
-        Name = "AoE";
-        CastAdd = 0;
+        Name = "Rain Fire";
+        CastAdd = 1.0f;
         PowerCoefficient = 0.25f;
-        Cooldown = 12.0f;
+        Cooldown = 15.0f;
     }
 
     protected override void Do()
     {
+        TargetList.Clear();
         TargetList = (List<Entity>) Owner.Mgr.Raid.GetAoE();
         foreach (var raider in TargetList)
         {

@@ -167,9 +167,10 @@ public class Raid
     }
 
     /// <summary>
-    /// Returns the raider and the n lowest health adjacent raiders
+    /// Returns the raider and number-1 random adjacent raiders
     /// </summary>
-    /// <param name="center"></param>
+    /// <param name="centerRaider"></param>
+    /// <param name="number"></param>
     /// <returns></returns>
     public IList<Entity> GetChain(Coordinate center, int number)
     {
@@ -177,6 +178,39 @@ public class Raid
     }
 
     public IList<Entity> GetChain(Entity centerRaider, int number)
+    {
+        var splash = GetSplash(centerRaider);
+
+        if (number >= splash.Count) return splash;
+
+        var chain = new List<Entity>
+        {
+            centerRaider
+        };
+
+        splash.Remove(centerRaider);
+
+        for (int i = 0; i < number - 1; i++)
+        {
+            int rand = Random.Range(0, splash.Count);
+            chain.Add(splash[rand]);
+            splash.RemoveAt(rand);
+        }
+
+        return chain;
+    }
+
+    /// <summary>
+    /// Returns the raider and number-1 lowest health adjacent raiders
+    /// </summary>
+    /// <param name="center"></param>
+    /// <returns></returns>
+    public IList<Entity> GetSmartChain(Coordinate center, int number)
+    {
+        return GetSmartChain(GetRaider(center), number);
+    }
+
+    public IList<Entity> GetSmartChain(Entity centerRaider, int number)
     {
         var splash = GetSplash(centerRaider);
         splash.Remove(centerRaider);

@@ -4,6 +4,7 @@
 ### Release 0.4.0
 - Implemented more Cleric abilities
 - Expanded ability framework to include cast events and auras
+- Gave boss casted abilities and a cast bar
 
 ### Release 0.3.0
 - Large Entity and Ability refactor

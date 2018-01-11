@@ -66,7 +66,7 @@ public class Boss : Entity
     {
         for (int i = AbilityList.Count - 1; i >= 0; i--)
         {
-            if(AbilityList[i].CooldownRemaining == 0)
+            if(AbilityList[i].OffCooldown)
             {
                 CurrentAbility = AbilityList[i];
                 break;

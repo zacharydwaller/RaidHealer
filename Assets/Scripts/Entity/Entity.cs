@@ -27,6 +27,7 @@ public abstract class Entity
     public Ability CurrentAbility;
 
     public bool IsCasting { get { return CurrentAbility != null ? CurrentAbility.IsBeingCasted : false; } }
+    public float CastProgress { get { return CurrentAbility != null ? CurrentAbility.CastProgress : 0; } }
 
     [HideInInspector]
     public BattleManager Mgr;
