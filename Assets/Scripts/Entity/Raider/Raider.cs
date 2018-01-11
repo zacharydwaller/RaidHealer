@@ -10,6 +10,8 @@ public class Raider : Entity
 
     public float ItemLevel;
 
+    public List<Aura> Auras;
+
     protected const float powerStd = 10;
     protected float gcdStd = 0.15f;
 
@@ -27,11 +29,18 @@ public class Raider : Entity
         GCDFinish = GlobalCooldown;
 
         CurrentAbility = new AutoAttack(this);
+
+        Auras = new List<Aura>();
     }
 
     public override void Tick()
     {
         base.Tick();
+
+        for(int i = 0; i < Auras.Count; i++)
+        {
+            Auras[i].Tick();
+        }
 
         // Ready for new cast
         if (GCDReady && !IsCasting)
@@ -39,5 +48,21 @@ public class Raider : Entity
             SelectAbility();
             DoAbility();
         }
+    }
+
+    public void AddAura(Aura newAura)
+    {
+        // If aura already exists, refresh it
+        foreach(var aura in Auras)
+        {
+            if (aura.GetType() == newAura.GetType())
+            {
+                aura.Start();
+                return;
+            }
+        }
+
+        // Otherwise add new aura
+        Auras.Add(newAura);
     }
 }

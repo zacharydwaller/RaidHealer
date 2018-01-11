@@ -24,7 +24,8 @@ public class PlayerInfo
             new Absolution(),
             new Prayer(),
             new HallowGround(),
-            new Supplication()
+            new Supplication(),
+            new Attune()
         };
     }
 }

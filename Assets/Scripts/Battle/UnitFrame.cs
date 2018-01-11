@@ -64,6 +64,15 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         // Health Bar
         HealthBar.value = Mathf.Lerp(HealthBar.value, Raider.Health, HealthLerpConstant);
 
+        if(Raider.Auras.Count != 0)
+        {
+            HealthBarFill.color = Color.cyan;
+        }
+        else if(HealthBarFill.color != RoleUtil.GetColor(Raider.Role))
+        {
+            HealthBarFill.color = RoleUtil.GetColor(Raider.Role);
+        }
+
         // Heal predict
         HealPredict.value = Mathf.Lerp(HealPredict.value, Raider.Health + Raider.HealPredict, HealthLerpConstant);
 
