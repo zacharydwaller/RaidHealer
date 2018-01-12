@@ -9,6 +9,8 @@ public class AttuneBuff : Aura, ICastEventHandler
     public AttuneBuff(Raider owner, Entity applier = null)
         : base(owner, applier)
     {
+        Name = "Attune";
+
         var player = Owner.Mgr.Player;
         player.StartingCast += OnStartingCast;
         player.CancellingCast += OnCancellingCast;

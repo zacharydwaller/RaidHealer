@@ -7,6 +7,9 @@ public abstract class Aura
     public Raider Owner;
     public Entity Applier;
 
+    public string Name;
+    public float PowerCoefficient;
+
     public float Duration;
     protected float DurationRemaining;
 

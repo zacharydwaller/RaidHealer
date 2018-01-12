@@ -25,7 +25,8 @@ public class PlayerInfo
             new Prayer(),
             new HallowGround(),
             new Supplication(),
-            new Attune()
+            //new Attune()
+            new Poultice()
         };
     }
 }

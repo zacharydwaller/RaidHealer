@@ -2,22 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Attune : Ability
+public class Attune : AuraAbility
 {
     public Attune(Entity owner = null)
         : base(owner)
     {
-        Name = "Attunement";
+        Name = "Attune";
         CastAdd = 0f;
         Cooldown = 4.0f;
         ImagePath = "Image/Cleric/attune";
     }
 
-    protected override void Do()
+    public override Aura CreateAura()
     {
-        var targetRaider = Target as Raider;
-        targetRaider.AddAura(new AttuneBuff(targetRaider));
-
-        base.Do();
+        return new AttuneBuff(Target as Raider);
     }
 }
