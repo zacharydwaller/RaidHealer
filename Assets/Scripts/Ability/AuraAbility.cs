@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class AuraAbility : Ability
+public abstract class AuraAbility : OldAbility
 {
     public AuraAbility(Entity owner = null)
         : base(owner)

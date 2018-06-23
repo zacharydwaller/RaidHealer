@@ -9,7 +9,7 @@ public class PlayerInfo
 
     public Gear Gear;
 
-    public List<Ability> AbilityList;
+    public List<OldAbility> AbilityList;
 
     public PlayerInfo(string newName, float itemLevel)
     {
@@ -17,7 +17,7 @@ public class PlayerInfo
         Gear = new Gear(itemLevel);
 
         // Have to set owner later
-        AbilityList = new List<Ability>
+        AbilityList = new List<OldAbility>
         {
             new Restore(),
             new Grace(),

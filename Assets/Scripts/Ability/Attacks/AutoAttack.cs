@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AutoAttack : Ability
+public class AutoAttack : OldAbility
 {
     public AutoAttack(Entity owner)
         : base(owner)

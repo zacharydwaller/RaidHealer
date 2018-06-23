@@ -18,7 +18,7 @@ public class Raid
 
     protected BattleManager Mgr;
 
-    public Raid(BattleManager mgr, Raider player, RaidSize _size)
+    public Raid(BattleManager mgr, Entity player, RaidSize _size)
     {
         Mgr = mgr;
 

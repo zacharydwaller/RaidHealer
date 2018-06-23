@@ -14,5 +14,5 @@ public class CastEventArgs : EventArgs
 {
     public BattleManager Mgr { get; set; }
     public Entity Owner { get; set; }
-    public Ability Ability { get; set; }
+    public OldAbility Ability { get; set; }
 }

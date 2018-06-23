@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Healer : Raider
 {
-    protected Ability Heal;
-    protected Ability SplashHeal;
+    protected OldAbility Heal;
+    protected OldAbility SplashHeal;
 
     public Healer(BattleManager mgr)
         : base(mgr)

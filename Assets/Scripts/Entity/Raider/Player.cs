@@ -8,7 +8,7 @@ public class Player : Raider
     public Raider HoverTarget;
     public Raider SelectTarget;
 
-    public List<Ability> AbilityList;
+    public List<OldAbility> AbilityList;
 
     protected int QueuedAbilityIndex = -1;
     protected float QueueTime = 0.5f;
@@ -127,7 +127,7 @@ public class Player : Raider
         }
     }
 
-    public Ability GetAbility(int index)
+    public OldAbility GetAbility(int index)
     {
         if (index < 0 || index >= AbilityList.Count) return null;
         else return AbilityList[index];

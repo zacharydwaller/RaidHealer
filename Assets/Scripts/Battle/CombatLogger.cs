@@ -44,13 +44,13 @@ public class CombatLogger : MonoBehaviour
         MessageBatch.Add(message);
     }
 
-    public void LogAction(Entity user, Entity target, Ability ability)
+    public void LogAction(Entity user, Entity target, OldAbility ability)
     {
         string message = CreateAbilityMessage(user, target, ability);
         MessageBatch.Add(message);
     }
 
-    protected string CreateAbilityMessage(Entity user, Entity target, Ability ability)
+    protected string CreateAbilityMessage(Entity user, Entity target, OldAbility ability)
     {
         var sb = new StringBuilder();
         float magnitude = user.AbilityPower * ability.PowerCoefficient;

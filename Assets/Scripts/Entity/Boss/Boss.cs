@@ -18,7 +18,7 @@ public class Boss : Entity
     /// <summary>
     /// List of abilities. Should be ordered least-to-most priority. So add AutoAttack first.
     /// </summary>
-    protected List<Ability> AbilityList;
+    protected List<OldAbility> AbilityList;
 
     public Boss(BattleManager mgr)
         : base(mgr)

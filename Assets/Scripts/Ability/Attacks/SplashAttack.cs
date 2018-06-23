@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SplashAttack : Ability
+public class SplashAttack : OldAbility
 {
     public SplashAttack(Entity owner)
         : base(owner)

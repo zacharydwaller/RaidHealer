@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackRandom : Ability
+public class AttackRandom : OldAbility
 {
     public AttackRandom(Entity owner)
         : base(owner)

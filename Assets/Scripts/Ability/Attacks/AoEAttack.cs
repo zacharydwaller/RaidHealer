@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AoEAttack : Ability
+public class AoEAttack : OldAbility
 {
     public AoEAttack(Entity owner)
         : base(owner)

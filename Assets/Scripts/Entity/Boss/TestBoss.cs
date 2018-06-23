@@ -15,7 +15,7 @@ public class TestBoss : Boss
         EnrageDelay = 60;
         EnrageTime = Time.time + EnrageDelay;
 
-        AbilityList = new List<Ability>
+        AbilityList = new List<OldAbility>
         {
             new AutoAttack(this),
             new AttackRandom(this),

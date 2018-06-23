@@ -1,6 +1,9 @@
 # Raid Healer
 ## A game about raid guild management and healing idiots
 
+### Release 0.4.5
+- Major Ability system rewrite
+
 ### Release 0.4.0
 - Implemented more Cleric abilities
 - Expanded ability framework to include cast events and auras

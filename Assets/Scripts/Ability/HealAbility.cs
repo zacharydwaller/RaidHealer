@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealAbility : Ability
+public class HealAbility : OldAbility
 {
     public HealAbility(Entity owner = null)
         : base(owner)

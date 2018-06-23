@@ -10,7 +10,7 @@ public class ActionButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public KeyCode Modifier;
     public int AbilityIndex;
 
-    protected Ability Ability;
+    protected OldAbility Ability;
 
     public Text KeyText;
     public Text SpellText;

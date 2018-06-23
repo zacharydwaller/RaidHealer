@@ -74,7 +74,7 @@ public class DamageMeter : MonoBehaviour
         }
     }
 
-    public void LogAction(Entity user, Entity target, Ability ability)
+    public void LogAction(Entity user, Entity target, OldAbility ability)
     {
         // Return if attack/ability wasn't made against boss
         if (!target.Equals(Mgr.Boss)) return;
