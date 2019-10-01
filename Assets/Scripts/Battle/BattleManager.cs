@@ -27,7 +27,7 @@ public class BattleManager : MonoBehaviour
         RaidItemLevel = Player.ItemLevel;
         Raid = new Raid(this, Player, RaidSize);
 
-        Boss = new TestBoss(this);
+        Boss = new BossBigBoy(this);
 
         UFManager.PopulateUnitFrames(this);
         CombatLogger = GetComponent<CombatLogger>();

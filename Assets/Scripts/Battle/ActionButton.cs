@@ -70,7 +70,7 @@ public class ActionButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         var cdProgress = 1.0f - Mathf.Max(cdFinish - Time.time, 0) / Ability.Cooldown;
 
         //Call SnapCDFill inside if statements to avoid dirtying canvas and forcing unnecessary draws
-        if (cdProgress >= 0.0f)
+        if (cdProgress < 1.0f)
         {
             CDMask.fillAmount = 1.0f - cdProgress;
             SnapCDFill();

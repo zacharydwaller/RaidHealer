@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestBoss : Boss
+public class BossBigBoy : Boss
 {
-    public TestBoss(BattleManager mgr)
+    public BossBigBoy(BattleManager mgr)
         : base(mgr)
     {
         Name = "Big Boy";
@@ -16,9 +16,8 @@ public class TestBoss : Boss
 
         Abilities = new List<Ability>
         {
-            new AutoAttack(),
-            //new AttackRandom(this),
-            //new SplashAttack(this),
+            new HurlBoulder(),
+            new Stomp(),
             //new AoEAttack(this)
         };
 

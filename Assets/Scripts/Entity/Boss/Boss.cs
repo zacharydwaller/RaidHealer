@@ -15,6 +15,9 @@ public class Boss : Entity
 
     protected int currentTank = 0;
 
+    public float AbilityUseDelay = 3.0f;
+    public float AbilityUseTime = 0;
+
     public Boss(BattleManager mgr)
         : base(mgr)
     {
@@ -52,20 +55,24 @@ public class Boss : Entity
     /// </summary>
     protected override void SelectAbility()
     {
-        // Find highest priority ability off cooldown
-        for (int i = Abilities.Count - 1; i >= 0; i--)
+        if(Time.time >= AbilityUseTime)
         {
-            if(Cooldowns[Abilities[i].Name] <= Time.time)
+            // Find highest priority ability off cooldown
+            for (int i = Abilities.Count - 1; i >= 0; i--)
             {
-                QueuedAbility = Abilities[i];
-                break;
+                if (Cooldowns[Abilities[i].Name] <= Time.time)
+                {
+                    QueuedAbility = Abilities[i];
+                    AbilityUseTime = Time.time + AbilityUseDelay;
+                    break;
+                }
             }
-        }
 
-        // Auto Attack if no abilities available
-        if(QueuedAbility == null)
-        {
-            QueuedAbility = AutoAttack;
+            // Auto Attack if no abilities available
+            if(QueuedAbility == null)
+            {
+                QueuedAbility = AutoAttack;
+            }
         }
     }
 
@@ -75,12 +82,15 @@ public class Boss : Entity
     /// </summary>
     protected override void DoAbility()
     {
+        if (QueuedAbility == null) return;
+
         var target = Mgr.Raid.GetTank(currentTank);
 
         if (target == null) target = Mgr.Raid.GetNextAlive();
         if (target != null)
         {
             CastManager.StartCast(QueuedAbility, target);
+            QueuedAbility = null;
         }
     }
 
