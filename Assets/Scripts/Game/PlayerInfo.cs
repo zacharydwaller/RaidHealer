@@ -32,7 +32,8 @@ public class PlayerInfo
         AbilityList = new List<Ability>()
         {
             //new Poultice()
-            new Grace()
+            new Grace(),
+            new Absolution()
         };
     }
 }

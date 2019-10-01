@@ -78,6 +78,7 @@ public class UnitFrameManager : MonoBehaviour
             GameObject uf = Instantiate(unitFrameRef);
             uf.GetComponent<UnitFrame>().Initialize(Mgr, i);
             uf.transform.SetParent(RaidFrames.transform);
+            uf.transform.localScale = Vector3.one;
         }
     }
 

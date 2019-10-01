@@ -67,12 +67,12 @@ public class ActionButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         if (!Mgr.Player.Cooldowns.ContainsKey(Ability.Name)) Mgr.Player.Cooldowns[Ability.Name] = 0.0f;
 
         var cdFinish = Mgr.Player.Cooldowns[Ability.Name];
-        var cdProgress = Mathf.Max(cdFinish - Time.time, 0);
+        var cdProgress = 1.0f - Mathf.Max(cdFinish - Time.time, 0) / Ability.Cooldown;
 
         //Call SnapCDFill inside if statements to avoid dirtying canvas and forcing unnecessary draws
-        if (cdProgress <= 0.0f)
+        if (cdProgress >= 0.0f)
         {
-            CDMask.fillAmount = 1.0f - (cdProgress / Ability.Cooldown);
+            CDMask.fillAmount = 1.0f - cdProgress;
             SnapCDFill();
         }
         // Check player GCD

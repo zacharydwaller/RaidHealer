@@ -17,6 +17,8 @@ public class BattleManager : MonoBehaviour
 
     public float RaidItemLevel;
 
+    public float WaitTime = 2.0f;
+
     private void Awake()
     {
         var gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
@@ -37,6 +39,8 @@ public class BattleManager : MonoBehaviour
 
     private void Update()
     {
+        if (Time.time <= WaitTime) return;
+
         foreach(var raider in Raid.Raiders)
         {
             if(raider.IsAlive) raider.Tick();

@@ -2,15 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Absolution : HealAbility
+/// <summary>
+///     Big instant cast heal with cooldown
+/// </summary>
+public class Absolution : Ability
 {
-    public Absolution(Entity owner = null)
-        : base(owner)
+    public Absolution()
     {
         Name = "Absolution";
-        CastAdd = 0f;
-        PowerCoefficient = 2f;
-        Cooldown = 15f;
         ImagePath = "Image/Cleric/absolution";
+
+        TargetType = TargetType.Friend;
+
+        Effects = new List<IAbilityEffect>()
+        {
+            new HealEffect(4.0f)
+        };
+
+        ManaCost = 1000;
+        CastTime = 0;
+        Cooldown = 15f;
+
     }
 }

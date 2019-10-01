@@ -24,7 +24,11 @@ public abstract class Entity
 
     public List<Aura> Auras;
     public List<Ability> Abilities;
-    public Dictionary<string, float> Cooldowns { get; protected set; } // Key = Spell Name; Value = When spell is ready
+
+    /// <summary>
+    ///  Key = Spell Name; Value = When spell is ready
+    /// </summary>
+    public Dictionary<string, float> Cooldowns { get; protected set; }
 
     protected Ability QueuedAbility;
     protected Ability AutoAttack;
