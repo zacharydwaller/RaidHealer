@@ -40,4 +40,10 @@ public static class Power
         float hasteSeconds = haste / 100.0f;
         return Mathf.Clamp(BaseGCD - hasteSeconds, MinGCD, BaseGCD);
     }
+
+    public static float GetHastedCD(float cooldown, float haste)
+    {
+        float hasteSeconds = haste / 100.0f;
+        return Mathf.Clamp(cooldown - hasteSeconds, 0.0f, cooldown);
+    }
 }

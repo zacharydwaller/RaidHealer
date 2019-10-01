@@ -16,7 +16,7 @@ public class Tank : Raider
     {
         if (Mgr.Boss.IsAlive)
         {
-            StartCast(Mgr.Boss);
+            CastManager.StartCast(AutoAttack, Mgr.Boss);
         }
     }
 }

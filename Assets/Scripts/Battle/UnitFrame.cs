@@ -77,11 +77,15 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         HealPredict.value = Mathf.Lerp(HealPredict.value, Raider.Health + Raider.HealPredict, HealthLerpConstant);
 
         // Cast Bar
-        if (!Raider.IsCasting) CastBar.gameObject.SetActive(false);
-        else
+        if (Raider.CastManager.IsCasting && Raider.CastManager.CurrentAbility.CastTime > 0.0f)
         {
             CastBar.gameObject.SetActive(true);
-            CastBar.value = Raider.CurrentAbility.CastProgress;
+            CastBar.value = Raider.CastManager.CastProgress;
+        }
+        else
+        {
+            CastBar.value = 0;
+            CastBar.gameObject.SetActive(false);
         }
 
         // Dead state

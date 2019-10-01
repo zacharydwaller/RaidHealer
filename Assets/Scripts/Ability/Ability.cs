@@ -4,29 +4,21 @@ using UnityEngine;
 
 public abstract class Ability
 {
-    public Entity Owner { get; protected set; }
-
     public string Name { get; protected set; }
     public string ImagePath { get; protected set; }
 
-    public AbilityType AbilityType;
-    public TargetType TargetType;
+    public TargetType TargetType { get; protected set; }
+    public List<IAbilityEffect> Effects { get; protected set; }
 
-    public int NumTargets { get; private set; }
-
-    public float PowerCoefficient { get; protected set; }
-    public float TotalPower { get { return Owner.AbilityPower * PowerCoefficient; } }
-
-    public bool IsCastedAbility { get; protected set; }
-    public float CastAdd { get; protected set; }
-    public float CastTime { get { return IsCastedAbility ? Owner.GlobalCooldown + CastAdd : 0; } }
-
+    public int ManaCost { get; protected set; }
+    public float CastTime { get; protected set; }
     public float Cooldown { get; protected set; }
 
-    public Ability(Entity owner = null)
+    public void Invoke(Entity owner, Entity target)
     {
-        Owner = owner;
+        foreach (var effect in Effects)
+        {
+            effect.Invoke(owner, this, target);
+        }
     }
-
-    public virtual void Invoke(IEnumerable<Entity> targets) { }
 }

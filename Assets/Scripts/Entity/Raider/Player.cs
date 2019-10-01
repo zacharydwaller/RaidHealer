@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : Raider
 {
     public Raider HoverTarget;
     public Raider SelectTarget;
 
-    public List<OldAbility> AbilityList;
-
-    protected int QueuedAbilityIndex = -1;
-    protected float QueueTime = 0.5f;
+    protected const float QueueTime = 0.5f;
 
     public Player(BattleManager mgr, PlayerInfo info)
         : base(mgr)
@@ -23,14 +17,8 @@ public class Player : Raider
         MaxHealth = Health = Power.BaseHP + info.Gear.TotalPlusHP;
         AbilityPower = Power.BaseAP + info.Gear.TotalAbilityPower;
         GlobalCooldown = Power.GetHastedGCD(info.Gear.TotalHaste);
-        GCDFinish = 0;
 
-        AbilityList = info.AbilityList;
-
-        foreach(var ability in AbilityList)
-        {
-            ability.Owner = this;
-        }
+        Abilities = info.AbilityList;
     }
 
     public override void Tick()
@@ -40,23 +28,23 @@ public class Player : Raider
         // Get Escape input
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Space))
         {
-            if(IsCasting)
+            if(CastManager.IsCasting)
             {
-                CancelCast();
+                CastManager.CancelCast();
             }
             else
             {
+                Mgr.UFManager.UnselectAll();
+
                 // Pause
             }
-
-            QueuedAbilityIndex = -1;
         }
 
         // Cast queued ability
-        if(GCDReady && !IsCasting && GetAbility(QueuedAbilityIndex) != null)
+        if(CastManager.ReadyToCast && QueuedAbility != null)
         {
-            AbilityPressed(QueuedAbilityIndex);
-            QueuedAbilityIndex = -1;
+            AbilityPressed(QueuedAbility);
+            QueuedAbility = null;
         }
 
         // Clear target
@@ -66,102 +54,64 @@ public class Player : Raider
         }
     }
 
-    protected override void TickAbilities()
+    public void AbilityPressed(Ability ability)
     {
-        foreach(var ability in AbilityList)
+        // Do ability if ready
+        if (CastManager.ReadyToCast)
         {
-            ability.Tick();
+            QueuedAbility = ability;
+            DoAbility();
         }
-    }
-
-    public override void StartCast(Entity target)
-    {
-        base.StartCast(target);
-        OnStartingCast();
-    }
-
-    public override void CancelCast()
-    {
-        base.CancelCast();
-        OnCancellingCast();
-    }
-
-    public override void FinishCast()
-    {
-        base.FinishCast();
-        OnFinishingCast();
     }
 
     public void AbilityPressed(int index)
     {
-        if (index < 0 || index >= AbilityList.Count) return;
+        if (index < 0 || index >= Abilities.Count) return;
 
-        var ability = AbilityList[index];
+        var ability = Abilities[index];
 
         // Do ability if ready
-        if(!IsCasting && GCDReady)
+        if(CastManager.ReadyToCast)
         {
-            CurrentAbility = ability;
-
-            Entity target;
-
-            if(HoverTarget != null)
-            {
-                target = HoverTarget;
-            }
-            else if(SelectTarget != null)
-            {
-                target = SelectTarget;
-            }
-            else
-            {
-                target = this;
-            }
-
-            StartCast(target);
+            QueuedAbility = ability;
+            DoAbility();
         }
         // Queue ability if within queue time
-        else if(GCDFinish - Time.time <= QueueTime)
+        else if(CastManager.GCDFinish - Time.time <= QueueTime
+            || CastManager.CastFinishTime - Time.time <= QueueTime)
         {
-            QueuedAbilityIndex = index;
+            QueuedAbility = ability;
         }
     }
 
-    public OldAbility GetAbility(int index)
+    protected override void DoAbility()
     {
-        if (index < 0 || index >= AbilityList.Count) return null;
-        else return AbilityList[index];
-    }
+        Entity target;
 
-#region EventHandling
-    public event EventHandler<CastEventArgs> StartingCast = delegate { };
-    public event EventHandler<CastEventArgs> CancellingCast = delegate { };
-    public event EventHandler<CastEventArgs> FinishingCast = delegate { };
-
-    protected CastEventArgs CreateEventArgs()
-    {
-        return new CastEventArgs
+        if (HoverTarget != null)
         {
-            Mgr = this.Mgr,
-            Owner = this,
-            Ability = CurrentAbility
-        };
+            target = HoverTarget;
+        }
+        else if (SelectTarget != null)
+        {
+            target = SelectTarget;
+        }
+        else
+        {
+            target = this;
+        }
+
+        if (target.IsAlive)
+        {
+            CastManager.StartCast(QueuedAbility, target);
+        }
+
+        QueuedAbility = null;
     }
 
-    protected virtual void OnStartingCast()
+    public Ability GetAbility(int index)
     {
-        StartingCast(this, CreateEventArgs());
+        if (index < 0 || index >= Abilities.Count) return null;
+        else return Abilities[index];
     }
-
-    protected virtual void OnCancellingCast()
-    {
-        CancellingCast(this, CreateEventArgs());
-    }
-
-    protected virtual void OnFinishingCast()
-    {
-        FinishingCast(this, CreateEventArgs());
-    }
-
-    #endregion
 }

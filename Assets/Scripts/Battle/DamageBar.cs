@@ -19,7 +19,7 @@ public class DamageBar : MonoBehaviour
 
     public void Initialize(Entity entity)
     {
-        ID = entity.ID;
+        ID = entity.Id;
         NameText.text = entity.Name;
         Bar.value = 0;
     }

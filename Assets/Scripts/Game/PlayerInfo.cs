@@ -9,7 +9,7 @@ public class PlayerInfo
 
     public Gear Gear;
 
-    public List<OldAbility> AbilityList;
+    public List<Ability> AbilityList;
 
     public PlayerInfo(string newName, float itemLevel)
     {
@@ -17,16 +17,22 @@ public class PlayerInfo
         Gear = new Gear(itemLevel);
 
         // Have to set owner later
-        AbilityList = new List<OldAbility>
+        //AbilityList = new List<OldAbility>
+        //{
+        //    new Restore(),
+        //    new Grace(),
+        //    new Absolution(),
+        //    new Prayer(),
+        //    new HallowGround(),
+        //    new Supplication(),
+        //    //new Attune()
+        //    //new OldPoultice(),
+        //};
+
+        AbilityList = new List<Ability>()
         {
-            new Restore(),
-            new Grace(),
-            new Absolution(),
-            new Prayer(),
-            new HallowGround(),
-            new Supplication(),
-            //new Attune()
-            new Poultice()
+            //new Poultice()
+            new Grace()
         };
     }
 }

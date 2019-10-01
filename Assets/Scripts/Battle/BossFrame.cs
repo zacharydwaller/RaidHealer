@@ -51,21 +51,21 @@ public class BossFrame : MonoBehaviour
         HealthBar.value = Mathf.Lerp(HealthBar.value, Boss.Health, LerpConstant);
 
         // Cast
-        if(Boss.IsCasting)
+        if(Boss.CastManager.IsCasting && Boss.CastManager.CurrentAbility.CastTime > 0.0f)
         {
             if(!CastBar.gameObject.activeInHierarchy)
             {
                 CastBar.gameObject.SetActive(true);
             }
 
-            if(AbilityText.text != Boss.CurrentAbility.Name)
+            if(AbilityText.text != Boss.CastManager.CurrentAbility.Name)
             {
-                AbilityText.text = Boss.CurrentAbility.Name;
+                AbilityText.text = Boss.CastManager.CurrentAbility.Name;
             }
 
-            CastBar.value = Mathf.Lerp(CastBar.value, Boss.CastProgress, LerpConstant);
+            CastBar.value = Mathf.Lerp(CastBar.value, Boss.CastManager.CastProgress, LerpConstant);
         }
-        else if(!Boss.IsCasting && CastBar.gameObject.activeInHierarchy)
+        else if(!Boss.CastManager.IsCasting && CastBar.gameObject.activeInHierarchy)
         {
             CastBar.value = 0;
             CastBar.gameObject.SetActive(false);

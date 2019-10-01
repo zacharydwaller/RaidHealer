@@ -1,20 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
-public class Poultice : AuraAbility
+/// <summary>
+///     Does a small amount of healing and adds a hot
+/// </summary>
+public class Poultice : Ability
 {
-    public Poultice(Entity owner = null)
-        : base(owner)
+    public Poultice()
     {
         Name = "Poultice";
-        CastAdd = 0f;
-        Cooldown = 0f;
         ImagePath = "Image/Witch/poultice";
-    }
 
-    public override Aura CreateAura()
-    {
-        return new PoulticeBuff(Target as Raider, Owner);
+        TargetType = TargetType.Friend;
+
+        var healCoeff = 0.5f;
+        var hotCoeff = 2.0f;
+
+        Effects = new List<IAbilityEffect>()
+        {
+            new HealEffect(healCoeff),
+            // new ApplyAura(new HotEffect(hotCoeff))
+        };
+
+        ManaCost = 1000;
+        CastTime = 0.0f;
+        Cooldown = 0.0f;
     }
 }

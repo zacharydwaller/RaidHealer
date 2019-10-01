@@ -84,13 +84,13 @@ public class DamageMeter : MonoBehaviour
         TotalDamage += damage;
         SetDamage += damage;
 
-        if(!DamageTable.ContainsKey(user.ID))
+        if(!DamageTable.ContainsKey(user.Id))
         {
-            DamageTable.Add(user.ID, 0);
+            DamageTable.Add(user.Id, 0);
             CreateDamageBar(user);
         }
 
-        DamageTable[user.ID] += damage;
+        DamageTable[user.Id] += damage;
     }
 
     public void UpdateDamageBar(DamageBar bar, float highestDamage)
@@ -109,7 +109,7 @@ public class DamageMeter : MonoBehaviour
         var barScript = barObj.GetComponent<DamageBar>();
         barScript.Initialize(raider);
         
-        DamageBars.Add(raider.ID, barScript);
+        DamageBars.Add(raider.Id, barScript);
     }
 
     public void SortBars()

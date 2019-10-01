@@ -10,7 +10,7 @@ public class ActionButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public KeyCode Modifier;
     public int AbilityIndex;
 
-    protected OldAbility Ability;
+    protected Ability Ability;
 
     public Text KeyText;
     public Text SpellText;
@@ -64,18 +64,21 @@ public class ActionButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     protected void CheckCD()
     {
-        //Call SnapCDFill inside if statements to avoid dirtying canvas and forcing unnecessary draws
-        // Check ability CD
+        if (!Mgr.Player.Cooldowns.ContainsKey(Ability.Name)) Mgr.Player.Cooldowns[Ability.Name] = 0.0f;
 
-        if (!Ability.OffCooldown)
+        var cdFinish = Mgr.Player.Cooldowns[Ability.Name];
+        var cdProgress = Mathf.Max(cdFinish - Time.time, 0);
+
+        //Call SnapCDFill inside if statements to avoid dirtying canvas and forcing unnecessary draws
+        if (cdProgress <= 0.0f)
         {
-            CDMask.fillAmount = 1.0f - Ability.CooldownProgress;
+            CDMask.fillAmount = 1.0f - (cdProgress / Ability.Cooldown);
             SnapCDFill();
         }
         // Check player GCD
-        else if (!Mgr.Player.GCDReady)
+        else if (!Mgr.Player.CastManager.GCDReady)
         {
-            CDMask.fillAmount = 1.0f - Mgr.Player.GCDProgress;
+            CDMask.fillAmount = 1.0f - Mgr.Player.CastManager.GCDProgress;
             SnapCDFill();
         }
     }

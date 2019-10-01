@@ -133,7 +133,7 @@ public abstract class OldAbility
         }
 
         CooldownRemaining = Cooldown;
-        Owner.FinishCast();
+        Owner.CastManager.FinishCast();
     }
 
     /// <summary>

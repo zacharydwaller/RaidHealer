@@ -109,7 +109,7 @@ public class Raid
     //Get by ID
     public Entity GetByID(int id)
     {
-        return Raiders.FirstOrDefault(r => r.ID == id);
+        return Raiders.FirstOrDefault(r => r.Id == id);
     }
 
     public Entity GetRandom()

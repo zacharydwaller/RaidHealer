@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Damage : Raider
+﻿public class Damage : Raider
 {
     public Damage(BattleManager mgr)
         : base(mgr)
@@ -14,7 +10,7 @@ public class Damage : Raider
     {
         if(Mgr.Boss.IsAlive)
         {
-            StartCast(Mgr.Boss);
+            CastManager.StartCast(AutoAttack, Mgr.Boss);
         }
     }
 }

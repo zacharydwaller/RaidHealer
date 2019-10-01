@@ -15,15 +15,10 @@ public class Boss : Entity
 
     protected int currentTank = 0;
 
-    /// <summary>
-    /// List of abilities. Should be ordered least-to-most priority. So add AutoAttack first.
-    /// </summary>
-    protected List<OldAbility> AbilityList;
-
     public Boss(BattleManager mgr)
         : base(mgr)
     {
-        
+
     }
 
     public override void Tick()
@@ -44,33 +39,33 @@ public class Boss : Entity
         }
 
         // Check if can do ability
-        if(GCDReady & !IsCasting)
+        if(CastManager.ReadyToCast)
         {
             SelectAbility();
             DoAbility();
         }
     }
 
-    protected override void TickAbilities()
-    {
-        foreach (var ability in AbilityList)
-        {
-            ability.Tick();
-        }
-    }
-
     /// <summary>
     /// Iterates through AbilityList in reverse and selects the first one that's not on cooldown.
+    /// If all abilities on cooldown, selects AutoAttack
     /// </summary>
     protected override void SelectAbility()
     {
-        for (int i = AbilityList.Count - 1; i >= 0; i--)
+        // Find highest priority ability off cooldown
+        for (int i = Abilities.Count - 1; i >= 0; i--)
         {
-            if(AbilityList[i].OffCooldown)
+            if(Cooldowns[Abilities[i].Name] <= Time.time)
             {
-                CurrentAbility = AbilityList[i];
+                QueuedAbility = Abilities[i];
                 break;
             }
+        }
+
+        // Auto Attack if no abilities available
+        if(QueuedAbility == null)
+        {
+            QueuedAbility = AutoAttack;
         }
     }
 
@@ -85,7 +80,7 @@ public class Boss : Entity
         if (target == null) target = Mgr.Raid.GetNextAlive();
         if (target != null)
         {
-            StartCast(target);
+            CastManager.StartCast(QueuedAbility, target);
         }
     }
 
@@ -100,9 +95,7 @@ public class Boss : Entity
         IsEnraged = true;
         AbilityPower = Numbers.IncreaseByPercent(AbilityPower, 500.0f);
 
-        AbilityList.Clear();
-        AbilityList.Add(new AutoAttack(this));
-        CurrentAbility = AbilityList[0];
+        Abilities.Clear();
 
         float attacksPerSec = 1.0f / GlobalCooldown;
         attacksPerSec = Numbers.IncreaseByPercent(attacksPerSec, 150.0f);

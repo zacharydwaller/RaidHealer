@@ -2,13 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Heal : HealAbility
+public class Heal : Ability
 {
-    public Heal(Entity owner = null)
-        : base(owner)
+    public Heal()
     {
         Name = "Heal";
-        CastAdd = 0.25f;
-        PowerCoefficient = 0.25f;
+        ImagePath = "";
+
+        TargetType = TargetType.Friend;
+        Effects = new List<IAbilityEffect>()
+        {
+            new HealEffect(1.0f)
+        };
+
+        ManaCost = 1000;
+        CastTime = 1.5f;
+        Cooldown = 1.5f;
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [System.Serializable]
 public class Raider : Entity
@@ -9,8 +6,6 @@ public class Raider : Entity
     public Role Role;
 
     public float ItemLevel;
-
-    public List<Aura> Auras;
 
     protected const float powerStd = 10;
     protected float gcdStd = 0.15f;
@@ -26,11 +21,6 @@ public class Raider : Entity
 
         float haste = Mathf.Abs(Power.BaseGCD - Distribution.GetRandom(Power.BaseGCD, gcdStd));
         GlobalCooldown = Mathf.Max(GlobalCooldown - haste, Power.MinGCD);
-        GCDFinish = GlobalCooldown;
-
-        CurrentAbility = new AutoAttack(this);
-
-        Auras = new List<Aura>();
     }
 
     public override void Tick()
@@ -43,26 +33,10 @@ public class Raider : Entity
         }
 
         // Ready for new cast
-        if (GCDReady && !IsCasting)
+        if (CastManager.ReadyToCast && this != Mgr.Player)
         {
             SelectAbility();
             DoAbility();
         }
-    }
-
-    public void AddAura(Aura newAura)
-    {
-        // If aura already exists, refresh it
-        foreach(var aura in Auras)
-        {
-            if (aura.GetType() == newAura.GetType())
-            {
-                aura.Start();
-                return;
-            }
-        }
-
-        // Otherwise add new aura
-        Auras.Add(newAura);
     }
 }

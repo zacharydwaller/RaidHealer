@@ -1,15 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Grace : HealAbility
+﻿using System.Collections.Generic;
+/// <summary>
+///     Standard flash heal
+/// </summary>
+public class Grace : Ability
 {
-    public Grace(Entity owner = null)
-        : base(owner)
+    public Grace()
     {
         Name = "Grace";
-        CastAdd = 0.01f;
-        PowerCoefficient = 1.0f;
         ImagePath = "Image/Cleric/grace";
+
+        TargetType = TargetType.Friend;
+
+        Effects = new List<IAbilityEffect>()
+        {
+            new HealEffect(2.0f)
+        };
+
+        ManaCost = 1000;
+        CastTime = 1.5f;
     }
 }

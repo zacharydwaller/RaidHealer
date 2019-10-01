@@ -1,20 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
-public class AutoAttack : OldAbility
+public class AutoAttack : Ability
 {
-    public AutoAttack(Entity owner)
-        : base(owner)
+    public AutoAttack()
     {
         Name = "Attack";
-        CastAdd = 0;
-        PowerCoefficient = 1.0f;
+        ImagePath = "";
+
+        TargetType = TargetType.Foe;
+        Effects = new List<IAbilityEffect>()
+        {
+            new DamageEffect(1.0f)
+        };
     }
 
-    protected override void Do()
-    {
-        Target.TakeDamage(TotalPower);
-        base.Do();
-    }
 }

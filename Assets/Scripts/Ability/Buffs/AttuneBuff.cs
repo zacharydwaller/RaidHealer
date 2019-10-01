@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttuneBuff : Aura, ICastEventHandler
+public class AttuneBuff : Aura
 {
     public float PowerMult = 0.4f;
 
@@ -10,11 +10,6 @@ public class AttuneBuff : Aura, ICastEventHandler
         : base(owner, applier)
     {
         Name = "Attune";
-
-        var player = Owner.Mgr.Player;
-        player.StartingCast += OnStartingCast;
-        player.CancellingCast += OnCancellingCast;
-        player.FinishingCast += OnFinishingCast;
     }
 
     public override void Start()
@@ -38,21 +33,5 @@ public class AttuneBuff : Aura, ICastEventHandler
     public override void Tick()
     {
         //base.Tick();
-    }
-
-    public void OnStartingCast(object sender, CastEventArgs e)
-    {
-        Owner.HealPredict += e.Ability.TotalPower * PowerMult;
-    }
-
-    public void OnCancellingCast(object sender, CastEventArgs e)
-    {
-        Owner.HealPredict -= e.Ability.TotalPower * PowerMult;
-    }
-
-    public void OnFinishingCast(object sender, CastEventArgs e)
-    {
-        Owner.TakeHeal(e.Ability.TotalPower * PowerMult);
-        Owner.HealPredict -= e.Ability.TotalPower * PowerMult;
     }
 }

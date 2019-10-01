@@ -23,7 +23,7 @@ public class CastBar : MonoBehaviour
     private void Update()
     {
         // Start Cast
-        if(!IsShowing && Player.IsCasting)
+        if(!IsShowing && Player.CastManager.IsCasting)
         {
             Background.enabled = true;
         }
@@ -31,11 +31,11 @@ public class CastBar : MonoBehaviour
         // During Cast
         if(IsShowing)
         {
-            Bar.value = Player.CurrentAbility.CastProgress;
+            Bar.value = Player.CastManager.CastProgress;
         }
 
         // End Cast
-        if(IsShowing && !Player.IsCasting)
+        if(IsShowing && !Player.CastManager.IsCasting)
         {
             Background.enabled = false;
             Bar.value = 0;

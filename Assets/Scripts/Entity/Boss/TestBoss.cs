@@ -9,24 +9,23 @@ public class TestBoss : Boss
     {
         Name = "Big Boy";
         MaxHealth = Health = 37.5f * Numbers.Thousand;
-        //MaxHealth = Health = 1.0f * Numbers.Million;
         AbilityPower = 150;
         GlobalCooldown = 2.0f;
         EnrageDelay = 60;
         EnrageTime = Time.time + EnrageDelay;
 
-        AbilityList = new List<OldAbility>
+        Abilities = new List<Ability>
         {
-            new AutoAttack(this),
-            new AttackRandom(this),
-            new SplashAttack(this),
-            new AoEAttack(this)
+            new AutoAttack(),
+            //new AttackRandom(this),
+            //new SplashAttack(this),
+            //new AoEAttack(this)
         };
 
         // Start every ability on cooldown
-        foreach(var ability in AbilityList)
+        foreach(var ability in Abilities)
         {
-            ability.CooldownRemaining = ability.Cooldown;
+            Cooldowns[ability.Name] = Time.time + ability.Cooldown;
         }
     }
 }

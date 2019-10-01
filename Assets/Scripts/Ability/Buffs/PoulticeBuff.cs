@@ -8,7 +8,7 @@ public class PoulticeBuff : HoT
         : base(owner, applier)
     {
         Name = "Poultice";
-        Duration = 12f;
+        Duration = 18f;
         PowerCoefficient = 2.0f;
 
         Start();

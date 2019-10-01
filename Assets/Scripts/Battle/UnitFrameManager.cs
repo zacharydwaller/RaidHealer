@@ -34,7 +34,7 @@ public class UnitFrameManager : MonoBehaviour
         
         for(int i = 0; i < list.Length; i++)
         {
-            if(list[i].Raider.ID == raider.ID)
+            if(list[i].Raider.Id == raider.Id)
             {
                 return i;
             }
