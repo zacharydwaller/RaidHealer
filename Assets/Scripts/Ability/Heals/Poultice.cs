@@ -12,17 +12,25 @@ public class Poultice : Ability
 
         TargetType = TargetType.Friend;
 
-        var healCoeff = 0.5f;
-        var hotCoeff = 2.0f;
-
         Effects = new List<IAbilityEffect>()
         {
-            new HealEffect(healCoeff),
-            // new ApplyAura(new HotEffect(hotCoeff))
+            new HealEffect(0.5f),
+            new ApplyAuraEffect(new PoulticeHot())
         };
 
         ManaCost = 1000;
         CastTime = 0.0f;
         Cooldown = 0.0f;
+    }
+}
+
+public class PoulticeHot : HotEffect
+{
+    public PoulticeHot()
+        : base()
+    {
+        Name = "Poultice";
+        PowerCoefficient = 3.0f;
+        Duration = 18.0f;
     }
 }

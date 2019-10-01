@@ -56,7 +56,9 @@ public abstract class Entity
     public virtual void Tick()
     {
         CastManager.Tick();
+
         Auras.ForEach(a => a.Tick());
+        Auras.RemoveAll(a => a.DurationRemaining <= 0);
     }
 
     /// <summary>

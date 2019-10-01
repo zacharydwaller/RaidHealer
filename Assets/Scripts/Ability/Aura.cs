@@ -1,34 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public abstract class Aura
+public class Aura
 {
-    public Raider Owner;
-    public Entity Applier;
+    public Entity Parent { get; protected set; }
+    public Entity Owner { get; protected set; }
 
-    public string Name;
-    public float PowerCoefficient;
+    public AuraEffect AuraEffect { get; protected set; }
 
-    public float Duration;
-    protected float DurationRemaining;
+    public string Name { get => AuraEffect.Name; }
+    public float Duration { get => AuraEffect.Duration; }
 
-    public Aura(Raider owner, Entity applier = null)
+    public float ExpirationTime { get; protected set; }
+    public float DurationRemaining { get => ExpirationTime - Time.time; }
+    public float NextTick { get; protected set; }
+
+    public Aura(Entity parent, Entity owner, AuraEffect auraEffect)
     {
-        Applier = applier;
+        Parent = parent;
         Owner = owner;
+        AuraEffect = auraEffect;
 
-        Start();
-    }
-
-    public virtual void Start()
-    {
-        DurationRemaining = Duration;
+        ExpirationTime = Time.time + Duration;
+        NextTick = Time.time + AuraEffect.TickDelay;
     }
 
     public virtual void Tick()
     {
-        DurationRemaining -= Time.deltaTime;
+        if(Time.time >= NextTick)
+        {
+            AuraEffect.Invoke(Parent, Owner, this);
+            NextTick += AuraEffect.TickDelay;
+        }
 
         if(DurationRemaining <= 0)
         {
@@ -36,9 +38,8 @@ public abstract class Aura
         }
     }
 
-
     public virtual void Finish()
     {
-        Owner.Auras.Remove(this);
+        //Owner.Auras.Remove(this);
     }
 }

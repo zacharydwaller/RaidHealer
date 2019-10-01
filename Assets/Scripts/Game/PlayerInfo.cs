@@ -33,7 +33,8 @@ public class PlayerInfo
         {
             //new Poultice()
             new Grace(),
-            new Absolution()
+            new Absolution(),
+            new Poultice()
         };
     }
 }
