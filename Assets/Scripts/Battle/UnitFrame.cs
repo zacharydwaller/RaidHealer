@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
@@ -17,6 +17,9 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public Image HealthBarFill;
 
     public Slider HealPredict;
+
+    public GameObject AuraIconPrefab;
+    public Transform BuffsArea;
 
     public Slider CastBar;
 
@@ -64,17 +67,27 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         // Health Bar
         HealthBar.value = Mathf.Lerp(HealthBar.value, Raider.Health, HealthLerpConstant);
 
-        if(Raider.Auras.Count != 0)
-        {
-            HealthBarFill.color = Color.cyan;
-        }
-        else if(HealthBarFill.color != RoleUtil.GetColor(Raider.Role))
-        {
-            HealthBarFill.color = RoleUtil.GetColor(Raider.Role);
-        }
-
         // Heal predict
         HealPredict.value = Mathf.Lerp(HealPredict.value, Raider.Health + Raider.HealPredict, HealthLerpConstant);
+
+        // Buffs
+        var buffs = Raider.Auras.Where(a => a.AuraEffect.Friendly);
+        var presentBuffNames = BuffsArea.GetComponentsInChildren<AuraIcon>().Select(ai => ai.Aura.Name);
+        foreach (var buff in buffs)
+        {
+            if (!presentBuffNames.Contains(buff.Name))
+            {
+                var auraIconObj = GameObject.Instantiate(AuraIconPrefab, BuffsArea);
+                var auraIcon = auraIconObj.GetComponent<AuraIcon>();
+
+                auraIcon.Initialize(buff);
+            }
+            else
+            {
+                var auraIcon = BuffsArea.GetComponentsInChildren<AuraIcon>().FirstOrDefault(a => a.Aura.Name.Equals(buff.Name));
+                auraIcon.Initialize(buff);
+            }
+        }
 
         // Cast Bar
         if (Raider.CastManager.IsCasting && Raider.CastManager.CurrentAbility.CastTime > 0.0f)
@@ -97,6 +110,7 @@ public class UnitFrame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             HealthText.text = "Dead";
             HealPredict.gameObject.SetActive(false);
             CastBar.gameObject.SetActive(false);
+            BuffsArea.gameObject.SetActive(false);
         }
     }
 

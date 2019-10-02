@@ -16,7 +16,7 @@ public class HurlBoulder : Ability
         TargetType = TargetType.Foe;
         Effects = new List<IAbilityEffect>()
         {
-            new DamageEffectRandom(0.5f)
+            new DamageEffectRandom(0.75f)
         };
     }
 }

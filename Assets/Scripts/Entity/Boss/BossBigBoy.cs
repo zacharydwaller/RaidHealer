@@ -11,7 +11,6 @@ public class BossBigBoy : Boss
         MaxHealth = Health = 37.5f * Numbers.Thousand;
         AbilityPower = 150;
         GlobalCooldown = 2.0f;
-        EnrageDelay = 60;
         EnrageTime = Time.time + EnrageDelay;
 
         Abilities = new List<Ability>

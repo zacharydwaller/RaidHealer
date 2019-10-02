@@ -65,7 +65,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void LogAction(Entity user, Entity target, OldAbility ability)
+    public void LogAction(Entity user, Entity target, Ability ability)
     {
         if (CombatLogger.isActiveAndEnabled)
         {

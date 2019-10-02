@@ -12,11 +12,11 @@ public class Stomp : Ability
     {
         Name = "Stomp";
         CastTime = 2.0f;
-        Cooldown = 15.0f;
+        Cooldown = 10.0f;
 
         Effects = new List<IAbilityEffect>()
         {
-            new DamageEffectRandomSplash(0.25f)
+            new DamageEffectRandomSplash(0.50f)
         };
     }
 }

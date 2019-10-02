@@ -4,7 +4,7 @@
 public class Boss : Entity
 {
     public bool IsEnraged = false;
-    public float EnrageDelay = 60;
+    public float EnrageDelay = 120;
     public float EnrageTime;
 
     public float TankSwapDelay = 10;

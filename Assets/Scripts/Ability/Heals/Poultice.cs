@@ -30,6 +30,7 @@ public class PoulticeHot : HotEffect
         : base()
     {
         Name = "Poultice";
+        ImagePath = "Image/Witch/poultice";
         PowerCoefficient = 3.0f;
         Duration = 18.0f;
     }
