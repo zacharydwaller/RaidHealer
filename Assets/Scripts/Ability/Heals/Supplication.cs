@@ -2,24 +2,37 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//public class Supplication : HealAbility
-//{
-//    int TargetCount;
+/// <summary>
+///     Raidwide CD, applies hot
+/// </summary>
+public class Supplication : Ability
+{
+    public Supplication()
+    {
+        Name = "Supplication";
+        ImagePath = "Image/Cleric/supplication";
 
-//    public Supplication(Entity owner = null)
-//        : base(owner)
-//    {
-//        Name = "Supplication";
-//        CastAdd = 0.5f;
-//        PowerCoefficient = 0.5f;
-//        Cooldown = 12.0f;
-//        ImagePath = "Image/Cleric/supplication";
-//        TargetCount = 6;
-//    }
+        Effects = new List<IAbilityEffect>()
+        {
+            new HealEffect(0.5f),
+            new ApplyAuraEffectRaidwide(new SupplicationHot())
+        };
 
-//    public override void StartCast(Entity target)
-//    {
-//        TargetList = (List<Entity>)Owner.Mgr.Raid.GetSmartAoE(TargetCount);
-//        base.StartCast(null);
-//    }
-//}
+        ManaCost = 1000;
+        CastTime = 2.0f;
+        Cooldown = 30.0f;
+    }
+}
+
+public class SupplicationHot : HotEffect
+{
+    public SupplicationHot()
+        : base()
+    {
+        Name = "Supplication";
+        ImagePath = "Image/Cleric/supplication";
+        PowerCoefficient = 2.0f;
+        Duration = 8.0f;
+        TickDelay = 2.0f;
+    }
+}

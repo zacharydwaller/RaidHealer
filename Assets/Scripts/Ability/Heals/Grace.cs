@@ -13,7 +13,7 @@ public class Grace : Ability
 
         Effects = new List<IAbilityEffect>()
         {
-            new HealEffect(1.25f)
+            new HealEffect(1.0f)
         };
 
         ManaCost = 1000;

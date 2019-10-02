@@ -15,9 +15,10 @@ public class BossBigBoy : Boss
 
         Abilities = new List<Ability>
         {
+            new RainFire(),
+            new Skewer(),
             new HurlBoulder(),
             new Stomp(),
-            new RainFire()
         };
 
         // Start every ability on cooldown

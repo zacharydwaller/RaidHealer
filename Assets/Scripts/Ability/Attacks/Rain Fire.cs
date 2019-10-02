@@ -13,7 +13,21 @@ public class RainFire : Ability
 
         Effects = new List<IAbilityEffect>()
         {
-            new DamageEffectRaidwide(0.5f)
+            new DamageEffectRaidwide(0.2f),
+            new ApplyAuraEffectRaidwide(new RainFireDot())
         };
+    }
+}
+
+public class RainFireDot : DotEffect
+{
+    public RainFireDot()
+        : base()
+    {
+        Name = "Rain Fire";
+        ImagePath = "";
+        PowerCoefficient = 0.8f;
+        Duration = 6.0f;
+        TickDelay = 1.5f;
     }
 }

@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class Healer : Raider
 {
+    public float AbilityUseDelay;
+    public float AbilityUseTime = 0;
+
     public Healer(BattleManager mgr)
         : base(mgr)
     {
         Role = Role.Healer;
+
+        AbilityUseDelay = GlobalCooldown * 2.0f;
 
         Abilities = new List<Ability>()
         {
@@ -17,16 +22,23 @@ public class Healer : Raider
 
     protected override void SelectAbility()
     {
-        QueuedAbility = Abilities[0]; // Heal
+        if (Time.time >= AbilityUseTime)
+        {
+            QueuedAbility = Abilities[0]; // Heal
+            AbilityUseTime = Time.time + AbilityUseDelay;
+        }
     }
 
     protected override void DoAbility()
     {
+        if (QueuedAbility == null) return;
+
         var target = GetTarget();
 
         if(target != null)
         {
             CastManager.StartCast(QueuedAbility, target);
+            QueuedAbility = null;
         }
     }
 
@@ -36,10 +48,20 @@ public class Healer : Raider
     /// <returns></returns>
     protected Entity GetTarget()
     {
-        var raid = Mgr.Raid;
-        var lowestHealth = raid.GetLowestHealth();
+        var targetCount = 3;
+        var lowestHealths = Mgr.Raid.GetSmartAoE(targetCount);
 
-        return lowestHealth;
+        var index = (int) Random.Range(0, 3);
+
+        if(lowestHealths[index].HealthPercent == 100)
+        {
+            return null;
+        }
+        else
+        {
+            return lowestHealths[index];
+        }
+
 
         // Uncomment for splash/chain heal support for AI healers
         //if (lowestHealth == null) return null;

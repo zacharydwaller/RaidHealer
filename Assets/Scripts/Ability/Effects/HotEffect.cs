@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public abstract class HotEffect : AuraEffect
+﻿public abstract class HotEffect : AuraEffect
 {
     public override void Invoke(Entity parent, Entity owner, Aura aura)
     {

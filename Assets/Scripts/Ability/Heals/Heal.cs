@@ -16,7 +16,6 @@ public class Heal : Ability
         };
 
         ManaCost = 1000;
-        CastTime = 1.5f;
-        Cooldown = 1.5f;
+        CastTime = 2.0f;
     }
 }
