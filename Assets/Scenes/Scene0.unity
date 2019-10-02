@@ -2413,7 +2413,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Boss:
-    ID: 0
+    Id: 0
     Name: 
     MaxHealth: 0
     Health: 0
@@ -2426,6 +2426,8 @@ MonoBehaviour:
     EnrageTime: 0
     TankSwapDelay: 0
     TankSwapTime: 0
+    AbilityUseDelay: 0
+    AbilityUseTime: 0
   NameText: {fileID: 17918947}
   HealthText: {fileID: 85107222}
   HealthPText: {fileID: 1970250446}
@@ -3431,7 +3433,7 @@ MonoBehaviour:
   CombatLogger: {fileID: 0}
   DamageMeter: {fileID: 0}
   Boss:
-    ID: 0
+    Id: 0
     Name: 
     MaxHealth: 0
     Health: 0
@@ -3444,10 +3446,13 @@ MonoBehaviour:
     EnrageTime: 0
     TankSwapDelay: 0
     TankSwapTime: 0
-  RaidSize: 4
+    AbilityUseDelay: 0
+    AbilityUseTime: 0
+  RaidSize: 24
   Raid:
     Size: 12
   RaidItemLevel: 0
+  WaitTime: 3
 --- !u!4 &1620592520
 Transform:
   m_ObjectHideFlags: 0

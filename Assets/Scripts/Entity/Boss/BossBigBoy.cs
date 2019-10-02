@@ -18,7 +18,7 @@ public class BossBigBoy : Boss
         {
             new HurlBoulder(),
             new Stomp(),
-            //new AoEAttack(this)
+            new RainFire()
         };
 
         // Start every ability on cooldown
